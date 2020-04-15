@@ -32,4 +32,4 @@ a storage format suited for network packets and indexing
 
 ## support & blame-game
 
-magenbluten < mb [ at ] 64k.by > | <https://64k.by>
+magenbluten < mb [ at ] 64k.by > :: <https://64k.by>
