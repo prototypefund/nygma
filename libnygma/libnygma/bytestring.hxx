@@ -269,7 +269,7 @@ class bytestring_view {
   constexpr bool available( std::size_t n ) const noexcept { return n <= size(); }
 
   constexpr void available_exn( std::size_t const n ) const {
-    if( n > size() ) { throw std::out_of_range( "bytestring_view::available_exn(): out-of-range" ); }
+    if( n > size() ) { throw std::out_of_range( "bytestring_view::available_exn: n > size()" ); }
   }
 
   constexpr bytestring_view slice_exn( std::size_t size, std::size_t offset = 0u ) const {
@@ -288,7 +288,7 @@ class bytestring_view {
 
   constexpr std::byte at( std::size_t const idx ) const {
     if( idx < _size ) { return _data[idx]; }
-    throw std::out_of_range( "bytestring_view.at(): <idx >= _sz>" );
+    throw std::out_of_range( "bytestring_view::at: idx >= _sz" );
   }
 
   constexpr auto rd8( std::size_t const idx = 0 ) const noexcept { return _data[idx]; }
@@ -383,7 +383,9 @@ class bytestring_istream {
   constexpr bool available( std::size_t n ) const noexcept { return n <= available(); }
 
   constexpr void available_exn( std::size_t const n ) const {
-    if( n > available() ) { throw std::out_of_range( "bytestring_istream: n > available" ); }
+    if( n > available() ) {
+      throw std::out_of_range( "bytestring_istream::available_exn: n > available()" );
+    }
   }
 
   constexpr void advance_exn( std::size_t const n ) {
@@ -402,7 +404,7 @@ class bytestring_istream {
 
   constexpr std::byte at( std::size_t const idx ) const {
     if( idx < _size ) { return _data[idx]; }
-    throw std::out_of_range( "bytestring_istream.at(): idx >= _sz" );
+    throw std::out_of_range( "bytestring_istream::at: idx >= _size" );
   }
 
   constexpr bool operator==( bytestring_istream<k_endianess> const& other ) const noexcept {
@@ -469,4 +471,4 @@ class bytestring_istream {
   }
 };
 
-} // namespace emptyspace::data
+} // namespace emptyspace
