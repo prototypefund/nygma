@@ -1,0 +1,6 @@
+$out_root/
+{
+  include libnygma/
+}
+
+export $out_root/libnygma/$import.target

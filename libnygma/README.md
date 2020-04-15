@@ -1,0 +1,3 @@
+# libnygma
+
+C++ library

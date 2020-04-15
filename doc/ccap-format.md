@@ -1,0 +1,175 @@
+# storage-format
+
+- plain pcap files
+  - no support for true 64bit ns timestamps
+    2 x 32bit timeval stamps are not full 64bit stamps. only a value of
+    1000000000 for the 32bit nano-second part is allowed according to the rfc.
+    this means that only 29.9bits can be used for the ns resolution.
+  - no support for adding the capture port id
+  - no support for compressed encoding of length
+  - no support for compressed blocks
+  - there exist many vendor specific variants of pcaps
+    - ms timestamps (the "default")
+    - ns timestamps
+    - alex kuznetzov's variant
+    - netsniff-ng variant
+    - navtel variant
+  - pcapng:
+    - extended packets waste to much space
+    - simple packets do not have timestamps
+
+### why pcap(ng) is not really useuful for long-term storage
+
+the extended block format induces at least 28 bytes per packet overhead.  the
+packet length and timestamps are inline which means they can not be compressed.
+the `pcapng` format is still packet oriented, not block oriented.
+
+from the rfc2629
+
+```
+
+Internet-Draft                   pcapng                    November 2019
+
+
+      0                   1                   2                   3
+      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +---------------------------------------------------------------+
+    0 |                    Block Type = 0x00000006                    |
+      +---------------------------------------------------------------+
+    4 |                      Block Total Length                       |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    8 |                         Interface ID                          |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   12 |                        Timestamp (High)                       |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   16 |                        Timestamp (Low)                        |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   20 |                    Captured Packet Length                     |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   24 |                    Original Packet Length                     |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   28 /                                                               /
+      /                          Packet Data                          /
+      /              variable length, padded to 32 bits               /
+      /                                                               /
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      /                                                               /
+      /                      Options (variable)                       /
+      /                                                               /
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |                      Block Total Length                       |
+      +---------------------------------------------------------------+
+
+                  Figure 11: Enhanced Packet Block Format
+
+```
+
+the simple packet format has less overhead than the extended packet format but
+does not include timestamps rendering it completely useless for our usecase.
+
+
+```
+
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +---------------------------------------------------------------+
+    0 |                    Block Type = 0x00000003                    |
+      +---------------------------------------------------------------+
+    4 |                      Block Total Length                       |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    8 |                    Original Packet Length                     |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   12 /                                                               /
+      /                          Packet Data                          /
+      /              variable length, padded to 32 bits               /
+      /                                                               /
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |                      Block Total Length                       |
+      +---------------------------------------------------------------+
+
+                   Figure 12: Simple Packet Block Format
+
+```
+
+further qutotes from the rfc2629
+
+> The Simple Packet Block does not contain the timestamp because this
+> is often one of the most costly operations on PCs.  Additionally,
+> there are applications that do not require it; e.g. an Intrusion
+> Detection System is interested in packets, not in their timestamp.
+
+> A Simple Packet Block cannot be present in a Section that has more
+> than one interface because of the impossibility to refer to the
+> correct one (it does not contain any Interface ID field).
+
+# suggested formats
+
+pcaps gets stored in compressed capture files (`.ccap`) files. various index
+files get stored in sorted string table (`.sst`) files for keys larger than
+64bit, e.g. ipv6 addresses and sorted integer files for keys upto 64bit.
+
+- .ccap
+  - block oriented capture storage
+  - compressed index and compressed data
+    - index: integer compression
+    - data: lz4 / snappy / blosc / ...
+  - a packet is uniquly identifiable by block number and packet number in block
+    - e.g. let `p` be the 23th packet in the 10th block (in short p@<10:23>)
+    - the data can be compressed because we have the packet to offset mapping
+      in a local compressed index prefixing the data itself.
+
+- .sst
+  - well known from [leveldb]() and [rocksdb]()
+  - prefix compression for strings and/or long integers
+    - ipv6 addresses
+
+- .sit
+  - sorted integer table for integers less than 64bit width
+    - ports (16bit)
+    - ipv4 address (32bit)
+    - timestamps (64bit)
+  - specialized format for storing e.g. ipv4 addresses
+  - integer compression for keys
+
+## the `.ccap` format
+
+```
+
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +---------------------------------------------------------------+
+    0 |block-cty|align-sh |block-index-size-hi |block-data-size-hi    |
+      +---------------------------------------------------------------+
+    4 |index-ty |index-cty|index-size                                 |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      /                                                               /
+      /index data (compressed according to `index-cty`)               /
+      /                                                               /
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |index-ty |index-cty|index-size                                 |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      /                                                               /
+      /index data (compressed according to `index-cty`)               /
+      /                                                               /
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      /                                                               /
+      / block data containing multiple packets                        /
+      /   - length: block-data-size-hi << 12                          /
+      /   - per-packet-align: 1 << align-sh                           /
+      /                                                               /
+      +---------------------------------------------------------------+
+
+index-ty ::= timestamps | offsets | port-ids | permutation-index
+index-cty ::= streamvbyte | tvsimple | ...
+
+where
+  timestamps ~ 64bit
+  offsets ~ 32bit
+  port-ids ~ 16bit
+  permutation-index ~ 32bit
+```
+
+timestamps are full 64bit timestamps. port ids are the interface port id from
+which the packet was captured (**very** important). the permutation index is to
+enable timestamp sorted access to packets ( without the need to rewrite the
+block data itself ).

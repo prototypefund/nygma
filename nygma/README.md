@@ -1,0 +1,3 @@
+# nygma
+
+C++ executable
