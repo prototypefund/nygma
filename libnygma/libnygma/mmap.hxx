@@ -229,7 +229,7 @@ class block_view {
   }
 
   bytestring_view const prefetch( std::uint64_t const offset ) noexcept {
-    if( not is_ok() ) { return bytestring_view{nullptr, 0u}; }
+    if( not is_ok() ) { return bytestring_view{ nullptr, 0u }; }
     // if the cached offset matches just return
     // a bytestring_view with the cached size
     auto* p = _block.data();
