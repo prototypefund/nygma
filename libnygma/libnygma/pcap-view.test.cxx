@@ -2,7 +2,7 @@
 
 #include <pest/pest.hxx>
 
-#include <libnygma/pcap.hxx>
+#include <libnygma/pcap-view.hxx>
 
 #include <algorithm>
 

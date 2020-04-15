@@ -4,7 +4,7 @@
 
 #include <libnygma/bytestring.hxx>
 #include <libnygma/packet-view.hxx>
-#include <libnygma/pcap.hxx>
+#include <libnygma/pcap-view.hxx>
 
 #include <filesystem>
 

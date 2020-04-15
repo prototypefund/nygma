@@ -3,7 +3,7 @@
 #include <pest/pest.hxx>
 
 #include <libnygma/pcap-reassembler.hxx>
-#include <libnygma/pcap.hxx>
+#include <libnygma/pcap-view.hxx>
 
 namespace {
 
