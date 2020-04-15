@@ -5,12 +5,15 @@ help is needed ...
 
 ## RIOT ( Rapid Indexing of Network Traffic )
 
-features:
+features & current status:
 
-- [ ] index existing pcap's inplace
-    - [ ] ip addresses ( v4 & v6 )
-    - [ ] tcp/udp ports
-- [ ] query index & reassemble pcap
+- [x] indexing of existing pcap's inplace
+    - [x] provide indexing method for ipv4 addresses
+    - [x] provide indexing method for ipv6 addresses
+    - [x] provide indexing method for ports
+- [x] provide means of querying the index
+- [x] re-assemble a pcap given an index query ( and the original pcap )
+- [ ] lightweight query engine supporting SIMD accelerated union and intersection ops
 - [ ] ... fun ...
 
 ## FPCC ( Full Packet Capture / Caching )
