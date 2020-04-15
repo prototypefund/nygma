@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include <emptyspace/data/bytestring.hxx>
-#include <emptyspace/data/packet.hxx>
-#include <emptyspace/data/pcap.hxx>
+#include <libnygma/bytestring.hxx>
+#include <libnygma/packet-view.hxx>
+#include <libnygma/pcap.hxx>
 
 #include <filesystem>
 
@@ -14,7 +14,7 @@ extern "C" {
 #include <unistd.h>
 }
 
-namespace emptyspace::data::pcap {
+namespace emptyspace {
 
 struct pcap_ostream {
   using handle_type = int;
@@ -56,7 +56,7 @@ struct pcap_ostream {
   bool writev( iovec_type const* const data, std::size_t const n ) const noexcept {
     while( true ) {
       if( auto rc = ::writev( _fd, data, static_cast<int>( n ) ); rc > 0 ) { return true; }
-      if( not( errno == EINTR || errno == EAGAIN ) ) { return false; }
+      if( not ( errno == EINTR || errno == EAGAIN ) ) { return false; }
     }
   }
 
@@ -70,11 +70,12 @@ namespace detail {
 namespace {
 
 constexpr std::uint32_t pcap_header[6]{
-    format::PCAP_NSEC, 0x00040002, 0, 0, 0xffff, linktype::en10mb };
+    pcap::format::PCAP_NSEC, 0x00040002, 0, 0, 0xffff, pcap::linktype::en10mb };
 
 }
 } // namespace detail
 
+namespace pcap {
 namespace {
 
 template <typename View, typename Iter, typename Stream>
@@ -108,5 +109,6 @@ inline bool reassemble_from( View& pcap, Iter begin, Iter const end, Stream& os 
 }
 
 } // namespace
+} // namespace pcap
 
-} // namespace emptyspace::data::pcap
+} // namespace emptyspace

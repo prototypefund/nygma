@@ -8,11 +8,11 @@
 #include <filesystem>
 #include <type_traits>
 
-namespace emptyspace::bytestream {
+namespace emptyspace {
 
 //--not-endianess-safe-bytestreams--------------------------------------------
 
-struct status {
+struct bytestream_status {
   using type = unsigned;
   enum : type {
     OK = 0,
@@ -24,7 +24,7 @@ template <typename Stream>
 class bytestream_ostream {
 
   // post-mortem status
-  status::type _status{ status::OK };
+  bytestream_status::type _status{ bytestream_status::OK };
 
  public:
   using char_type = std::byte;
@@ -41,16 +41,16 @@ class bytestream_ostream {
  public:
   auto status() const noexcept { return _status; }
 
-  auto ok() const noexcept { return _status == status::OK; }
+  auto ok() const noexcept { return _status == bytestream_status::OK; }
 
-  status::type write( std::byte const* const p, std::size_t const n ) noexcept {
+  bytestream_status::type write( std::byte const* const p, std::size_t const n ) noexcept {
     auto& self = downcast();
     auto const rc = self._write_bytes_( p, n );
     _status |= rc;
     return rc;
   }
 
-  status::type write( std::byte const b ) noexcept {
+  bytestream_status::type write( std::byte const b ) noexcept {
     auto& self = downcast();
     auto const rc = self._write_byte_( b );
     _status = rc;
@@ -58,8 +58,8 @@ class bytestream_ostream {
   }
 
   template <typename T>
-  auto write( T const* const p, std::size_t const n ) noexcept
-      -> std::enable_if_t<std::is_trivial_v<T> && not std::is_same_v<T, std::byte>, status::type> {
+  auto write( T const* const p, std::size_t const n ) noexcept -> std::
+      enable_if_t<std::is_trivial_v<T> && not std::is_same_v<T, std::byte>, bytestream_status::type> {
     auto& self = downcast();
     auto const rc = self._write_trivial_( p, n );
     _status |= rc;
@@ -98,23 +98,27 @@ class cfile_ostream : public bytestream_ostream<cfile_ostream> {
   bool inline valid() const noexcept { return _handle != nullptr; }
   bool inline invalid() const noexcept { return _handle == nullptr; }
 
-  status::type _write_byte_( std::byte const b ) noexcept {
-    if( invalid() ) { return status::FAILED; }
-    if( auto rc = std::fputc( static_cast<int>( b ), _handle ); rc == EOF ) { return status::FAILED; }
-    return status::OK;
+  bytestream_status::type _write_byte_( std::byte const b ) noexcept {
+    if( invalid() ) { return bytestream_status::FAILED; }
+    if( auto rc = std::fputc( static_cast<int>( b ), _handle ); rc == EOF ) {
+      return bytestream_status::FAILED;
+    }
+    return bytestream_status::OK;
   }
 
-  status::type _write_bytes_( std::byte const* const p, std::size_t const n ) noexcept {
-    if( invalid() ) { return status::FAILED; }
-    if( auto rc = std::fwrite( p, n, 1, _handle ); rc != 1 ) { return status::FAILED; }
-    return status::FAILED;
+  bytestream_status::type _write_bytes_( std::byte const* const p, std::size_t const n ) noexcept {
+    if( invalid() ) { return bytestream_status::FAILED; }
+    if( auto rc = std::fwrite( p, n, 1, _handle ); rc != 1 ) { return bytestream_status::FAILED; }
+    return bytestream_status::FAILED;
   }
 
   template <typename T>
-  status::type _write_trivial_( T const* const p, std::size_t const n ) noexcept {
-    if( invalid() ) { return status::FAILED; }
-    if( auto rc = std::fwrite( p, sizeof( T ), n, _handle ); rc < n ) { return status::FAILED; }
-    return status::OK;
+  bytestream_status::type _write_trivial_( T const* const p, std::size_t const n ) noexcept {
+    if( invalid() ) { return bytestream_status::FAILED; }
+    if( auto rc = std::fwrite( p, sizeof( T ), n, _handle ); rc < n ) {
+      return bytestream_status::FAILED;
+    }
+    return bytestream_status::OK;
   }
 
   std::int64_t _current_position_() const noexcept {
@@ -128,4 +132,4 @@ class cfile_ostream : public bytestream_ostream<cfile_ostream> {
   }
 };
 
-} // namespace emptyspace::bytestream
+} // namespace emptyspace

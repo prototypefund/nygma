@@ -12,10 +12,10 @@ constexpr std::byte operator"" _b( unsigned long long const x ) noexcept {
 
 emptyspace::pest::suite basic( "bytestream suite", []( auto& test ) {
   using namespace emptyspace::pest;
-  namespace stream = emptyspace::bytestream;
+  using namespace emptyspace;
 
   test( "construct cfile_ostream via path", []( auto& expect ) {
-    auto os = stream::cfile_ostream{ "/tmp/xxx" };
+    auto os = cfile_ostream{ "/tmp/xxx" };
     expect( os.valid(), equal_to( true ) );
     expect( os.invalid(), not_equal_to( true ) );
     expect( os.ok(), equal_to( true ) );
@@ -24,7 +24,7 @@ emptyspace::pest::suite basic( "bytestream suite", []( auto& test ) {
   test( "construct cfile_ostream in-memory", []( auto& expect ) {
     std::byte bytes[2];
     {
-      auto os = stream::cfile_ostream{ bytes };
+      auto os = cfile_ostream{ bytes };
       expect( os.valid(), equal_to( true ) );
       expect( os.invalid(), equal_to( false ) );
       os.write( 0x13_b );
@@ -37,7 +37,7 @@ emptyspace::pest::suite basic( "bytestream suite", []( auto& test ) {
   test( "in-memory cfile_ostream is overflow safe", []( auto& expect ) {
     std::byte bytes[2];
     {
-      auto os = stream::cfile_ostream{ bytes };
+      auto os = cfile_ostream{ bytes };
       expect( os.valid(), equal_to( true ) );
       expect( os.invalid(), equal_to( false ) );
       os.write( 0x13_b );
