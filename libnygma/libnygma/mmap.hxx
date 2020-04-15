@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include <libnygma/support.hxx>
 #include <libnygma/bytestring.hxx>
+#include <libnygma/support.hxx>
 
 #include <cstddef>
 #include <filesystem>
@@ -229,6 +229,7 @@ class block_view {
   }
 
   bytestring_view const prefetch( std::uint64_t const offset ) noexcept {
+    if( not is_ok() ) { return bytestring_view{nullptr, 0u}; }
     // if the cached offset matches just return
     // a bytestring_view with the cached size
     auto* p = _block.data();
@@ -256,4 +257,4 @@ class block_view {
   }
 };
 
-} // namespace emptyspace::data
+} // namespace emptyspace
