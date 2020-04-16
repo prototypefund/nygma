@@ -1,9 +1,21 @@
-# NYGMA: Not Your GrandMa's Applicance ( for Network Packet Processing )
+# NYGMA
 
-the code you find here is probably horrible. the is no excuse to that. you're
-help is needed ...
+Not Your GrandMa's Applicance for Network Packet Processing.
 
-## RIOT ( Rapid Indexing of Network Traffic )
+the code you find here is probably horrible. there is no excuse to that. therefore, your help is
+needed ...
+
+`nygma` is organized as a set of ( mostly ) header only cxx libraries.
+
+## libnygma ( base functionality and dealing with pcaps )
+
+- [ ] rss hashing in software ( using toeplitz hashing )
+- [ ] lightweight packet dissector
+- [ ] permissive dns dissector
+
+## libriot ( indexing and index compression using SIMD based integer compression )
+
+Rapid Indexing of Network Traffic ( or Data thereof ).
 
 features & current status:
 
@@ -16,19 +28,16 @@ features & current status:
 - [ ] lightweight query engine supporting SIMD accelerated union and intersection ops
 - [ ] ... fun ...
 
-## FPCC ( Full Packet Capture / Caching )
+## libcapture
+
+full packet capture ( or caching ) and compressed capture storage format ( ccap ).
 
 - [ ] combined full packet capture / caching & indexing
-- [ ] custom storage format for compressed packet captures ( CCAP )
-
-## CCAP ( Compressed Capture )
-
-a storage format suited for network packets and indexing
-
-- [ ] full 64bit timestamps in nanosecond resolution
-- [ ] block oriented and optimized for indexing
-- [ ] integer compression
-- [ ] stores capture ports for each packet
+- [ ] a storage format suited for network packets and indexing
+    - [ ] full 64bit timestamps in nanosecond resolution
+    - [ ] block oriented and optimized for indexing
+    - [ ] integer compression for internal block offsets ...
+    - [ ] stores capture port for each packet
 
 ## support & blame-game
 
