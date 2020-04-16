@@ -50,138 +50,138 @@ inline std::string_view const to_string( dns_dissect_rc const code ) noexcept {
 struct dns_op {
   using type = unsigned;
   enum : type {
-    query = 0u,
-    iquery = 1u,
-    status = 2u,
-    notify = 4u,
-    update = 5u,
+    QUERY = 0u,
+    IQUERY = 1u,
+    STATUS = 2u,
+    NOTIFY = 4u,
+    UPDATE = 5u,
   };
 };
 
 struct dns_rcode {
   using type = unsigned;
   enum : type {
-    noerror = 0,
-    formerr = 1, // Format Error                     [RFC1035]
-    servfail = 2, // Server Failure                   [RFC1035]
-    nxdomain = 3, // Non-Existent Domain              [RFC1035]
-    notimp = 4, // Not Implemented                  [RFC1035]
-    refused = 5, // Query Refused                    [RFC1035]
-    yxdomain = 6, // Name Exists when it should't     [RFC2136]
-    yxrrset = 7, // RR Set Exists when it should't   [RFC2136]
-    nxrrset = 8, // RR Set that should exist does't  [RFC2136]
-    notauth = 9, // Not Authorized                   [RFC2845]
-    notzone = 10, // Name not contained in zone       [RFC2136]
-    badsig = 16, // TSIG Signature Failure           [RFC2845]
-    badkey = 17, // Key not recognized               [RFC2845]
-    badtime = 18, // Signature out of time window     [RFC2845]
-    badmode = 19, // Bad TKEY Mode                    [RFC2930]
-    badname = 20, // Duplicate key name               [RFC2930]
-    badalg = 21, // Algorithm not supported          [RFC2930]
-    badtrunc = 22, // Bad Truncation                   [RFC4635]
+    NOERROR = 0,
+    FORMERR = 1, // Format Error                     [RFC1035]
+    SERVFAIL = 2, // Server Failure                   [RFC1035]
+    NXDOMAIN = 3, // Non-Existent Domain              [RFC1035]
+    NOTIMP = 4, // Not Implemented                  [RFC1035]
+    REFUSED = 5, // Query Refused                    [RFC1035]
+    YXDOMAIN = 6, // Name Exists when it should't     [RFC2136]
+    YXRRSET = 7, // RR Set Exists when it should't   [RFC2136]
+    NXRRSET = 8, // RR Set that should exist does't  [RFC2136]
+    NOTAUTH = 9, // Not Authorized                   [RFC2845]
+    NOTZONE = 10, // Name not contained in zone       [RFC2136]
+    BADSIG = 16, // TSIG Signature Failure           [RFC2845]
+    BADKEY = 17, // Key not recognized               [RFC2845]
+    BADTIME = 18, // Signature out of time window     [RFC2845]
+    BADMODE = 19, // Bad TKEY Mode                    [RFC2930]
+    BADNAME = 20, // Duplicate key name               [RFC2930]
+    BADALG = 21, // Algorithm not supported          [RFC2930]
+    BADTRUNC = 22, // Bad Truncation                   [RFC4635]
   };
 };
 
 struct dns_class {
   using type = unsigned;
   enum : type {
-    in = 1,
-    ch = 3,
-    hs = 4,
-    none = 254,
-    any = 255,
+    IN = 1,
+    CH = 3,
+    HS = 4,
+    NONE = 254,
+    ANY = 255,
   };
 };
 
 struct dns_type {
   using type = unsigned;
   enum : type {
-    a = 1,
-    ns = 2,
-    md = 3,
-    mf = 4,
-    cname = 5,
-    soa = 6,
-    mb = 7,
-    mg = 8,
-    mr = 9,
-    null = 10,
-    wks = 11,
-    ptr = 12,
-    hinfo = 13,
-    minfo = 14,
-    mx = 15,
-    txt = 16,
-    rp = 17,
-    afsdb = 18,
-    x25 = 19,
-    isdn = 20,
-    rt = 21,
-    nsap = 22,
-    nsap_ptr = 23,
-    sig = 24,
-    key = 25,
-    px = 26,
-    gpos = 27,
-    aaaa = 28,
-    loc = 29,
-    nxt = 30,
-    eid = 31,
-    nimloc = 32,
-    srv = 33,
-    atma = 34,
-    naptr = 35,
-    kx = 36,
-    cert = 37,
-    a6 = 38,
-    dname = 39,
-    sink = 40,
-    opt = 41,
-    apl = 42,
-    ds = 43,
-    sshfp = 44,
-    ipseckey = 45,
-    rrsig = 46,
-    nsec = 47,
-    dnskey = 48,
-    dhcid = 49,
-    nsec3 = 50,
-    nsec3param = 51,
-    tlsa = 52,
+    A = 1,
+    NS = 2,
+    MD = 3,
+    MF = 4,
+    CNAME = 5,
+    SOA = 6,
+    MB = 7,
+    MG = 8,
+    MR = 9,
+    NUL = 10,
+    WKS = 11,
+    PTR = 12,
+    HINFO = 13,
+    MINFO = 14,
+    MX = 15,
+    TXT = 16,
+    RP = 17,
+    AFSDB = 18,
+    X25 = 19,
+    ISDN = 20,
+    RT = 21,
+    NSAP = 22,
+    NSAP_PTR = 23,
+    SIG = 24,
+    KEY = 25,
+    PX = 26,
+    GPOS = 27,
+    AAAA = 28,
+    LOC = 29,
+    NXT = 30,
+    EID = 31,
+    NIMLOC = 32,
+    SRV = 33,
+    ATMA = 34,
+    NAPTR = 35,
+    KX = 36,
+    CERT = 37,
+    A6 = 38,
+    DNAME = 39,
+    SINK = 40,
+    OPT = 41,
+    APL = 42,
+    DS = 43,
+    SSHFP = 44,
+    IPSECKEY = 45,
+    RRSIG = 46,
+    NSEC = 47,
+    DNSKEY = 48,
+    DHCID = 49,
+    NSEC3 = 50,
+    NSEC3PARAM = 51,
+    TLSA = 52,
     // unassigned: 53 - 54
-    hip = 55,
-    ninfo = 56,
-    rkey = 57,
-    talink = 58,
-    cds = 59,
-    cdnskey = 60,
-    openpgpkey = 61,
-    csync = 62,
+    HIP = 55,
+    NINFO = 56,
+    RKEY = 57,
+    TALINK = 58,
+    CDS = 59,
+    CDNSKEY = 60,
+    OPENPGPKEY = 61,
+    CSYNC = 62,
     // unassigned: 63 - 98
-    spf = 99,
-    uinfo = 100,
-    uid = 101,
-    gid = 102,
-    unspec = 103,
-    nid = 104,
-    l32 = 105,
-    l64 = 106,
-    lp = 107,
-    eui48 = 108,
-    eui64 = 109,
+    SPF = 99,
+    UINFO = 100,
+    UID = 101,
+    GID = 102,
+    UNSPEC = 103,
+    NID = 104,
+    L32 = 105,
+    L64 = 106,
+    LP = 107,
+    EUI48 = 108,
+    EUI64 = 109,
     // unassigned: 110 - 248
-    tkey = 249,
-    tsig = 250,
-    ixfr = 251,
-    axfr = 252,
-    mailb = 253,
-    maila = 254,
-    any = 255,
-    uri = 256,
-    caa = 257,
+    TKEY = 249,
+    TSIG = 250,
+    IXFR = 251,
+    AXFR = 252,
+    MAILB = 253,
+    MAILA = 254,
+    ANY = 255,
+    URI = 256,
+    CAA = 257,
     // unassigned: 258 - 32767
-    ta = 32768,
-    dlv = 32769,
+    TA = 32768,
+    DLV = 32769,
     // unassigned: 32770 - 65279
     // private use: 65280 - 65534
     // reserved: 65535
