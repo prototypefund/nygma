@@ -3,8 +3,8 @@
 #pragma once
 
 #include <libnygma/bytestring.hxx>
-#include <libnygma/support.hxx>
 #include <libnygma/dissect.hxx>
+#include <libnygma/support.hxx>
 
 #include <array>
 #include <iostream>

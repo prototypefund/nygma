@@ -170,18 +170,18 @@ class dissect_stack_trace : public dissect::dissect_trace {
     }                                                                                                 \
   } while( false )
 
- struct void_hash_policy {
-   template<std::size_t N>
-   inline std::uint32_t hash( std::byte const*const) const noexcept {
-     return 0;
-   }
- };
+struct void_hash_policy {
+  template <std::size_t N>
+  inline std::uint32_t hash( std::byte const* const ) const noexcept {
+    return 0;
+  }
+};
 
 template <typename HashPolicy, typename Trace, bool Cont = true>
 static inline std::uint32_t dissect_en10mb(
     HashPolicy& hash_policy, Trace&& trace, bytestring_view const& view ) noexcept {
   constexpr endianess BE = endianess::BE;
-  
+
   std::byte const* const begin = view.data();
   std::byte const* const end = begin + view.size();
   std::byte const* p = begin;
@@ -300,5 +300,5 @@ parse_vlan_mpls:
 }
 
 #undef _next0_
-  
+
 } // namespace emptyspace::dissect
