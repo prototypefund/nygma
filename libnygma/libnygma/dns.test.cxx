@@ -357,7 +357,7 @@ emptyspace::pest::suite basic( "dissect dns suite", []( auto& test ) {
     expect( dns._opcode, equal_to( 0u ) );
     expect( dns._rd, equal_to( 1u ) );
 
-    expect( rc, equal_to( dns::dns_dissect_rc::ok ) );
+    expect( rc, equal_to( dns::dns_dissect_rc::OK ) );
     expect( dns._rr_count, equal_to( 1u ) );
     expect( dns._is_packet_finished, equal_to( true ) );
 
@@ -389,7 +389,7 @@ emptyspace::pest::suite basic( "dissect dns suite", []( auto& test ) {
     expect( dns._rd, equal_to( 1u ) );
     expect( dns._ra, equal_to( 1u ) );
 
-    expect( rc, equal_to( dns::dns_dissect_rc::ok ) );
+    expect( rc, equal_to( dns::dns_dissect_rc::OK ) );
     expect( dns._rr_count, equal_to( 6u ) );
     expect( dns._is_packet_finished, equal_to( true ) );
 
@@ -442,7 +442,7 @@ emptyspace::pest::suite basic( "dissect dns suite", []( auto& test ) {
     expect( dns._rd, equal_to( 0u ) );
     expect( dns._ra, equal_to( 0u ) );
 
-    expect( rc, equal_to( dns::dns_dissect_rc::ok ) );
+    expect( rc, equal_to( dns::dns_dissect_rc::OK ) );
     expect( dns._rr_count, equal_to( 3u ) );
     expect( dns._is_packet_finished, equal_to( true ) );
 
@@ -489,7 +489,7 @@ emptyspace::pest::suite basic( "dissect dns suite", []( auto& test ) {
     expect( dns._rd, equal_to( 0u ) );
     expect( dns._ra, equal_to( 0u ) );
 
-    expect( rc, equal_to( dns::dns_dissect_rc::ok ) );
+    expect( rc, equal_to( dns::dns_dissect_rc::OK ) );
     expect( dns._rr_count, equal_to( 3u ) );
     expect( dns._is_packet_finished, equal_to( true ) );
 
@@ -536,7 +536,7 @@ emptyspace::pest::suite basic( "dissect dns suite", []( auto& test ) {
     expect( dns._rd, equal_to( 0u ) );
     expect( dns._ra, equal_to( 0u ) );
 
-    expect( rc, equal_to( dns::dns_dissect_rc::ok ) );
+    expect( rc, equal_to( dns::dns_dissect_rc::OK ) );
     expect( dns._rr_count, equal_to( 5u ) );
     expect( dns._is_packet_finished, equal_to( true ) );
 
@@ -611,7 +611,7 @@ emptyspace::pest::suite basic( "dissect dns suite", []( auto& test ) {
     expect( dns._opcode, equal_to( 0u ) );
     expect( dns._rd, equal_to( 1u ) );
 
-    expect( rc, equal_to( dns::dns_dissect_rc::ok ) );
+    expect( rc, equal_to( dns::dns_dissect_rc::OK ) );
     expect( dns._rr_count, equal_to( 2u ) );
     expect( dns._is_packet_finished, equal_to( true ) );
 
@@ -658,7 +658,7 @@ emptyspace::pest::suite basic( "dissect dns suite", []( auto& test ) {
     expect( dns._ad, equal_to( 1u ) );
     expect( dns._cd, equal_to( 0u ) );
 
-    expect( rc, equal_to( dns::dns_dissect_rc::ok ) );
+    expect( rc, equal_to( dns::dns_dissect_rc::OK ) );
     expect( dns._rr_count, equal_to( 6u ) );
     expect( dns._is_packet_finished, equal_to( true ) );
 
@@ -730,7 +730,7 @@ emptyspace::pest::suite basic( "dissect dns suite", []( auto& test ) {
     expect( dns._cd, equal_to( 0u ) );
     expect( dns._qr, equal_to( 0u ) );
 
-    expect( rc, equal_to( dns::dns_dissect_rc::ok ) );
+    expect( rc, equal_to( dns::dns_dissect_rc::OK ) );
     expect( dns._rr_count, equal_to( 1u ) );
     expect( dns._is_packet_finished, equal_to( true ) );
 

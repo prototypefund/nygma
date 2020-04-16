@@ -27,24 +27,23 @@ inline std::uint32_t rd32( unsigned char const* p ) noexcept {
 } // namespace detail
 
 enum class dns_dissect_rc {
-  ok,
-  extract_qname_overflow,
-  extract_rname_overflow,
-  header_underflow,
-  rdata_overflow,
-  record_overflow,
+  OK,
+  QNAME_OVERFLOW,
+  RNAME_OVERFLOW,
+  HEADER_UNDERFLOW,
+  RDATA_OVERFLOW,
+  RECORD_OVERFLOW,
 };
 
 inline std::string_view const to_string( dns_dissect_rc const code ) noexcept {
   using rc = dns_dissect_rc;
   switch( code ) {
-    case rc::ok: return "ok";
-    case rc::extract_qname_overflow: return "extract qname overflow";
-    case rc::extract_rname_overflow: return "extract rname overflow";
-    case rc::header_underflow: return "header underflow";
-    case rc::rdata_overflow: return "rdata overflow";
-    case rc::record_overflow: return "record fields overflow";
-    //default: return  "unknown `dns_dissect_rc` value" ;
+    case rc::OK: return "OK";
+    case rc::QNAME_OVERFLOW: return "QNAME_OVERFLOW";
+    case rc::RNAME_OVERFLOW: return "RNAME_OVERFLOW";
+    case rc::HEADER_UNDERFLOW: return "HEADER_UNDERFLOW";
+    case rc::RDATA_OVERFLOW: return "RDATE_OVERFLOW";
+    case rc::RECORD_OVERFLOW: return "RECORD_OVERFLOW";
   }
 }
 
@@ -345,7 +344,7 @@ struct dns {
     |                    ARCOUNT                    |
     +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
     */
-    if( p + 12 > end ) return dns_dissect_rc::header_underflow;
+    if( p + 12 > end ) return dns_dissect_rc::HEADER_UNDERFLOW;
 
     _id = detail::rd16( p );
     _qr = ( p[2] >> 7 ) & 1;
@@ -383,7 +382,7 @@ struct dns {
     */
 
     for( unsigned i = 0; i < _qdcount && p < end; i++ ) {
-      if( _rr_count >= RecordCnt ) return dns_dissect_rc::record_overflow;
+      if( _rr_count >= RecordCnt ) return dns_dissect_rc::RECORD_OVERFLOW;
       auto& rr = _rr[_rr_count];
       rr._is_edns0 = 0;
       rr._rr_begin = p;
@@ -391,7 +390,7 @@ struct dns {
       rr._rdata_begin = nullptr;
       rr._ttl = 0;
       p = extract_name( p, end, rr );
-      if( p + 4 > end ) { return dns_dissect_rc::extract_qname_overflow; }
+      if( p + 4 > end ) { return dns_dissect_rc::QNAME_OVERFLOW; }
       rr._type = detail::rd16( p );
       rr._class = detail::rd16( p + 2 );
       // no rdata for queries, so just continue
@@ -422,24 +421,24 @@ struct dns {
     +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
     */
     for( unsigned i = 0; i < _ancount + _nscount && p < end; i++ ) {
-      if( _rr_count >= RecordCnt ) return dns_dissect_rc::record_overflow;
+      if( _rr_count >= RecordCnt ) return dns_dissect_rc::RECORD_OVERFLOW;
       auto& rr = _rr[_rr_count];
       rr._is_edns0 = 0;
       rr._rr_begin = p;
       p = extract_name( p, end, rr );
-      if( p + 10 > end ) { return dns_dissect_rc::extract_rname_overflow; }
+      if( p + 10 > end ) { return dns_dissect_rc::RNAME_OVERFLOW; }
       rr._type = detail::rd16( p );
       rr._class = detail::rd16( p + 2 );
       rr._ttl = detail::rd32( p + 4 );
       rr._rdata_len = detail::rd16( p + 8 );
       rr._rdata_begin = reinterpret_cast<std::byte const*>( p + 10 );
       p += rr._rdata_len + 10;
-      if( p > end ) { return dns_dissect_rc::rdata_overflow; }
+      if( p > end ) { return dns_dissect_rc::RDATA_OVERFLOW; }
       _rr_count++;
     }
 
     for( unsigned i = 0; i < _arcount && p < end; i++ ) {
-      if( _rr_count >= RecordCnt ) return dns_dissect_rc::record_overflow;
+      if( _rr_count >= RecordCnt ) return dns_dissect_rc::RECORD_OVERFLOW;
       auto& rr = _rr[_rr_count];
       rr._is_edns0 = 0;
       rr._rr_begin = p;
@@ -458,21 +457,21 @@ struct dns {
         rr._edns0._cache_flush = ( clazz >> 31 ) & 1;
       }
       p = extract_name( p, end, rr );
-      if( p + 10 > end ) return dns_dissect_rc::extract_rname_overflow;
+      if( p + 10 > end ) return dns_dissect_rc::RNAME_OVERFLOW;
       rr._type = detail::rd16( p );
       rr._class = detail::rd16( p + 2 );
       rr._ttl = detail::rd32( p + 4 );
       rr._rdata_len = detail::rd16( p + 8 );
       rr._rdata_begin = reinterpret_cast<std::byte const*>( p + 10 );
       p += rr._rdata_len + 10;
-      if( p > end ) { return dns_dissect_rc::rdata_overflow; }
+      if( p > end ) { return dns_dissect_rc::RDATA_OVERFLOW; }
       _rr_count++;
     }
 
     _is_packet_finished = p <= end;
     _dns_end = p;
 
-    return dns_dissect_rc::ok;
+    return dns_dissect_rc::OK;
   }
 };
 
