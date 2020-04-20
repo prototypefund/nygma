@@ -2,7 +2,8 @@ int_libs = # interface dependencies
 imp_libs = # implementation dependencies
 tst_libs = # unit test dependencies
 
-#import imp_libs += libnygma%lib{nygma}
+import imp_libs += libnygma%lib{nygma}
+import int_libs += libunclassified%lib{unclassified}
 import tst_libs += pest%lib{pest}
 
 ./: lib{riot}: {hxx ixx txx}{** -**.test... -version} hxx{version} \
