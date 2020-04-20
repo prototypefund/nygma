@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <libnygma/bytestring.hxx>
+#include <libunclassified/bytestring.hxx>
 #include <libnygma/support.hxx>
 
 #include <array>
@@ -12,9 +12,9 @@
 
 namespace emptyspace::dissect {
 
-namespace unsafe = emptyspace::unsafe;
-using endianess = emptyspace::endianess;
-using bytestring_view = emptyspace::bytestring_view;
+namespace unsafe = unclassified::unsafe;
+using endianess = unclassified::endianess;
+using bytestring_view = unclassified::bytestring_view;
 
 enum class dissect_tag {
   arp,

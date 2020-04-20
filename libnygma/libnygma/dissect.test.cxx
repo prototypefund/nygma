@@ -11,7 +11,7 @@
 namespace dissect = emptyspace::dissect;
 
 using hash_type = dissect::void_hash_policy;
-using bytestring_view = emptyspace::bytestring_view;
+using bytestring_view = unclassified::bytestring_view;
 using dissect_tag = dissect::dissect_tag;
 
 namespace {

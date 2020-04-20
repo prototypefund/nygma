@@ -2,9 +2,10 @@
 
 #pragma once
 
-#include <libnygma/bytestring.hxx>
 #include <libnygma/dissect.hxx>
 #include <libnygma/support.hxx>
+
+#include <libunclassified/bytestring.hxx>
 
 #include <array>
 #include <iostream>
@@ -13,9 +14,9 @@
 
 namespace emptyspace::dissect {
 
-namespace unsafe = emptyspace::unsafe;
-using endianess = emptyspace::endianess;
-using bytestring_view = emptyspace::bytestring_view;
+namespace unsafe = unclassified::unsafe;
+using endianess = unclassified::endianess;
+using bytestring_view = unclassified::bytestring_view;
 
 #define _next_( allow_vlan, x )                                                                       \
   do {                                                                                                \

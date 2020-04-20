@@ -9,5 +9,7 @@ url: https://hub.darcs.net/magenbluten/nygma
 email: mb@64k.by
 depends: * build2 >= 0.12.0
 depends: * bpkg >= 0.12.0
-depends: * pest 
+depends: pest
+depends: libunclassified
+requires: c++20
 #builds: linux | freebsd

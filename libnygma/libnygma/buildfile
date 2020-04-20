@@ -2,7 +2,7 @@ int_libs = # interface dependencies.
 imp_libs = # implementation dependencies.
 tst_libs = # unit test dependencies.
 
-#import imp_libs += libhello%lib{hello}
+import int_libs += libunclassified%lib{unclassified}
 import tst_libs += pest%lib{pest}
 
 ./: lib{nygma}: {hxx ixx txx}{** -**.test... -version} hxx{version} \

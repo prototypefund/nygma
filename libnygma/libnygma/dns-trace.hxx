@@ -2,13 +2,14 @@
 
 #pragma once
 
-#include <libnygma/bytestring.hxx>
 #include <libnygma/dissect.hxx>
 #include <libnygma/dns.hxx>
+#include <libunclassified/bytestring.hxx>
 
 namespace emptyspace::dns {
 
-namespace unsafe = emptyspace::unsafe;
+namespace unsafe = unclassified::unsafe;
+using endianess = unclassified::endianess;
 
 struct dns_trace : public dissect::dissect_trace {
   std::byte const* _src_begin;
@@ -24,7 +25,7 @@ struct dns_trace : public dissect::dissect_trace {
   template <typename V>
   inline void operator()( V&& v ) noexcept {
     using T = std::decay_t<decltype( v )>;
-    constexpr auto BE = emptyspace::endianess::BE;
+    constexpr auto BE = endianess::BE;
     if constexpr( std::is_same_v<T, dissect::ipv4> ) {
       std::byte const* const p = v._begin + 12;
       _src_begin = p;

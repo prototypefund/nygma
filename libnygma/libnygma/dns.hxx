@@ -7,21 +7,22 @@
 //   - <https://github.com/farsightsec/wdns/blob/master/wdns/wdns.h.in>
 
 #include <libnygma/dissect.hxx>
-#include <libnygma/bytestring.hxx>
+#include <libunclassified/bytestring.hxx>
 
 #include <string_view>
 
 namespace emptyspace::dns {
 namespace detail {
 
-  namespace unsafe = emptyspace::unsafe;
+namespace unsafe = unclassified::unsafe;
+using endianess = unclassified::endianess;
 
 inline std::uint16_t rd16( unsigned char const* p ) noexcept {
-  return unsafe::rd16<emptyspace::endianess::BE>( reinterpret_cast<std::byte const*>( p ) );
+  return unsafe::rd16<endianess::BE>( reinterpret_cast<std::byte const*>( p ) );
 }
 
 inline std::uint32_t rd32( unsigned char const* p ) noexcept {
-  return unsafe::rd32<emptyspace::endianess::BE>( reinterpret_cast<std::byte const*>( p ) );
+  return unsafe::rd32<endianess::BE>( reinterpret_cast<std::byte const*>( p ) );
 }
 
 } // namespace detail

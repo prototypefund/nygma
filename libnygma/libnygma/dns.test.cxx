@@ -2,24 +2,24 @@
 
 #include <pest/pest.hxx>
 
-#include <libnygma/bytestring.hxx>
 #include <libnygma/dissect.hxx>
 #include <libnygma/dns-trace.hxx>
 #include <libnygma/dns.hxx>
 #include <libnygma/toeplitz.hxx>
+#include <libunclassified/bytestring.hxx>
 
 #include <array>
 #include <cstdint>
 #include <type_traits>
 
-namespace unsafe = emptyspace::unsafe;
+namespace unsafe = unclassified::unsafe;
 namespace dissect = emptyspace::dissect;
 namespace toeplitz = emptyspace::toeplitz;
 namespace dns = emptyspace::dns;
 
 using hash_type = toeplitz::toeplitz_scalar_lut<toeplitz::rss_key_symmetric>;
-using bytestring_view = emptyspace::bytestring_view;
-using dissect_tag = dissect::dissect_tag;
+using bytestring_view = unclassified::bytestring_view;
+using dissect_tag = emptyspace::dissect::dissect_tag;
 using dns_trace = emptyspace::dns::dns_trace;
 
 namespace {

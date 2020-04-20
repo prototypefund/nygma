@@ -2,9 +2,11 @@
 
 #pragma once
 
-#include <libnygma/bytestring.hxx>
+#include <libunclassified/bytestring.hxx>
 
 namespace emptyspace {
+
+using bytestring_view = unclassified::bytestring_view;
 
 struct packet_view {
   std::uint64_t _stamp{ 0 };

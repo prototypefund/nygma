@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include <libnygma/bytestring.hxx>
 #include <libnygma/support.hxx>
+#include <libunclassified/bytestring.hxx>
 
 #include <cstddef>
 #include <filesystem>
@@ -20,6 +20,7 @@ extern "C" {
 namespace emptyspace {
 
 namespace fs = std::filesystem;
+using bytestring_view = unclassified::bytestring_view;
 
 class mmap_view {
 

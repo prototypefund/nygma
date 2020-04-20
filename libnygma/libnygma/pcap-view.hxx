@@ -2,15 +2,17 @@
 
 #pragma once
 
-#include <libnygma/bytestring.hxx>
 #include <libnygma/mmap.hxx>
 #include <libnygma/packet-view.hxx>
+#include <libunclassified/bytestring.hxx>
 
 #include <algorithm>
 
 namespace emptyspace {
 
-using namespace unsafe;
+using namespace unclassified::unsafe;
+using endianess = unclassified::endianess;
+using bytestring_view = unclassified::bytestring_view;
 
 namespace pcap {
 
@@ -108,7 +110,7 @@ class pcap_view {
   }
 
   class cursor {
-    bytestring_istream<ENDIANESS> _data;
+    unclassified::bytestring_istream<ENDIANESS> _data;
     packet_view _packet;
     bool _done;
 

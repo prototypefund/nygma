@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include <libnygma/bytestring.hxx>
 #include <libnygma/packet-view.hxx>
 #include <libnygma/pcap-view.hxx>
+#include <libunclassified/bytestring.hxx>
 
 #include <filesystem>
 
@@ -15,6 +15,8 @@ extern "C" {
 }
 
 namespace emptyspace {
+
+using bytestring_view = unclassified::bytestring_view;
 
 struct pcap_ostream {
   using handle_type = int;
