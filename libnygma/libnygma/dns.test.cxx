@@ -13,14 +13,14 @@
 #include <type_traits>
 
 namespace unsafe = unclassified::unsafe;
-namespace dissect = emptyspace::dissect;
-namespace toeplitz = emptyspace::toeplitz;
-namespace dns = emptyspace::dns;
+namespace dissect = nygma::dissect;
+namespace toeplitz = nygma::toeplitz;
+namespace dns = nygma::dns;
 
 using hash_type = toeplitz::toeplitz_scalar_lut<toeplitz::rss_key_symmetric>;
 using bytestring_view = unclassified::bytestring_view;
-using dissect_tag = emptyspace::dissect::dissect_tag;
-using dns_trace = emptyspace::dns::dns_trace;
+using dissect_tag = nygma::dissect::dissect_tag;
+using dns_trace = nygma::dns::dns_trace;
 
 namespace {
 

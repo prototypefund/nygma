@@ -6,7 +6,7 @@
 #include <libnygma/dns.hxx>
 #include <libunclassified/bytestring.hxx>
 
-namespace emptyspace::dns {
+namespace nygma::dns {
 
 namespace unsafe = unclassified::unsafe;
 using endianess = unclassified::endianess;
@@ -64,4 +64,4 @@ struct dns_trace : public dissect::dissect_trace {
   inline void rewind() noexcept { dissect::dissect_trace::rewind(); }
 };
 
-} // namespace emptyspace::dns
+} // namespace nygma::dns

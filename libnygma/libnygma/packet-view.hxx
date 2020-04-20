@@ -4,7 +4,7 @@
 
 #include <libunclassified/bytestring.hxx>
 
-namespace emptyspace {
+namespace nygma {
 
 using bytestring_view = unclassified::bytestring_view;
 
@@ -57,4 +57,4 @@ struct packet_view {
   constexpr auto stamp() const noexcept { return _stamp; }
 };
 
-} // namespace emptyspace
+} // namespace nygma

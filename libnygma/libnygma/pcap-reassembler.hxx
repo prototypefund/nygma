@@ -14,7 +14,7 @@ extern "C" {
 #include <unistd.h>
 }
 
-namespace emptyspace {
+namespace nygma {
 
 using bytestring_view = unclassified::bytestring_view;
 
@@ -113,4 +113,4 @@ inline bool reassemble_from( View& pcap, Iter begin, Iter const end, Stream& os 
 } // namespace
 } // namespace pcap
 
-} // namespace emptyspace
+} // namespace nygma

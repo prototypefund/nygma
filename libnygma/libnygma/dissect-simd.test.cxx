@@ -9,7 +9,7 @@
 #include <cstdint>
 #include <type_traits>
 
-namespace dissect = emptyspace::dissect;
+namespace dissect = nygma::dissect;
 
 using hash_type = dissect::void_hash_policy;
 using bytestring_view = unclassified::bytestring_view;

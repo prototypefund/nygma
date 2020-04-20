@@ -9,7 +9,7 @@ namespace {
 
 emptyspace::pest::suite basic( "pcap reassembler suite", []( auto& test ) {
   using namespace emptyspace::pest;
-  using namespace emptyspace;
+  using namespace nygma;
 
   struct query {
     std::uint32_t _offset;

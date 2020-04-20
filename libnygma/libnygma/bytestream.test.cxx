@@ -12,7 +12,7 @@ constexpr std::byte operator"" _b( unsigned long long const x ) noexcept {
 
 emptyspace::pest::suite basic( "bytestream suite", []( auto& test ) {
   using namespace emptyspace::pest;
-  using namespace emptyspace;
+  using namespace nygma;
 
   test( "construct cfile_ostream via path", []( auto& expect ) {
     auto os = cfile_ostream{ "/tmp/xxx" };

@@ -6,7 +6,7 @@
 
 #include <algorithm>
 
-namespace pcap = emptyspace::pcap;
+namespace pcap = nygma::pcap;
 
 namespace {
 
@@ -96,7 +96,7 @@ static_assert( sizeof( pcap_nsec_le_en10mb_with_data_1 ) == 24 + 16 );
 
 emptyspace::pest::suite basic_mmap( "pcap in-memory suite", []( auto& test ) {
   using namespace emptyspace::pest;
-  using namespace emptyspace;
+  using namespace nygma;
   test( "little-endian", []( auto& expect ) {
     bytestring_view data{ pcap_le_en10mb_1 };
     expected_format f{ pcap::format::PCAP_MSEC, 65535 };
@@ -146,7 +146,7 @@ emptyspace::pest::suite basic_mmap( "pcap in-memory suite", []( auto& test ) {
 
 emptyspace::pest::suite basic_blockio( "pcap blockio suite", []( auto& test ) {
   using namespace emptyspace::pest;
-  using namespace emptyspace;
+  using namespace nygma;
   test( "block view: random-2k.bin", []( auto& expect ) {
     block_view bv{ "tests/data/random-2k.bin", block_flags::rdd };
     auto const bs = bv.prefetch( 0 );

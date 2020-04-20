@@ -4,7 +4,7 @@
 
 #include <array>
 
-namespace emptyspace::toeplitz {
+namespace nygma::toeplitz {
 
 struct rss_key_symmetric {
   static constexpr std::array<std::uint8_t, 40> key{
@@ -40,4 +40,4 @@ struct rss_key_ms {
   };
 };
 
-} // namespace emptyspace::toeplitz
+} // namespace nygma::toeplitz

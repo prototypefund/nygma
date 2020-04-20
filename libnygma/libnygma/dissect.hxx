@@ -10,7 +10,7 @@
 
 #include <immintrin.h>
 
-namespace emptyspace::dissect {
+namespace nygma::dissect {
 
 namespace unsafe = unclassified::unsafe;
 using endianess = unclassified::endianess;
@@ -301,4 +301,4 @@ parse_vlan_mpls:
 
 #undef _next0_
 
-} // namespace emptyspace::dissect
+} // namespace nygma::dissect

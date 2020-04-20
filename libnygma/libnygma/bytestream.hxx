@@ -8,7 +8,7 @@
 #include <filesystem>
 #include <type_traits>
 
-namespace emptyspace {
+namespace nygma {
 
 //--not-endianess-safe-bytestreams--------------------------------------------
 
@@ -132,4 +132,4 @@ class cfile_ostream : public bytestream_ostream<cfile_ostream> {
   }
 };
 
-} // namespace emptyspace
+} // namespace nygma

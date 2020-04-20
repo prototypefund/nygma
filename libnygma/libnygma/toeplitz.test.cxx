@@ -17,7 +17,7 @@ extern "C" {
 
 namespace {
 
-namespace toeplitz = emptyspace::toeplitz;
+namespace toeplitz = nygma::toeplitz;
 using ip6_addr_t = std::array<std::byte, 16>;
 
 struct dir {

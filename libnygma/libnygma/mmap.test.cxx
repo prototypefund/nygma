@@ -8,7 +8,7 @@ namespace {
 
 emptyspace::pest::suite basic( "mmap suite", []( auto& test ) {
   using namespace emptyspace::pest;
-  using namespace emptyspace;
+  using namespace nygma;
   test( "can instantiate mmap_block<4096>", []( auto& expect ) {
     mmap_block<4096> blk;
     expect( blk.data() != nullptr, equal_to( true ) );

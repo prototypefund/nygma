@@ -8,7 +8,7 @@
 
 #include <algorithm>
 
-namespace emptyspace {
+namespace nygma {
 
 using namespace unclassified::unsafe;
 using endianess = unclassified::endianess;
@@ -434,4 +434,4 @@ static inline error_code with( std::unique_ptr<block_view> view, T&& t ) noexcep
 
 } // namespace pcap
 
-} // namespace emptyspace
+} // namespace nygma

@@ -4,7 +4,7 @@
 
 #include <array>
 
-namespace emptyspace::toeplitz {
+namespace nygma::toeplitz {
 
 static constexpr std::size_t RSSKEYSZ = 40;
 static constexpr std::size_t RSSHASHSZ = 32;
@@ -104,4 +104,4 @@ struct toeplitz_scalar_lut {
   }
 };
 
-} // namespace emptyspace::analyze::toeplitz
+} // namespace nygma::analyze::toeplitz

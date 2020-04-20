@@ -80,7 +80,7 @@ constexpr std::size_t hardware_destructive_interference_size = CACHE_ALIGN_FALLB
 
 } // namespace std
 
-namespace emptyspace {
+namespace nygma {
 
 constexpr std::size_t CACHE_ALIGN = std::hardware_destructive_interference_size;
 

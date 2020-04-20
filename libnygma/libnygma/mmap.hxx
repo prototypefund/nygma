@@ -17,7 +17,7 @@ extern "C" {
 #include <unistd.h>
 }
 
-namespace emptyspace {
+namespace nygma {
 
 namespace fs = std::filesystem;
 using bytestring_view = unclassified::bytestring_view;
@@ -258,4 +258,4 @@ class block_view {
   }
 };
 
-} // namespace emptyspace
+} // namespace nygma

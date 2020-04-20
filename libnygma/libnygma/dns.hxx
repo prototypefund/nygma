@@ -11,7 +11,7 @@
 
 #include <string_view>
 
-namespace emptyspace::dns {
+namespace nygma::dns {
 namespace detail {
 
 namespace unsafe = unclassified::unsafe;
@@ -478,4 +478,4 @@ struct dns {
 
 using dns_t = dns<64, 1024>;
 
-} // namespace emptyspace::dns
+} // namespace nygma::dns

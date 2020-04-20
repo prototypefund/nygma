@@ -4,7 +4,7 @@
 
 #include <array>
 
-namespace emptyspace::toeplitz {
+namespace nygma::toeplitz {
 
 // @see:
 //   - github.com/scylladb/seastar/include/seastar/net/toeplitz.hh
@@ -30,4 +30,4 @@ struct toeplitz_scalar_loop {
   }
 };
 
-} // namespace emptyspace::analyze::toeplitz
+} // namespace nygma::analyze::toeplitz
