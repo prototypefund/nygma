@@ -8,9 +8,12 @@ location: https://pkg.cppget.org/1/stable
 
 :
 role: prerequisite
+location: https://github.com/stackless-goto/argh.git#master
+
+:
+role: prerequisite
 location: https://github.com/stackless-goto/pest.git#master
 
-#:
-#role: prerequisite
-#location: https://github.com/stackless-goto/argh.git#master
-
+:
+role: prerequisite
+location: https://github.com/stackless-goto/libunclassified.git#master
