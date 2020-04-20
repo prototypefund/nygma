@@ -1,4 +1,6 @@
 : 1
 location: libnygma/
 :
+location: libriot/
+:
 location: nygma
