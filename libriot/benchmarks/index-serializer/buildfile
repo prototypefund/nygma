@@ -1,0 +1,10 @@
+import libs = libnygma%lib{nygma}
+import libs += libriot%lib{riot}
+import libs += libunclassified%lib{unclassified}
+import libs += argh%lib{argh}
+import libs += pest%lib{pest}
+
+if! ( $tclass == 'windows' )
+  cxx.libs = -lpthread
+
+exe{driver}: {hxx ixx txx cxx}{**} $libs testscript{**}

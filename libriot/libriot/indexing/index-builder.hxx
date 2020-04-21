@@ -144,6 +144,7 @@ class index_builder {
   auto key_count() const noexcept { return _index.size(); }
 
   std::pair<std::size_t, std::size_t> minmax_offset_count() const noexcept {
+    if( _index.size() == 0 ) { return { 0, 0 }; }
     auto const [min, max] =
         std::minmax_element( _index.begin(), _index.end(), [&]( auto& a, auto& b ) {
           return _chunks[a.second].size() < _chunks[b.second].size();
@@ -221,4 +222,4 @@ class index_builder {
   }
 };
 
-} // namespace riot::index
+} // namespace riot
