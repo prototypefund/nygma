@@ -1,11 +1,11 @@
 : 1
 name: nygma
 version: 0.1.0-a.0.z
-summary: nygma C++ executable
-license: proprietary
+summary: nygma cxx executable
+license: public domain
 description-file: README.md
-url: https://example.org/nygma
+url: https://hub.darcs.net/magenbluten/nygma
 email: mb@64k.by
 depends: * build2 >= 0.12.0
 depends: * bpkg >= 0.12.0
-#depends: libhello ^1.0.0
+depends: argh

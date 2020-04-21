@@ -2,12 +2,16 @@ int_libs = # interface dependencies
 imp_libs = # implementation dependencies
 tst_libs = # unit test dependencies
 
-import imp_libs += libnygma%lib{nygma}
 import int_libs += libunclassified%lib{unclassified}
+import int_libs += libnygma%lib{nygma}
 import tst_libs += pest%lib{pest}
 
 ./: lib{riot}: {hxx ixx txx}{** -**.test... -version} hxx{version} \
   $imp_libs $int_libs
+
+pthread_libs =
+if! ( $tclass == 'windows' )
+  pthread_libs = -lpthread
 
 # unit tests.
 #
@@ -15,6 +19,7 @@ exe{*.test}:
 {
   test = true
   install = false
+  cxx.libs = $pthread_libs
 }
 
 for t: cxx{**.test...}
