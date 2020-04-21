@@ -1,0 +1,16 @@
+: 1
+name: fuzzing
+version: 0.1.0-a.0.z
+project: nygma
+summary: simple fuzzing targets for clang's libFuzzer
+license: public domain
+description-file: README.md
+url: https://hub.darcs.net/magenbluten/nygma
+email: mb@64k.by
+depends: * build2 >= 0.12.0
+depends: * bpkg >= 0.12.0
+depends: libunclassified
+depends: libriot
+depends: libnygma
+builds: clang
+requires: -fsanitize
