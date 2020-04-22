@@ -1,6 +1,12 @@
 libs =
 import libs += argh%lib{argh}
+import libs += libriot%lib{riot}
+import libs += libnygma%lib{nygma}
+import libs += libunclassified%lib{unclassified}
 
-exe{nygma}: {hxx ixx txx cxx}{**} $libs testscript
+exe{ny}: {hxx ixx txx cxx}{**} $libs testscript
+
+if! ( $tclass == 'windows' )
+  cxx.loptions += -lpthread
 
 cxx.poptions =+ "-I$out_root" "-I$src_root"
