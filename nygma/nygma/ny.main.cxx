@@ -1,15 +1,14 @@
 // SPDX-License-Identifier: UNLICENSE
 
-#include <algorithm>
 #include <argh/argh.hxx>
-
-#include <cctype>
 #include <libnygma/version.hxx>
 #include <libriot/version.hxx>
 #include <libunclassified/femtolog.hxx>
 
 #include <nygma/ny-command-index.hxx>
 
+#include <algorithm>
+#include <cctype>
 #include <cstdlib>
 #include <exception>
 #include <iostream>

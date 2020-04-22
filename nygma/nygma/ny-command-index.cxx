@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: UNLICENSE
 
-#include <cstdint>
 #include <libnygma/dissect.hxx>
 #include <libnygma/pcap-view.hxx>
 #include <libriot/indexing/index-builder.hxx>
@@ -13,6 +12,7 @@
 #include <nygma/ny-command-index.hxx>
 
 #include <chrono>
+#include <cstdint>
 #include <map>
 
 namespace nygma {
