@@ -49,13 +49,13 @@ void ny_show_version() {
 
 //--indexing-a-pcap------------------------------------------------------------
 
-void ny_command_index_pcap( argh::Subparser& argh ) {
+void ny_index_pcap( argh::Subparser& argh ) {
   auto const methods = "NONE|BITPACK|STREAMVBYTE";
   argh::HelpFlag help( argh, "help", "show this help message", { 'h', "help" } );
   argh::ValueFlag<std::string> method_4( argh, "compression-method", methods, { "i4" }, "BITPACK" );
   argh::ValueFlag<std::string> method_6( argh, "compression-method", methods, { "i6" }, "BITPACK" );
   argh::ValueFlag<std::string> method_x( argh, "compression-method", methods, { "ix" }, "BITPACK" );
-  argh::Positional<std::string> path( argh, "path", "the pcap to index" );
+  argh::Positional<std::string> path( argh, "path", "path to the pcap to index" );
 
   argh.Parse();
 
@@ -88,7 +88,7 @@ void ny_command_index_pcap( argh::Subparser& argh ) {
   flog( lvl::i, "index_pcap_config._method_i6 = ", to_string( config._method_i6 ) );
   flog( lvl::i, "index_pcap_config._method_ix = ", to_string( config._method_ix ) );
 
-  ny_index_pcap( config );
+  ny_command_index_pcap( config );
 }
 
 //--show-version---------------------------------------------------------------
@@ -106,7 +106,7 @@ int main( int argc, char* argv[] ) {
   argh::ArgumentParser argh( "ny index, query & reassembly of pcaps" );
   argh::HelpFlag help( argh, "help", "show this help message", { 'h', "help" } );
   argh::Group commands( argh, "commands" );
-  argh::Command index( commands, "index-pcap", "index a pcap file", &ny_command_index_pcap );
+  argh::Command index( commands, "index-pcap", "index a pcap file", &ny_index_pcap );
   argh::Command version( commands, "version", "show version", &ny_command_version );
   argh::GlobalOptions globals( argh, arguments );
 

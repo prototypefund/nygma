@@ -14,7 +14,6 @@
 
 #include <chrono>
 #include <map>
-#include "libriot/indexing/index-serializer.hxx"
 
 namespace nygma {
 
@@ -56,7 +55,7 @@ using poly256 =
 using poly128 =
     poly_cycler<riot::uc128_serializer, riot::bp128d1_serializer, riot::svb128d1_serializer>;
 
-void ny_index_pcap( index_pcap_config const& config ) {
+void ny_command_index_pcap( index_pcap_config const& config ) {
   // the async index writer, it is shared among all cyclers
   auto const w = std::make_shared<riot::index_writer>();
 
@@ -70,8 +69,8 @@ void ny_index_pcap( index_pcap_config const& config ) {
   poly128 cycx{ "ix", config._method_i6, w, d, f, ".ix" };
 
   auto const cycler = [&]( std::unique_ptr<index_i4_type> i4,
-                     std::unique_ptr<index_ix_type> ix,
-                     std::uint64_t const segment_offset ) noexcept {
+                           std::unique_ptr<index_ix_type> ix,
+                           std::uint64_t const segment_offset ) noexcept {
     flog( lvl::i, "cycler callback for segment offset = ", segment_offset );
     cyc4( std::move( i4 ), segment_offset );
     cycx( std::move( ix ), segment_offset );

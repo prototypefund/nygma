@@ -32,6 +32,6 @@ struct index_pcap_config {
   index_pcap_config() {}
 };
 
-void ny_index_pcap( index_pcap_config const& cfg );
+void ny_command_index_pcap( index_pcap_config const& cfg );
 
 } // namespace nygma
