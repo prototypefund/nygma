@@ -131,11 +131,11 @@ class index_cycler {
     _count++;
     // capturing `this` is not allowed, that would introduce a race condition
     // where the worker is live but `this` may have already been destructed.
-    _w->send( [p = std::move( p ), i = i.release(), segment_offset]() {
+    _w->send( [p = std::move( p ), d = i.get_deleter(), i = i.release(), segment_offset]() {
       nygma::cfile_ostream o{ p };
       S<nygma::cfile_ostream> s{ o };
       i->accept( s, segment_offset );
-      delete i;
+      d(i);
     } );
   }
 
