@@ -192,6 +192,8 @@ class poly_index_view {
     virtual bool query_ex( key_ex_t const k, container_type& out ) noexcept = 0;
     virtual std::size_t size() const noexcept = 0;
     virtual bool is_ex() const noexcept = 0;
+    virtual std::uint64_t segment_offset() const noexcept = 0;
+
   };
 
   template <typename T, typename VC>
@@ -219,6 +221,10 @@ class poly_index_view {
       }
       return false;
     }
+
+    std::uint64_t segment_offset() const noexcept override {
+      return _view.segment_offset();
+    }
   };
 
   std::unique_ptr<base> _p;
@@ -230,6 +236,7 @@ class poly_index_view {
   auto size() const noexcept { return _p->size(); }
   auto key_count() const noexcept { return _p->size(); }
   bool is_ex() const noexcept { return _p->is_ex(); }
+  std::uint64_t segment_offset() const noexcept { return _p->segment_offset(); }
 
   bool query( key_t const k, container_type& out ) const noexcept { return _p->query( k, out ); }
 

@@ -6,6 +6,7 @@
 #include <libunclassified/femtolog.hxx>
 
 #include <nygma/ny-command-index.hxx>
+#include <nygma/ny-command-offset-by.hxx>
 
 #include <algorithm>
 #include <cctype>
@@ -90,9 +91,44 @@ void ny_index_pcap( argh::Subparser& argh ) {
   ny_command_index_pcap( config );
 }
 
+//--querying-offsets-----------------------------------------------------------
+
+void ny_offsets_by( argh::Subparser& argh ) {
+  argh::HelpFlag help( argh, "help", "show this help message", { 'h', "help" } );
+  argh::Positional<std::string> path( argh, "path", "path to the indexed pcap" );
+  argh::ValueFlag<std::string> root( argh, "directory", "root path override", { "root" } );
+  argh::ValueFlag<std::string> k4( argh, "ipv4 address", "the i4 key", { "i4" } );
+  argh::ValueFlag<std::string> k6( argh, "ipv6 address", "the i6 key", { "i6" } );
+  argh::ValueFlag<std::string> kx( argh, "port number", "the ix key", { "ix" } );
+  argh::ValueFlag<std::string> ky( argh, "match id", "the iy key", { "iy" } );
+
+  argh.Parse();
+
+  if( not path ) { throw argh::Help( "path to pcap file missing" ); }
+
+  offset_by_config config;
+  config._path = argh::get( path );
+  config._root = argh::get( root );
+  config._key_i4 = argh::get( k4 );
+  config._key_i6 = argh::get( k6 );
+  config._key_ix = argh::get( kx );
+  config._key_iy = argh::get( ky );
+
+  ny_show_version();
+
+  flog( lvl::i, "offset_by_config._path = ", config._path );
+  flog( lvl::i, "offset_by_config._root = ", config._root );
+  flog( lvl::i, "offset_by_config._key_i4 = ", config._key_i4 );
+  flog( lvl::i, "offset_by_config._key_i6 = ", config._key_i6 );
+  flog( lvl::i, "offset_by_config._key_ix = ", config._key_ix );
+  flog( lvl::i, "offset_by_config._key_iy = ", config._key_iy );
+
+  ny_command_offset_by( config );
+}
+
 //--show-version---------------------------------------------------------------
 
-void ny_command_version( argh::Subparser& argh ) {
+void ny_version( argh::Subparser& argh ) {
   argh.Parse();
   femtolog::log::instance().level( lvl::i );
   ny_show_version();
@@ -101,12 +137,12 @@ void ny_command_version( argh::Subparser& argh ) {
 } // namespace
 
 int main( int argc, char* argv[] ) {
-
   argh::ArgumentParser argh( "ny index, query & reassembly of pcaps" );
   argh::HelpFlag help( argh, "help", "show this help message", { 'h', "help" } );
   argh::Group commands( argh, "commands" );
   argh::Command index( commands, "index-pcap", "index a pcap file", &ny_index_pcap );
-  argh::Command version( commands, "version", "show version", &ny_command_version );
+  argh::Command offset( commands, "offset-by", "query offsets", &ny_offsets_by );
+  argh::Command version( commands, "version", "show version", &ny_version );
   argh::GlobalOptions globals( argh, arguments );
 
   try {

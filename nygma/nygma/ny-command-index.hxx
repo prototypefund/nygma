@@ -27,7 +27,7 @@ struct index_pcap_config {
   compression_method _method_i4{ compression_method::NONE };
   compression_method _method_i6{ compression_method::NONE };
   compression_method _method_ix{ compression_method::NONE };
-  compression_method _method_ir{ compression_method::NONE };
+  compression_method _method_iy{ compression_method::NONE };
 
   index_pcap_config() {}
 };
