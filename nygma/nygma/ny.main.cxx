@@ -106,7 +106,7 @@ void ny_offsets_by( argh::Subparser& argh ) {
 
   if( not path ) { throw argh::Help( "path to pcap file missing" ); }
 
-  offset_by_config config;
+  offsets_by_config config;
   config._path = argh::get( path );
   config._root = argh::get( root );
   config._key_i4 = argh::get( k4 );
@@ -116,12 +116,12 @@ void ny_offsets_by( argh::Subparser& argh ) {
 
   ny_show_version();
 
-  flog( lvl::i, "offset_by_config._path = ", config._path );
-  flog( lvl::i, "offset_by_config._root = ", config._root );
-  flog( lvl::i, "offset_by_config._key_i4 = ", config._key_i4 );
-  flog( lvl::i, "offset_by_config._key_i6 = ", config._key_i6 );
-  flog( lvl::i, "offset_by_config._key_ix = ", config._key_ix );
-  flog( lvl::i, "offset_by_config._key_iy = ", config._key_iy );
+  flog( lvl::i, "offsets_by_config._path = ", config._path );
+  flog( lvl::i, "offsets_by_config._root = ", config._root );
+  flog( lvl::i, "offsets_by_config._key_i4 = ", config._key_i4 );
+  flog( lvl::i, "offsets_by_config._key_i6 = ", config._key_i6 );
+  flog( lvl::i, "offsets_by_config._key_ix = ", config._key_ix );
+  flog( lvl::i, "offsets_by_config._key_iy = ", config._key_iy );
 
   ny_command_offset_by( config );
 }
@@ -141,7 +141,7 @@ int main( int argc, char* argv[] ) {
   argh::HelpFlag help( argh, "help", "show this help message", { 'h', "help" } );
   argh::Group commands( argh, "commands" );
   argh::Command index( commands, "index-pcap", "index a pcap file", &ny_index_pcap );
-  argh::Command offset( commands, "offset-by", "query offsets", &ny_offsets_by );
+  argh::Command offsets( commands, "offsets-by", "query offsets", &ny_offsets_by );
   argh::Command version( commands, "version", "show version", &ny_version );
   argh::GlobalOptions globals( argh, arguments );
 

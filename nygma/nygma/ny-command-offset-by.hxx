@@ -6,7 +6,7 @@
 
 namespace nygma {
 
-struct offset_by_config {
+struct offsets_by_config {
   // via command line
   std::filesystem::path _path{ "/non-existent" };
   std::filesystem::path _root;
@@ -15,9 +15,9 @@ struct offset_by_config {
   std::string _key_ix;
   std::string _key_iy;
 
-  offset_by_config() {}
+  offsets_by_config() {}
 };
 
-void ny_command_offset_by( offset_by_config const& cfg );
+void ny_command_offset_by( offsets_by_config const& cfg );
 
 } // namespace nygma

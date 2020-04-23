@@ -57,7 +57,7 @@ void index_file_dependencies::gather(
   flog( lvl::i, "index_file_dependencies._count_iy = ", _iy.size() );
 }
 
-void ny_command_offset_by( offset_by_config const& config ) {
+void ny_command_offset_by( offsets_by_config const& config ) {
 
   auto const d = config._root == "" ? config._path.parent_path() : config._root;
   auto const f = config._path.filename().stem();
