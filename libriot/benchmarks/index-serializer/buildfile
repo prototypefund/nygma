@@ -4,7 +4,7 @@ import libs += libunclassified%lib{unclassified}
 import libs += argh%lib{argh}
 import libs += pest%lib{pest}
 
-if! ( $tclass == 'windows' )
+if! ( $c.target.class == 'windows' )
   cxx.libs = -lpthread
 
 exe{driver}: {hxx ixx txx cxx}{**} $libs testscript{**}

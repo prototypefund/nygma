@@ -10,7 +10,7 @@ import tst_libs += pest%lib{pest}
   $imp_libs $int_libs
 
 pthread_libs =
-if! ( $tclass == 'windows' )
+if! ( $c.target.class == 'windows' )
   pthread_libs = -lpthread
 
 # unit tests.
