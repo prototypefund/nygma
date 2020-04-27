@@ -69,11 +69,14 @@ class chunked_vector {
  private:
   vector_type _chunks;
   std::size_t _cursor{ 0 };
+  T _cached{ 0 }; // we assume a value of `0` is invalid
 
  public:
   chunked_vector() : _chunks{} {}
 
   inline void push( T const t ) noexcept {
+    if( t == _cached ) { return; }
+    _cached = t;
     auto const idx = _cursor / BlockLen;
     auto const offset = _cursor & ( BlockLen - 1 );
     if( offset == 0 ) { _chunks.emplace_back(); }

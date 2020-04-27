@@ -127,6 +127,25 @@ emptyspace::pest::suite basic( "index-builder basic suite", []( auto& test ) {
     expect( idx.key_count(), equal_to( 2u ) );
   } );
 
+  test( "index_builder: add same value twice", []( auto& expect ) {
+    using index_type = riot::index_builder<std::uint32_t, map_type, 128>;
+    index_type idx;
+
+    idx.add( 0x23421337u, 16 );
+    idx.add( 0x23421337u, 16 );
+
+    std::ostringstream os;
+    text_serialzer ser{ os };
+    idx.accept( ser, 0u );
+
+    expect( idx.key_count(), equal_to( 1u ) );
+    expect( os.str(), equal_to( R"(<cbloc-[1] 16>
+<kblock[1] 591532855>
+<oblock[1] 0>
+<mblock _offset_kblock=15 _offset_oblock=37>
+)" ) );
+  } );
+
   test( "index_builder accepts serializer", []( auto& expect ) {
     using index_type = riot::index_builder<std::uint32_t, map_type, 128>;
     index_type idx;
