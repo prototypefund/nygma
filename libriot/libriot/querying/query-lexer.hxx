@@ -9,7 +9,7 @@ namespace riot {
 
 struct token_type {
   using type = unsigned;
-  enum : type { LB, RB, LP, RP, LT, GT, LS, RS, NAME, AND, OR, EOS, BAD };
+  enum : type { LB, RB, LP, RP, LT, GT, LS, RS, NAME, AND, OR, NUM, IPV4, IPV6, EOS, BAD };
 };
 
 struct token {

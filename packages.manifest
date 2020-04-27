@@ -3,6 +3,6 @@ location: libnygma/
 :
 location: libriot/
 :
-location: nygma
+location: nygma/
 :
 location: fuzzing/
