@@ -1,6 +1,6 @@
 # NYGMA - network packet processing
 
-... here be dragons -- prototype ahead ...
+... from hackers for hackers -- prototype ahead ...
 
 project `nygma` is organized as a set of ( mostly ) header only `cxx` libraries as well as an example
 console application `ny`.
