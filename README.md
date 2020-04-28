@@ -26,7 +26,7 @@ base functionality and dealing with network packets
 
 (r)apid (i)ndexing (o)f network (t)raffic ( or data thereof ).
 
-indexing, querying and index serializtion using SIMD based integer compression.
+indexing, querying and index serialization using SIMD based integer compression.
 
 features & current status:
 
