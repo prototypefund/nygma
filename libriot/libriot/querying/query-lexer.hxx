@@ -9,7 +9,7 @@ namespace riot {
 
 struct token_type {
   using type = unsigned;
-  enum : type { LB, RB, LP, RP, LT, GT, LS, RS, NAME, AND, OR, NUM, IPV4, IPV6, EOS, BAD };
+  enum : type { LB, RB, LP, RP, LT, GT, LS, RS, ID, AND, OR, NUM, IPV4, IPV6, EOS, BAD };
 };
 
 struct token {
@@ -20,6 +20,7 @@ struct token {
   static constexpr unsigned TMASK = 0xff;
   static constexpr unsigned TSHIFT = SSHIFT + 24;
 
+  // squeeze everything into a 64bit value
   std::uint64_t const _token;
 
   constexpr token( token_type::type token, std::size_t offset, std::size_t size ) noexcept
@@ -107,7 +108,8 @@ struct scanner {
   constexpr token const next( Predicate const p ) noexcept {
     while( p( peek() ) ) { pop(); }
     auto const begin = _offset;
-    switch( peek() ) {
+    auto c = peek();
+    switch( c ) {
       case '(': return one<token_type::LP>();
       case ')': return one<token_type::RP>();
       case '{': return one<token_type::LB>();
@@ -119,7 +121,11 @@ struct scanner {
       case ':': return consume_ipv6_literal();
       case '0' ... '9': return consume_literal();
       case -1: return { token_type::EOS, begin, _offset - begin };
-      default: return { token_type::BAD, _offset, std::max( _offset - begin, 1ul ) };
+      default:
+        if( ::isalnum( c ) ) {
+          return consume<token_type::ID>( []( auto const _ ) { return ::isalnum( _ ); } );
+        }
+        return { token_type::BAD, _offset, std::max( _offset - begin, 1ul ) };
     }
   }
 
