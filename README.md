@@ -1,26 +1,32 @@
-# NYGMA
+# NYGMA - network packet processing
 
 ... here be dragons -- prototype ahead ...
 
-project `nygma` is organized as a set of ( mostly ) header only cxx libraries and an example
+project `nygma` is organized as a set of ( mostly ) header only `cxx` libraries as well as an example
 console application `ny`.
 
 instead of boring you to death the obligatory animated gif:
 
-## ny ( basic command line demonstration tool for indexing and reassembling pcaps )
+## ny
+
+basic command line demonstration tool for indexing and reassembling pcaps
 
 ```
 ```
 
-## libnygma ( base functionality and dealing with network packets )
+## libnygma
+
+base functionality and dealing with network packets
 
   - [x] rss hashing in software ( using toeplitz hashing )
   - [x] lightweight packet dissector
   - [x] lightweight dns dissector
 
-## libriot ( indexing and index compression using SIMD based integer compression )
+## libriot
 
-Rapid Indexing of Network Traffic ( or data thereof ).
+(r)apid (i)ndexing (o)f network (t)raffic ( or data thereof ).
+
+indexing, querying and index serializtion using SIMD based integer compression.
 
 features & current status:
 
@@ -37,7 +43,7 @@ features & current status:
 
 ## libcapture ( TBD )
 
-full packet capture ( or caching ) and compressed capture storage format ( ccap ).
+full packet capture ( or caching ) and compressed capture storage format ( `ccap` ).
 
   - [ ] combined full packet capture / caching & indexing on commodity ( server ) hardware
   - [ ] a storage format suited for network packets and indexing
@@ -45,6 +51,30 @@ full packet capture ( or caching ) and compressed capture storage format ( ccap 
       - [ ] block oriented and optimized for indexing
       - [ ] integer compression for internal block offsets ...
       - [ ] stores capture port for each packet
+
+## dependencies
+
+`nygma` uses the [build2](https://build2.org) build system to manage all dependencies 
+( actually the full project lifecycle ).
+
+  - [~stackless-goto/pest] for unit testing
+  - [~stackless-goto/argh] for argument parsing in `ny`
+  - [~stackless-goto/libforest] for `std::map` alternatives and faster index generation
+  - [~stackless-goto/libunclassified] for otherwise unrelated auxiliary functions
+  - [build2](https://build2.org) as build system
+
+## building & development
+
+development happens mainly on [freebsd](https://freebsd.org). theoretically linux should work
+as well. if not it's a bug. please report.
+
+building `ny` example using `clang10`.
+
+```
+git clone https://github.com/stackless-goto/nygma
+cd nygma/nygma/
+bdep init -C @clang10 
+```
 
 ## support & blame-game
 
