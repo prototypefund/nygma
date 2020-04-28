@@ -106,7 +106,7 @@ a unit test for the reassembler using the [~stackless-goto/pest](https://github.
 
 @see: [pcap-reassembler.test.cxx](https://github.com/magenbluten/nygma-staging/blob/master/libnygma/libnygma/pcap-reassembler.test.cxx)
 
-```
+```cpp
 #include <pest/pest.hxx>
 
 #include <libnygma/pcap-reassembler.hxx>
