@@ -52,16 +52,66 @@ full packet capture ( or caching ) and compressed capture storage format ( `ccap
       - [ ] integer compression for internal block offsets ...
       - [ ] stores capture port for each packet
 
+## example / code snippets
+
+@see: [ny-command-index.cxx](https://github.com/stackless-goto/nygma/blob/master/nygma/nygma/ny-command-index.cxx)
+
+```cpp
+...
+
+using hash_type = dissect::void_hash_policy;
+template <typename K, typename V>
+using map_type = std::map<K, V>;
+using index_i4_type = typename riot::index_builder<std::uint32_t, map_type, 256>;
+using index_ix_type = typename riot::index_builder<std::uint32_t, map_type, 128>;
+using index_trace_type = typename riot::index_trace<index_i4_type, index_ix_type>;
+
+auto data = std::make_unique<nygma::block_view>( "test.pcap", nygma::block_flags::rd );
+auto const start = std::chrono::high_resolution_clock::now();
+
+...
+
+auto const cycler = [&]( std::unique_ptr<index_i4_type> i4,
+                         std::unique_ptr<index_ix_type> ix,
+                         std::uint64_t const segment_offset ) noexcept {
+  flog( lvl::i, "cycler callback for segment offset = ", segment_offset );
+  cyc4( std::move( i4 ), segment_offset );
+  cycx( std::move( ix ), segment_offset );
+};
+
+index_trace_type trace; 
+hash_type hash;         // for rss hashing ( in this case void policy is used )
+nygma::pcap::with( std::move( data ), [&]( auto& pcap ) {
+  if( not pcap.valid() ) {
+    flog( lvl::e, "invalid pcap" );
+    return;
+  }
+  pcap.for_each( [&]( auto const& pkt, auto const offset ) noexcept {
+    trace.prepare( offset, cycler );
+    riot::dissect::dissect_en10mb( hash, trace, pkt._slice );
+    total_packets++;
+    total_bytes += pkt._slice.size();
+    first_seen = std::min( pkt._stamp, first_seen );
+    last_seen = std::max( pkt._stamp, last_seen );
+  } );
+  trace.finish( cycler );
+} );
+
+auto const end = std::chrono::high_resolution_clock::now();
+
+...
+```
+
 ## dependencies
 
 `nygma` uses the [build2](https://build2.org) build system to manage all dependencies 
 ( actually the full project lifecycle ).
 
-  - [~stackless-goto/pest] for unit testing
-  - [~stackless-goto/argh] for argument parsing in `ny`
-  - [~stackless-goto/libforest] for `std::map` alternatives and faster index generation
-  - [~stackless-goto/libunclassified] for otherwise unrelated auxiliary functions
-  - [build2](https://build2.org) as build system
+  - [~stackless-goto/pest](https://github.com/stackless-goto/pest) for unit testing
+  - [~stackless-goto/argh](https://github.com/stackless-goto/argh) for argument parsing in `ny`
+  - [~stackless-goto/libforest](https://github.com/stackless-goto/libforest) for `std::map` alternatives and faster index generation
+  - [~stackless-goto/libunclassified](https://github.com/stackless-goto/libunclassified) for otherwise unrelated auxiliary functions
+  - [build2](https://build2.org) as build system ( [install-doc](https://build2.org/install.xhtml) )
 
 ## building & development
 
@@ -71,9 +121,30 @@ as well. if not it's a bug. please report.
 building `ny` example using `clang10`.
 
 ```
-git clone https://github.com/stackless-goto/nygma
-cd nygma/nygma/
-bdep init -C @clang10 
+$ git clone https://github.com/stackless-goto/nygma
+$ cd nygma/nygma/
+$ bdep init -C @clang10 cc \
+    config.cxx=clang++10 \
+    config.cxx.poptions="-DNDEBUG" \
+    config.cxx.coptions="-flto -stdlib=libc++ -Ofast -fno-rtti -mavx2 -mlzcnt -Wall -Wextra -Wno-c99-designator"
+...
+$ b
+$ nygma/nygma/ny --help
+  nygma/nygma/ny COMMAND {OPTIONS}
+
+    ny index, query & reassembly of pcaps
+
+  OPTIONS:
+
+      -h, --help                        show this help message
+      commands
+        index-pcap                        index a pcap file
+        offsets-by                        query offsets
+        slice                             slice by given ( simple ) query
+        version                           show version
+      arguments
+        -v[integer],
+        --verbosity=[integer]             verbosity level
 ```
 
 ## support & blame-game
