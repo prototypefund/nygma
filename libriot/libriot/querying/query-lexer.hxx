@@ -53,22 +53,92 @@ struct scanner {
 
   constexpr void pop() noexcept { _offset++; }
 
-  template <typename IsWhiteSpace>
-  constexpr token const next( IsWhiteSpace const predicate ) noexcept {
-    while( predicate( peek() ) ) {
-      pop();
-    }
-    auto const _begin = _offset;
+  template <token_type::type T, typename Predicate>
+  constexpr token consume( Predicate const p ) noexcept {
+    auto const begin = _offset;
+    while( p( peek() ) ) { pop(); }
+    return { T, begin, _offset - begin };
+  }
+
+  //--non-validating
+  constexpr token consume_ipv4_literal() noexcept {
+    auto constexpr p = []( auto const c ) noexcept { return c == '.' and ::isdigit( c ); };
+    return consume<token_type::IPV4>( p );
+  }
+
+  //--non-validating
+  constexpr token consume_ipv6_literal() noexcept {
+    auto constexpr p = []( auto const c ) noexcept { return c == '.' or c == ':' or ::isxdigit( c ); };
+    return consume<token_type::IPV6>( p );
+  }
+
+  //--non-validating
+  constexpr token consume_literal() noexcept {
+    auto const begin = _offset;
+    auto expected_output_token = token_type::NUM;
+    auto const p = [&]( auto const c ) noexcept {
+      if( ::isdigit( c ) ) {
+        return true;
+      } else if( ::isxdigit( c ) ) {
+        expected_output_token = token_type::IPV6;
+        return true;
+      } else if( c == '.' ) {
+        expected_output_token = // if already in v6 do not switch back to v4
+            expected_output_token == token_type::IPV6 ? token_type::IPV6 : token_type::IPV4;
+        return true;
+      } else if( c == ':' ) {
+        expected_output_token = token_type::IPV6;
+        return true;
+      }
+      return false;
+    };
+    while( p( peek() ) ) { pop(); }
+    return { expected_output_token, begin, _offset - begin };
+  }
+
+  template <token_type::type T>
+  constexpr token const one() noexcept {
+    auto const begin = _offset;
+    pop();
+    return { T, begin, 1u };
+  }
+
+  template <typename Predicate>
+  constexpr token const next( Predicate const p ) noexcept {
+    while( p( peek() ) ) { pop(); }
+    auto const begin = _offset;
     switch( peek() ) {
-      case '(': pop(); return { token_type::LP, _begin, 1u };
-      case ')': pop(); return { token_type::RP, _begin, 1u };
-      case -1: return { token_type::EOS, _begin, _offset - _begin };
-      default: return { token_type::BAD, _offset, std::max( _offset - _begin, 1ul ) };
+      case '(': return one<token_type::LP>();
+      case ')': return one<token_type::RP>();
+      case '{': return one<token_type::LB>();
+      case '}': return one<token_type::RB>();
+      case '[': return one<token_type::LS>();
+      case ']': return one<token_type::RS>();
+      case '<': return one<token_type::LT>();
+      case '>': return one<token_type::GT>();
+      case ':': return consume_ipv6_literal();
+      case '0' ... '9': return consume_literal();
+      case -1: return { token_type::EOS, begin, _offset - begin };
+      default: return { token_type::BAD, _offset, std::max( _offset - begin, 1ul ) };
     }
   }
 
   constexpr token const next() noexcept {
     return next( []( auto const c ) noexcept { return std::isspace( c ); } );
+  }
+
+  template <typename Predicate>
+  constexpr void skip( Predicate const p ) noexcept {
+    while( p( peek() ) ) { pop(); }
+  }
+
+  constexpr void skip_ws() noexcept {
+    return skip( []( auto const c ) noexcept { return std::isspace( c ); } );
+  }
+
+  constexpr std::string_view slice_of( token const tok ) const noexcept {
+    if( static_cast<std::size_t>( tok.offset() ) + tok.size() > _data.size() ) { return {}; }
+    return { _data.data() + tok.offset(), tok.size() };
   }
 };
 

@@ -10,7 +10,7 @@ namespace riot {
 
 enum class kind {
   BINARY,
-  UNARY,
+  QUERY,
   ID,
   IPV4,
   IPV6,
@@ -20,9 +20,12 @@ enum class kind {
 enum class binop {
   AND,
   OR,
+  PLUS,
+  MINUS,
+  SLASH,
 };
 
-enum class query { FWD, REV, WIDEN };
+enum class query_method { LOOKUP, REVERSE_LOOKUP, COMBINED };
 
 struct node {
   virtual ~node() = default;
@@ -42,6 +45,8 @@ struct typed_node : public node {
 
   source_span _span;
 
+  constexpr typed_node( source_span const span ) noexcept : _span{ span } {}
+
   kind type() const noexcept override { return type_impl(); }
 
   constexpr kind type_impl() const noexcept { return TYPE; }
@@ -50,11 +55,39 @@ struct typed_node : public node {
 struct ident : public typed_node<kind::ID> {
   std::string _name;
   token _tok;
+  constexpr ident( token const tok, std::string_view const name ) : _tok{ tok }, _name{ name } {}
 };
 
-struct unary : public typed_node<kind::UNARY> {
-  query _query;
-  node_ptr _expr;
+template <kind T, typename I>
+struct literal : public typed_node<T> {
+  I const _value;
+  constexpr literal( source_span const span, I const value )
+    : typed_node<T>{ span }, _value{ value } {}
+};
+
+struct ipv4 : public literal<kind::IPV4, std::uint32_t> {
+  template <typename... Args>
+  constexpr ipv4( Args&&... args )
+    : literal<kind::IPV4, std::uint32_t>{ std::forward<Args>( args )... } {}
+};
+
+struct ipv6 : public literal<kind::IPV6, __uint128_t> {
+  template <typename... Args>
+  constexpr ipv6( Args&&... args )
+    : literal<kind::IPV6, __uint128_t>{ std::forward<Args>( args )... } {}
+};
+
+struct number : public literal<kind::NUM, std::uint64_t> {
+  template <typename... Args>
+  constexpr number( Args&&... args )
+    : literal<kind::NUM, std::uint64_t>{ std::forward<Args>( args )... } {}
+};
+
+struct query : public typed_node<kind::QUERY> {
+  query_method _method;
+  ident _index;
+  node_ptr _what;
+  std::uint64_t _limit;
 };
 
 struct binary : public typed_node<kind::BINARY> {
@@ -63,6 +96,12 @@ struct binary : public typed_node<kind::BINARY> {
   node_ptr _right;
 };
 
-namespace ast {}
+namespace ast {
+
+constexpr riot::number number( source_span const span, std::uint64_t const value ) noexcept {
+  return riot::number{ span, value };
+}
+
+} // namespace ast
 
 } // namespace riot
