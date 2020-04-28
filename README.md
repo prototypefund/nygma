@@ -11,8 +11,7 @@ instead of boring you to death the obligatory animated gif:
 
 basic command line demonstration tool for indexing and reassembling pcaps
 
-```
-```
+![ny](https://64k.by/assets/nygma.gif)
 
 ## libnygma
 
