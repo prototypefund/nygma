@@ -155,6 +155,7 @@ emptyspace::pest::suite basic( "query-lexer basic suite", []( auto& test ) {
 } );
 
 }
+
 int main() {
   basic( std::clog );
   return EXIT_SUCCESS;
