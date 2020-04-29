@@ -88,14 +88,15 @@ inline bool reassemble_begin( [[maybe_unused]] View const& pcap, Stream& os ) no
 }
 
 template <typename View, typename Iter, typename Stream>
-inline bool reassemble_stream( View& pcap, Iter begin, Iter const end, Stream& os ) noexcept {
+inline bool reassemble_stream(
+    View& pcap, std::uint64_t const segment_offset, Iter begin, Iter const end, Stream& os ) noexcept {
   using iovec_type = typename Stream::iovec_type;
   std::uint32_t packet_header[4];
   iovec_type iov[2];
   iov[0].iov_base = packet_header;
   iov[0].iov_len = sizeof( packet_header );
   while( begin != end ) {
-    auto const p = pcap.slice( *begin );
+    auto const p = pcap.slice( *begin + segment_offset );
     auto const stamp = p.stamp();
     auto const& slice = p._slice;
     if( slice.size() == 0u ) { return false; }

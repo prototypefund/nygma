@@ -52,7 +52,7 @@ void ny_command_slice_by( slice_config const& config ) {
       flog( lvl::v, "@segment offset = ", iv->segment_offset() );
       iv->query( key, offsets );
       flog( lvl::v, "hits = ", offsets.size() );
-      pcap::reassemble_stream( pcap, offsets.cbegin(), offsets.cend(), os );
+      pcap::reassemble_stream( pcap, iv->segment_offset(), offsets.cbegin(), offsets.cend(), os );
     };
 
     auto const stream_ex = [&pcap, &os]( auto const& p, auto const key, auto& offsets ) {
@@ -61,7 +61,7 @@ void ny_command_slice_by( slice_config const& config ) {
       flog( lvl::v, "@segment offset = ", iv->segment_offset() );
       iv->query_ex( key, offsets );
       flog( lvl::v, "hits = ", offsets.size() );
-      pcap::reassemble_stream( pcap, offsets.cbegin(), offsets.cend(), os );
+      pcap::reassemble_stream( pcap, iv->segment_offset(), offsets.cbegin(), offsets.cend(), os );
     };
 
     std::vector<std::uint32_t> offsets;
