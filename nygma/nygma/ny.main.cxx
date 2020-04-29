@@ -7,6 +7,7 @@
 
 #include <nygma/ny-command-index.hxx>
 #include <nygma/ny-command-offset-by.hxx>
+#include <nygma/ny-command-slice-by.hxx>
 
 #include <algorithm>
 #include <cctype>
@@ -126,6 +127,44 @@ void ny_offsets_by( argh::Subparser& argh ) {
   ny_command_offset_by( config );
 }
 
+//--slice-a-pcap-(-unsorted-output-)------------------------------------------
+
+void ny_slice_by( argh::Subparser& argh ) {
+  argh::HelpFlag help( argh, "help", "show this help message", { 'h', "help" } );
+  argh::Positional<std::string> path( argh, "path", "path to the indexed pcap" );
+  argh::ValueFlag<std::string> root( argh, "directory", "root path override", { "root" } );
+  argh::ValueFlag<std::string> out( argh, "output", "the restitched output", { 'o', "output" }, "-" );
+  argh::ValueFlag<std::string> k4( argh, "ipv4 address", "the i4 key", { "i4" } );
+  argh::ValueFlag<std::string> k6( argh, "ipv6 address", "the i6 key", { "i6" } );
+  argh::ValueFlag<std::string> kx( argh, "port number", "the ix key", { "ix" } );
+  argh::ValueFlag<std::string> ky( argh, "match id", "the iy key", { "iy" } );
+
+  argh.Parse();
+
+  if( not path ) { throw argh::Help( "path to pcap file missing" ); }
+
+  slice_config config;
+  config._path = argh::get( path );
+  config._root = argh::get( root );
+  config._out = argh::get( out );
+  config._key_i4 = argh::get( k4 );
+  config._key_i6 = argh::get( k6 );
+  config._key_ix = argh::get( kx );
+  config._key_iy = argh::get( ky );
+
+  ny_show_version();
+
+  flog( lvl::i, "offsets_by_config._path = ", config._path );
+  flog( lvl::i, "offsets_by_config._root = ", config._root );
+  flog( lvl::i, "offsets_by_config._out = ", config._out );
+  flog( lvl::i, "offsets_by_config._key_i4 = ", config._key_i4 );
+  flog( lvl::i, "offsets_by_config._key_i6 = ", config._key_i6 );
+  flog( lvl::i, "offsets_by_config._key_ix = ", config._key_ix );
+  flog( lvl::i, "offsets_by_config._key_iy = ", config._key_iy );
+
+  ny_command_slice_by( config );
+}
+
 //--show-version---------------------------------------------------------------
 
 void ny_version( argh::Subparser& argh ) {
@@ -142,6 +181,7 @@ int main( int argc, char* argv[] ) {
   argh::Group commands( argh, "commands" );
   argh::Command index( commands, "index-pcap", "index a pcap file", &ny_index_pcap );
   argh::Command offsets( commands, "offsets-by", "query offsets", &ny_offsets_by );
+  argh::Command slice( commands, "slice-by", "restitch pcap from query", &ny_slice_by );
   argh::Command version( commands, "version", "show version", &ny_version );
   argh::GlobalOptions globals( argh, arguments );
 

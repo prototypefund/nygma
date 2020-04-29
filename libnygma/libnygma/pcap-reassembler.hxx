@@ -80,15 +80,16 @@ constexpr std::uint32_t pcap_header[6]{
 namespace pcap {
 namespace {
 
+template <typename View, typename Stream>
+inline bool reassemble_begin( [[maybe_unused]] View const& pcap, Stream& os ) noexcept {
+  return os.write(
+      reinterpret_cast<std::byte const*>( detail::pcap_header ),
+      sizeof( detail::pcap_header ) );
+}
+
 template <typename View, typename Iter, typename Stream>
-inline bool reassemble_from( View& pcap, Iter begin, Iter const end, Stream& os ) noexcept {
+inline bool reassemble_stream( View& pcap, Iter begin, Iter const end, Stream& os ) noexcept {
   using iovec_type = typename Stream::iovec_type;
-  if( auto rc = os.write(
-          reinterpret_cast<std::byte const*>( detail::pcap_header ),
-          sizeof( detail::pcap_header ) );
-      not rc ) {
-    return false;
-  }
   std::uint32_t packet_header[4];
   iovec_type iov[2];
   iov[0].iov_base = packet_header;
@@ -107,6 +108,13 @@ inline bool reassemble_from( View& pcap, Iter begin, Iter const end, Stream& os 
     if( auto rc = os.writev( iov, 2 ); not rc ) { return false; }
     begin++;
   }
+  return true;
+}
+
+template <typename View, typename Iter, typename Stream>
+inline bool reassemble_from( View& pcap, Iter begin, Iter const end, Stream& os ) noexcept {
+  if( auto rc = reassemble_begin( pcap, os ); not rc ) { return false; }
+  return reassemble_stream( pcap, begin, end, os );
   return true;
 }
 

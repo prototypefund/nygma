@@ -40,8 +40,8 @@ struct poly_cycler {
     : _name{ name }, _cyc{ std::forward<Args>( args )... }, _method{ method } {}
   template <typename I>
   void operator()( I&& i, std::uint64_t segment_offset ) noexcept {
-    flog( lvl::i, "cycler{", _name, "} index path = ", _cyc.path() );
-    flog( lvl::i, "cycler{", _name, "} index.keys = ", i->key_count() );
+    flog( lvl::m, "cycler{", _name, "} index path = ", _cyc.path() );
+    flog( lvl::m, "cycler{", _name, "} index.keys = ", i->key_count() );
     switch( _method ) {
       case compression_method::NONE: _cyc.accept<S1>( std::move( i ), segment_offset ); break;
       case compression_method::BITPACK: _cyc.accept<S2>( std::move( i ), segment_offset ); break;
