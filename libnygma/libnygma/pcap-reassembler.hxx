@@ -115,7 +115,7 @@ inline bool reassemble_stream(
 template <typename View, typename Iter, typename Stream>
 inline bool reassemble_from( View& pcap, Iter begin, Iter const end, Stream& os ) noexcept {
   if( auto rc = reassemble_begin( pcap, os ); not rc ) { return false; }
-  return reassemble_stream( pcap, begin, end, os );
+  return reassemble_stream( pcap, 0u, begin, end, os );
   return true;
 }
 

@@ -99,7 +99,7 @@ emptyspace::pest::suite basic_mmap( "pcap in-memory suite", []( auto& test ) {
   using namespace nygma;
   test( "little-endian", []( auto& expect ) {
     bytestring_view data{ pcap_le_en10mb_1 };
-    expected_format f{ pcap::format::PCAP_MSEC, 65535 };
+    expected_format f{ pcap::format::PCAP_USEC, 65535 };
     pcap_consumer c{ expect, f };
     pcap::with( data, c );
     expect( c._count, equal_to( 0u ) );
@@ -107,7 +107,7 @@ emptyspace::pest::suite basic_mmap( "pcap in-memory suite", []( auto& test ) {
 
   test( "big-endian", []( auto& expect ) {
     bytestring_view data{ pcap_be_en10mb_1 };
-    expected_format f{ pcap::format::PCAP_MSEC, 65535 };
+    expected_format f{ pcap::format::PCAP_USEC, 65535 };
     pcap_consumer c{ expect, f };
     pcap::with( data, c );
     expect( c._count, equal_to( 0u ) );
@@ -115,7 +115,7 @@ emptyspace::pest::suite basic_mmap( "pcap in-memory suite", []( auto& test ) {
 
   test( "little-endian-packet1", []( auto& expect ) {
     bytestring_view data{ pcap_le_en10mb_with_data_1 };
-    expected_format f{ pcap::format::PCAP_MSEC, 65535 };
+    expected_format f{ pcap::format::PCAP_USEC, 65535 };
     pcap_consumer c{ expect, f };
     pcap::with( data, c );
     expect( c._count, equal_to( 1u ) );
@@ -125,7 +125,7 @@ emptyspace::pest::suite basic_mmap( "pcap in-memory suite", []( auto& test ) {
 
   test( "little-endian-packet2", []( auto& expect ) {
     bytestring_view data{ pcap_le_en10mb_with_data_2 };
-    expected_format f{ pcap::format::PCAP_MSEC, 65535 };
+    expected_format f{ pcap::format::PCAP_USEC, 65535 };
     pcap_consumer c{ expect, f };
     pcap::with( data, c );
     expect( c._count, equal_to( 1u ) );
@@ -196,7 +196,7 @@ emptyspace::pest::suite basic_blockio( "pcap blockio suite", []( auto& test ) {
     auto bv = std::make_unique<block_view>( "tests/data/pcap/dns-over-tcp6.pcap", block_flags::rdd );
     auto const bs = bv->prefetch( 0 );
     expect( bs.size(), equal_to( 2235u ) );
-    expected_format f{ pcap::format::PCAP_MSEC, 524288 };
+    expected_format f{ pcap::format::PCAP_USEC, 524288 };
     pcap_consumer c{ expect, f };
     pcap::with( std::move( bv ), c );
     expect( c._count, equal_to( 10u ) );
@@ -206,7 +206,7 @@ emptyspace::pest::suite basic_blockio( "pcap blockio suite", []( auto& test ) {
     mmap_view mv{ "tests/data/pcap/dns-over-tcp6.pcap" };
     auto const bs = mv.view();
     expect( bs.size(), equal_to( 2235u ) );
-    expected_format f{ pcap::format::PCAP_MSEC, 524288 };
+    expected_format f{ pcap::format::PCAP_USEC, 524288 };
     pcap_consumer c{ expect, f };
     pcap::with( bs, c );
     expect( c._count, equal_to( 10u ) );
@@ -217,7 +217,7 @@ emptyspace::pest::suite basic_blockio( "pcap blockio suite", []( auto& test ) {
     pcap::with( std::move( bv ), [&]( auto& pcap ) {
       auto const pkt = pcap.slice( pcap::PCAP_HEADERSZ + pcap::PACKET_HEADERSZ );
       expect( pkt.size(), equal_to( 75u ) );
-      expect( pkt.stamp(), equal_to( 1424219665518000000ull ) );
+      expect( pkt.stamp(), equal_to( 1424219007658518000ull ) );
     } );
   } );
 
@@ -257,18 +257,18 @@ emptyspace::pest::suite basic_blockio( "pcap blockio suite", []( auto& test ) {
   test( "bulk slice `block_view{ 1000.pcap }`", []( auto& expect ) {
     query queries[] = {
         // generated using the indexer ( with limit )
-        { 40, 75u, 1424219665518000000ull },     { 131, 75u, 1424219665559000000ull },
-        { 222, 95u, 1424219744404000000ull },    { 333, 95u, 1424219744414000000ull },
-        { 444, 62u, 1424219767103000000ull },    { 522, 62u, 1424219767112000000ull },
-        { 600, 82u, 1424219807276000000ull },    { 698, 82u, 1424219807286000000ull },
-        { 796, 60u, 1424219808348000000ull },    { 872, 54u, 1424219808358000000ull },
-        { 942, 62u, 1424219828570000000ull },    { 1020, 62u, 1424219828579000000ull },
-        { 1244, 62u, 1424219879018000000ull },   { 1322, 62u, 1424219879027000000ull },
-        { 1400, 101u, 1424219880054000000ull },  { 1517, 101u, 1424219880061000000ull },
-        { 2072, 80u, 1424219961612000000ull },   { 2168, 80u, 1424219961621000000ull },
-        { 2410, 1514u, 1424219041493000000ull }, { 3940, 1514u, 1424219041503000000ull },
-        { 5470, 1514u, 1424219041512000000ull }, { 7000, 1514u, 1424219041514000000ull },
-        { 8530, 1514u, 1424219041703000000ull },
+        { 40, 75u, 1424219007658518000ull },     { 131, 75u, 1424219007658559000ull },
+        { 222, 95u, 1424219007737404000ull },    { 333, 95u, 1424219007737414000ull },
+        { 444, 62u, 1424219007760103000ull },    { 522, 62u, 1424219007760112000ull},
+        { 600, 82u, 1424219007800276000ull },    { 698, 82u, 1424219007800286000ull },
+        { 796, 60u, 1424219007801348000ull },    { 872, 54u, 1424219007801358000ull },
+        { 942, 62u, 1424219007821570000ull },    { 1020, 62u, 1424219007821579000ull },
+        { 1244, 62u, 1424219007872018000ull },   { 1322, 62u, 1424219007872027000ull },
+        { 1400, 101u, 1424219007873054000ull },  { 1517, 101u, 1424219007873061000ull },
+        { 2072, 80u, 1424219007954612000ull },   { 2168, 80u, 1424219007954621000ull },
+        { 2410, 1514u, 1424219008033493000ull }, { 3940, 1514u, 1424219008033503000ull },
+        { 5470, 1514u, 1424219008033512000ull }, { 7000, 1514u, 1424219008033514000ull },
+        { 8530, 1514u, 1424219008033703000ull },
     };
     auto bv = std::make_unique<block_view>( "tests/data/pcap/1000.pcap", block_flags::rd );
     pcap::with( std::move( bv ), [&]( auto& pcap ) {

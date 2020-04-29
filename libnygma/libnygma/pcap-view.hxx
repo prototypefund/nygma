@@ -20,7 +20,7 @@ struct format {
   using type = std::uint32_t;
   enum : type {
     // standard libpcap format.
-    PCAP_MSEC = 0xa1b2c3d4,
+    PCAP_USEC = 0xa1b2c3d4,
 
     // alexey Kuznetzov's modified libpcap format.
     PCAP_KUZNETZOV = 0xa1b2cd34,
@@ -52,7 +52,7 @@ class pcap_view {
   static constexpr endianess ENDIANESS = E;
   static constexpr pcap::format::type FORMAT = F;
 
-  static_assert( FORMAT == pcap::format::PCAP_MSEC || FORMAT == pcap::format::PCAP_NSEC );
+  static_assert( FORMAT == pcap::format::PCAP_USEC || FORMAT == pcap::format::PCAP_NSEC );
 
   u32 _raw_magic;
   u16 _raw_version_major;
@@ -99,7 +99,7 @@ class pcap_view {
       if( pkt_size > is.available() ) { break; }
       auto const tv_sec = std::uint64_t( raw_tv_sec );
       auto tv_nsec = std::uint64_t( raw_tv_nsec );
-      if constexpr( FORMAT == pcap::format::PCAP_MSEC ) { tv_nsec *= 1'000'000ull; }
+      if constexpr( FORMAT == pcap::format::PCAP_USEC ) { tv_nsec *= 1'000'000ull; }
       packet._stamp = tv_sec * 1'000'000'000ull + tv_nsec;
       packet._slice = is.slice( pkt_size );
       is.advance( pkt_size );
@@ -137,7 +137,7 @@ class pcap_view {
       auto const pkt_size = std::min( raw_caplen, raw_snaplen );
       auto const tv_sec = std::uint64_t( raw_tv_sec );
       auto tv_nsec = std::uint64_t( raw_tv_nsec );
-      if constexpr( FORMAT == pcap::format::PCAP_MSEC ) { tv_nsec *= 1'000'000ull; }
+      if constexpr( FORMAT == pcap::format::PCAP_USEC ) { tv_nsec *= 1'000'000ull; }
       _packet._stamp = tv_sec * 1'000'000'000ull + tv_nsec;
       _packet._slice = _data.slice( pkt_size );
       //_packet._valid = pkt_size <= _data.available();
@@ -181,7 +181,7 @@ class pcap_block_view {
   static constexpr endianess ENDIANESS = E;
   static constexpr pcap::format::type FORMAT = F;
 
-  static_assert( FORMAT == pcap::format::PCAP_MSEC || FORMAT == pcap::format::PCAP_NSEC );
+  static_assert( FORMAT == pcap::format::PCAP_USEC || FORMAT == pcap::format::PCAP_NSEC );
 
   u32 _raw_magic;
   u16 _raw_version_major;
@@ -216,8 +216,8 @@ class pcap_block_view {
 
   static constexpr std::uint64_t to_ns( std::uint32_t const raw_tv_nsec ) noexcept {
     auto const tv_nsec = static_cast<std::uint64_t>( raw_tv_nsec );
-    if constexpr( FORMAT == pcap::format::PCAP_MSEC ) {
-      return tv_nsec * 1'000'000ull;
+    if constexpr( FORMAT == pcap::format::PCAP_USEC ) {
+      return tv_nsec * 1'000ull;
     } else {
       return tv_nsec;
     }
@@ -377,8 +377,8 @@ static inline error_code specialize0(
       t( pv );
       return error_code::OK;
     }
-    case format::PCAP_MSEC: {
-      using pcap_view_type = PcapView<E, format::PCAP_MSEC>;
+    case format::PCAP_USEC: {
+      using pcap_view_type = PcapView<E, format::PCAP_USEC>;
       pcap_view_type pv{ std::move( view ) };
       t( pv );
       return error_code::OK;

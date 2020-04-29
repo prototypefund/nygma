@@ -25,10 +25,10 @@ emptyspace::pest::suite basic( "pcap reassembler suite", []( auto& test ) {
   test( "slice and reassemble pcap using predefined offsets", []( auto& expect ) {
     query queries[] = {
         // generated using the indexer ( with limit )
-        { 40, 75u, 1424219665518000000ull },
-        { 222, 95u, 1424219744404000000ull },
-        { 444, 62u, 1424219767103000000ull },
-        { 600, 82u, 1424219807276000000ull },
+        { 40, 75u, 1424219007658518000ull },
+        { 222, 95u, 1424219007737404000ull },
+        { 444, 62u, 1424219007760103000ull },
+        { 600, 82u, 1424219007800276000ull },
     };
     auto vs = std::vector<std::uint32_t>{};
     { // iterate and collect / check offsets into 1000.pcap
