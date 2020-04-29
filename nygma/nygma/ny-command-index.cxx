@@ -64,7 +64,7 @@ void ny_command_index_pcap( index_pcap_config const& config ) {
   flog( lvl::m, "cycler.filestem = ", f );
 
   c256 cyc4{ "i4", config._method_i4, w, d, f, ".i4" };
-  c128 cycx{ "ix", config._method_i6, w, d, f, ".ix" };
+  c128 cycx{ "ix", config._method_ix, w, d, f, ".ix" };
 
   auto const cycler = [&]( std::unique_ptr<index_i4_type> i4,
                            std::unique_ptr<index_ix_type> ix,
