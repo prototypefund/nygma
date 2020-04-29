@@ -29,9 +29,9 @@ template <typename OStream>
 struct svb256d1_serializer //
   : compressing_serializer<
         OStream,
-        method::SVB128D1,
+        method::SVB256D1,
         streamvbyte::svb256d1_i128,
-        method::SVB128D1,
+        method::SVB256D1,
         streamvbyte::svb256d1_i128> {};
 
 template <typename OStream>
@@ -40,16 +40,16 @@ svb128d1_serializer( OStream ) -> svb128d1_serializer<OStream>;
 template <typename OStream>
 svb256d1_serializer( OStream ) -> svb256d1_serializer<OStream>;
 
+//--streamvqb------------------------------------------------------------------
+
 template <typename OStream>
 struct svq128d1_serializer //
   : compressing_serializer<
         OStream,
-        method::SVB128D1,
+        method::SVQ4x0D1,
         streamvqb::svq128d1,
-        method::SVB128D1,
+        method::SVQ4x0D1,
         streamvqb::svq128d1> {};
-
-//--streamvqb------------------------------------------------------------------
 
 template <typename OStream>
 svq128d1_serializer( OStream ) -> svq128d1_serializer<OStream>;
