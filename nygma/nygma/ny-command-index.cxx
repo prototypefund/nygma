@@ -39,21 +39,19 @@ struct poly_cycler {
   poly_cycler( std::string_view const name, compression_method const method, Args&&... args )
     : _name{ name }, _cyc{ std::forward<Args>( args )... }, _method{ method } {}
   template <typename I>
-  void operator()( I&& i, std::uint64_t segment_offset ) noexcept {
+  void operator()( I&& i, std::uint64_t const o ) noexcept {
     flog( lvl::m, "cycler{", _name, "} index path = ", _cyc.path() );
-    flog( lvl::m, "cycler{", _name, "} index.keys = ", i->key_count() );
+    flog( lvl::m, "cycler{", _name, "} index.keys = ", i->key_count(), " index.segment_offset = ", o );
     switch( _method ) {
-      case compression_method::NONE: _cyc.accept<S1>( std::move( i ), segment_offset ); break;
-      case compression_method::BITPACK: _cyc.accept<S2>( std::move( i ), segment_offset ); break;
-      case compression_method::STREAMVBYTE: _cyc.accept<S3>( std::move( i ), segment_offset ); break;
+      case compression_method::NONE: _cyc.accept<S1>( std::move( i ), o ); break;
+      case compression_method::BITPACK: _cyc.accept<S2>( std::move( i ), o ); break;
+      case compression_method::STREAMVBYTE: _cyc.accept<S3>( std::move( i ), o ); break;
     }
   }
 };
 
-using poly256 =
-    poly_cycler<riot::uc256_serializer, riot::bp256d1_serializer, riot::svb256d1_serializer>;
-using poly128 =
-    poly_cycler<riot::uc128_serializer, riot::bp128d1_serializer, riot::svb128d1_serializer>;
+using c256 = poly_cycler<riot::uc256_serializer, riot::bp256d1_serializer, riot::svb256d1_serializer>;
+using c128 = poly_cycler<riot::uc128_serializer, riot::bp128d1_serializer, riot::svb128d1_serializer>;
 
 void ny_command_index_pcap( index_pcap_config const& config ) {
   // the async index writer, it is shared among all cyclers
@@ -62,11 +60,11 @@ void ny_command_index_pcap( index_pcap_config const& config ) {
   auto const d = config._path.parent_path();
   auto const f = config._path.filename().stem();
 
-  flog( lvl::i, "cycler.directory = ", d );
-  flog( lvl::i, "cycler.filestem = ", f );
+  flog( lvl::m, "cycler.directory = ", d );
+  flog( lvl::m, "cycler.filestem = ", f );
 
-  poly256 cyc4{ "i4", config._method_i4, w, d, f, ".i4" };
-  poly128 cycx{ "ix", config._method_i6, w, d, f, ".ix" };
+  c256 cyc4{ "i4", config._method_i4, w, d, f, ".i4" };
+  c128 cycx{ "ix", config._method_i6, w, d, f, ".ix" };
 
   auto const cycler = [&]( std::unique_ptr<index_i4_type> i4,
                            std::unique_ptr<index_ix_type> ix,
@@ -80,6 +78,8 @@ void ny_command_index_pcap( index_pcap_config const& config ) {
   std::size_t total_bytes{ 0 };
   std::uint64_t first_seen{ std::numeric_limits<std::uint64_t>::max() };
   std::uint64_t last_seen{ 0 };
+
+  flog( lvl::m, "pcap storage path = ", config._path );
 
   auto data = std::make_unique<nygma::block_view>( config._path, nygma::block_flags::rd );
   auto const start = std::chrono::high_resolution_clock::now();
