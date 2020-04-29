@@ -5,6 +5,8 @@
 #include <libriot/querying/query-lexer.hxx>
 
 #include <memory>
+#include <sstream>
+#include <stdexcept>
 
 namespace riot {
 
@@ -23,21 +25,59 @@ enum class binop {
   PLUS,
   MINUS,
   SLASH,
+  BACKSLASH,
 };
-
-enum class query_method { LOOKUP, REVERSE_LOOKUP, COMBINED };
-
-struct node {
-  virtual ~node() = default;
-  virtual kind type() const noexcept = 0;
-};
-
-using node_ptr = std::unique_ptr<node>;
 
 struct source_span {
   unsigned _offset;
   unsigned _size;
+
+  static constexpr source_span const null() noexcept { return { 0, 0 }; }
+
+  static constexpr source_span const from( token const tok ) noexcept {
+    return { tok.offset(), tok.size() };
+  }
 };
+
+namespace {
+
+inline std::string_view const to_string( kind const t ) noexcept {
+  switch( t ) {
+    case kind::BINARY: return "BINARY";
+    case kind::QUERY: return "QUERY";
+    case kind::ID: return "ID";
+    case kind::IPV6: return "IPV6";
+    case kind::IPV4: return "IPV4";
+    case kind::NUM: return "NUM";
+  }
+}
+
+} // namespace
+
+enum class query_method { LOOKUP, REVERSE_LOOKUP, COMBINED };
+
+struct expression_coercion_error : std::runtime_error {
+  expression_coercion_error( std::string const& msg ) : std::runtime_error( msg ) {}
+  virtual ~expression_coercion_error() override = default;
+};
+
+struct node {
+  virtual ~node() = default;
+  virtual kind type() const noexcept = 0;
+
+  void expect_kind( kind const t ) const {
+    if( type() == t ) { return; }
+    std::ostringstream msg;
+    msg << "expression coercion failed: exptected = " << to_string( t )
+        << " actual = " << to_string( type() );
+    throw expression_coercion_error( msg.str() );
+  }
+
+  template <kind T, typename Visitor>
+  void accept( Visitor const v );
+};
+
+using node_ptr = std::unique_ptr<node>;
 
 template <kind T>
 struct typed_node : public node {
@@ -53,9 +93,10 @@ struct typed_node : public node {
 };
 
 struct ident : public typed_node<kind::ID> {
-  std::string _name;
   token _tok;
-  constexpr ident( token const tok, std::string_view const name ) : _tok{ tok }, _name{ name } {}
+  std::string _name;
+  ident( token const tok, std::string_view const name )
+    : typed_node<kind::ID>{ source_span::from( tok ) }, _tok{ tok }, _name{ name } {}
 };
 
 template <kind T, typename I>
@@ -96,11 +137,30 @@ struct binary : public typed_node<kind::BINARY> {
   node_ptr _right;
 };
 
+template <kind T, typename Visitor>
+void node::accept( Visitor const v ) {
+  if constexpr( T == kind::ID ) {
+    expect_kind( kind::ID );
+    v( static_cast<ident&>( *this ) );
+  } else if constexpr( T == kind::NUM ) {
+    expect_kind( kind::NUM );
+    v( static_cast<number&>( *this ) );
+  }
+}
+
 namespace ast {
 
-constexpr riot::number number( source_span const span, std::uint64_t const value ) noexcept {
-  return riot::number{ span, value };
+namespace {
+
+inline node_ptr number( source_span const span, std::uint64_t const value ) noexcept {
+  return std::make_unique<riot::number>( span, value );
 }
+
+inline node_ptr ipv4( source_span const span, std::uint32_t const value ) noexcept {
+  return std::make_unique<riot::ipv4>( span, value );
+}
+
+} // namespace
 
 } // namespace ast
 

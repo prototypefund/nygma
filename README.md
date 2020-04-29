@@ -34,7 +34,7 @@ features & current status:
       - [x] provide indexing method for ipv6 addresses
       - [x] provide indexing method for ports
       - [x] index compression using SIMD bitpacking/streamvbyte
-      - [ ] provide indexing for *IOC*s ( regexp that is basically )
+      - [ ] provide indexing for *IOC*s ( multi-regexp that is basically )
   - [x] provide means of querying the index
   - [x] reassemble a pcap given an index query ( and the original pcap )
   - [ ] lightweight query engine supporting SIMD accelerated union and intersection ops
