@@ -7,17 +7,18 @@ console application `ny`.
 
 instead of boring you to death the obligatory animated gif:
 
+![ny](https://64k.by/assets/nygma.svg)
+
 ## ny
 
-basic command line demonstration tool for indexing and reassembling pcaps
-
-![ny](https://64k.by/assets/nygma.svg)
+basic command line demonstration tool for indexing and reassembling pcaps ( as can be seen in the screencast )
 
 ## libnygma
 
 base functionality and dealing with network packets
 
   - [x] rss hashing in software ( using toeplitz hashing )
+  - [x] pcap parsing & stitching
   - [x] lightweight packet dissector
   - [x] lightweight dns dissector
 
