@@ -60,6 +60,19 @@ static const unsigned char pkt3[64] = {
 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00  /* ........ */
 };
 
+// fragmented udp packet
+/* Frame (70 bytes) */
+static const unsigned char pkt_unsw_nb15[70] = {
+0x00, 0x55, 0x22, 0xaf, 0xc6, 0x37, 0x00, 0x44, /* .U"..7.D */
+0x66, 0xfc, 0x29, 0xaf, 0x08, 0x00, 0x45, 0x00, /* f.)...E. */
+0x00, 0x38, 0x2b, 0x5c, 0x20, 0x00, 0xfe, 0x11, /* .8+\ ... */
+0xfe, 0x6d, 0xaf, 0x2d, 0xb0, 0x00, 0x95, 0xab, /* .m.-.... */
+0x7e, 0x11, 0x00, 0x35, 0x00, 0x35, 0x00, 0x24, /* ~..5.5.$ */
+0x8c, 0x51, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* .Q...... */
+0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* ........ */
+0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* ........ */
+0x00, 0x00, 0x00, 0x00, 0x00, 0x00              /* ...... */
+};
 // clang-format on
 
 emptyspace::pest::suite basic( "dissect suite", []( auto& test ) {
@@ -114,11 +127,28 @@ emptyspace::pest::suite basic( "dissect suite", []( auto& test ) {
     expect( trace.entries()[2]._data, equal_to( offset( 22 ) ) );
     expect( hash, equal_to( 0u ) );
   } );
+  
+  test( "dissect fragmented upd ( from unsw nb15 )", []( auto& expect ) {
+    auto trace = dissect::dissect_stack_trace{};
+    auto const hash_policy = hash_type{};
+    auto const bs = bytestring_view{ pkt_unsw_nb15 };
+    auto const hash = dissect::dissect_en10mb( hash_policy, trace, bs );
+    auto offset = [&]( unsigned const o ) { return ( bs.data() + o ); };
+
+    expect( trace.index(), equal_to( 3u ) );
+    expect( trace.entries()[0]._tag, equal_to( dissect_tag::eth ) );
+    expect( trace.entries()[0]._data, equal_to( offset( 0 ) ) );
+    expect( trace.entries()[1]._tag, equal_to( dissect_tag::ipv4f ) );
+    expect( trace.entries()[1]._data, equal_to( offset( 14 ) ) );
+    expect( trace.entries()[2]._tag, equal_to( dissect_tag::udp ) );
+    expect( trace.entries()[2]._data, equal_to( offset( 34 ) ) );
+    expect( hash, equal_to( 0u ) );
+  } );
 } );
 
 } // namespace
 
 int main() {
   basic( std::clog );
-  return ( EXIT_SUCCESS );
+  return EXIT_SUCCESS;
 }

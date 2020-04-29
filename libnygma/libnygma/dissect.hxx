@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include <libunclassified/bytestring.hxx>
 #include <libnygma/support.hxx>
+#include <libunclassified/bytestring.hxx>
 
 #include <array>
 #include <iostream>
@@ -220,9 +220,10 @@ parse_ipv4 : {
   hash = hash_policy.template hash<8>( p + 12 );
   if( part & 0b0011'1111'1111'1111u ) {
     trace( ipv4f{ { p, end } } );
-    return hash;
+    if( auto const foffset = part & 0b0001'1111'1111'1111u; foffset != 0 ) { return hash; }
+  } else {
+    trace( ipv4{ { p, end } } );
   }
-  trace( ipv4{ { p, end } } );
   if constexpr( Cont ) {
     unsigned const transport = static_cast<unsigned>( p[9] );
     p += len;
