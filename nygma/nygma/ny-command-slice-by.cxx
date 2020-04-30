@@ -42,7 +42,7 @@ void ny_command_slice_by( slice_config const& config ) {
       return;
     }
     // open output pcap or `stdout`
-    auto os = config._out == "-" ? nygma::pcap_ostream( STDOUT_FILENO )
+    auto os = config._out == "-" ? nygma::pcap_ostream{ STDOUT_FILENO }
                                  : nygma::pcap_ostream{ config._out };
     pcap::reassemble_begin( pcap, os );
 

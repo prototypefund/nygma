@@ -195,13 +195,14 @@ building `ny` example using `clang10`.
 
 ```
 $ git clone https://github.com/stackless-goto/nygma
-$ cd nygma/nygma/
+$ cd nygma/
 $ bdep init -C @clang10 cc \
     config.cxx=clang++10 \
     config.cxx.poptions="-DNDEBUG" \
     config.cxx.coptions="-flto -stdlib=libc++ -Ofast -fno-rtti -mavx2 -mlzcnt -Wall -Wextra -Wno-c99-designator"
 ...
-$ b
+$ b nygma/
+...
 $ nygma/nygma/ny --help
   nygma/nygma/ny COMMAND {OPTIONS}
 
