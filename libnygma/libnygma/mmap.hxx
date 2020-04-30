@@ -153,9 +153,10 @@ struct block_flags {
   static constexpr type rdd = rd | direct;
 };
 
+template <std::size_t BlockSz>
 class block_view {
  public:
-  static constexpr std::size_t BLOCKSZ = 2ul << 20;
+  static constexpr std::size_t BLOCKSZ = BlockSz;
   static constexpr auto INVALID = std::numeric_limits<std::uint64_t>::max();
 
  private:
@@ -257,5 +258,12 @@ class block_view {
     return bytestring_view{ _block.data(), _block.size() - n };
   }
 };
+
+using block_view_2m = block_view<2ul << 20>;
+using block_view_4k = block_view<4ul << 10>;
+using block_view_8k = block_view<8ul << 10>;
+using block_view_16k = block_view<16ul << 10>;
+using block_view_32k = block_view<32ul << 10>;
+using block_view_64k = block_view<64ul << 10>;
 
 } // namespace nygma

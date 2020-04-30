@@ -81,7 +81,7 @@ void ny_command_index_pcap( index_pcap_config const& config ) {
 
   flog( lvl::m, "pcap storage path = ", config._path );
 
-  auto data = std::make_unique<nygma::block_view>( config._path, nygma::block_flags::rd );
+  auto data = std::make_unique<nygma::block_view_2m>( config._path, nygma::block_flags::rd );
   auto const start = std::chrono::high_resolution_clock::now();
 
   index_trace_type trace;

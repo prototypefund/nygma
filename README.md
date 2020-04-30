@@ -41,7 +41,7 @@ features & current status:
   - [ ] lightweight query engine supporting SIMD accelerated union and intersection ops
   - [ ] ... fun ...
 
-## libcapture ( TBD )
+## libzsasz ( TBD )
 
 full packet capture ( or caching ) and compressed capture storage format ( `ccap` ).
 

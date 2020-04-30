@@ -32,7 +32,7 @@ emptyspace::pest::suite basic( "pcap reassembler suite", []( auto& test ) {
     };
     auto vs = std::vector<std::uint32_t>{};
     { // iterate and collect / check offsets into 1000.pcap
-      auto bv = std::make_unique<block_view>( "tests/data/pcap/1000.pcap", block_flags::rd );
+      auto bv = std::make_unique<block_view_2m>( "tests/data/pcap/1000.pcap", block_flags::rd );
       pcap::with( std::move( bv ), [&]( auto& pcap ) {
         for( auto& q : queries ) {
           vs.push_back( q._offset );
@@ -44,7 +44,7 @@ emptyspace::pest::suite basic( "pcap reassembler suite", []( auto& test ) {
     }
     { // reassemble pcap using the given offsets
       auto os = pcap_ostream{ "./pcap-reassembler.test.pcap" };
-      auto bv = std::make_unique<block_view>( "tests/data/pcap/1000.pcap", block_flags::rd );
+      auto bv = std::make_unique<block_view_2m>( "tests/data/pcap/1000.pcap", block_flags::rd );
       pcap::with( std::move( bv ), [&]( auto& pcap ) {
         expect( pcap.valid(), equal_to( true ) );
         pcap::reassemble_from( pcap, vs.cbegin(), vs.cend(), os );

@@ -34,7 +34,7 @@ void ny_command_slice_by( slice_config const& config ) {
   index_file_dependencies deps;
   deps.gather( d, expected_base );
 
-  auto data = std::make_unique<block_view>( config._path, block_flags::rd );
+  auto data = std::make_unique<block_view_8k>( config._path, block_flags::rd );
 
   nygma::pcap::with( std::move( data ), [&]( auto& pcap ) {
     if( not pcap.valid() ) {

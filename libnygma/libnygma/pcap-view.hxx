@@ -46,7 +46,7 @@ static constexpr std::size_t PACKET_HEADERSZ = 16;
 
 } // namespace pcap
 
-template <endianess E, pcap::format::type F>
+template <endianess E, pcap::format::type F, typename V>
 class pcap_view {
  public:
   static constexpr endianess ENDIANESS = E;
@@ -175,7 +175,7 @@ class pcap_view {
   const_interator_type end() const noexcept { return const_interator_type{ _data.get(), true }; }
 };
 
-template <endianess E, pcap::format::type F>
+template <endianess E, pcap::format::type F, typename V>
 class pcap_block_view {
  public:
   static constexpr endianess ENDIANESS = E;
@@ -192,9 +192,9 @@ class pcap_block_view {
   u32 _raw_linktype;
   bool _valid;
 
-  std::unique_ptr<block_view> _data;
+  std::unique_ptr<V> _data;
 
-  explicit pcap_block_view( std::unique_ptr<block_view> data ) noexcept : _data{ std::move( data ) } {
+  explicit pcap_block_view( std::unique_ptr<V> data ) noexcept : _data{ std::move( data ) } {
     auto const bs = _data->prefetch( 0 );
     _valid = bs.size() >= pcap::PCAP_HEADERSZ;
     if( not _valid ) { return; }
@@ -275,7 +275,7 @@ class pcap_block_view {
   }
 
   class cursor {
-    block_view* _block;
+    V* _block;
     bytestring_view _data{ nullptr, 0 };
     std::size_t _block_offset;
     std::uint64_t _total_offset;
@@ -286,7 +286,7 @@ class pcap_block_view {
     using iterator_category = std::forward_iterator_tag;
     using value_type = packet_view const&;
 
-    explicit constexpr cursor( block_view* block, bool const done = false ) noexcept
+    explicit constexpr cursor( V* block, bool const done = false ) noexcept
       : _block{ block }, _done{ done } {
       _total_offset = 0;
       if( _done ) { return; }
@@ -365,20 +365,20 @@ enum class error_code {
 template <
     typename T,
     typename DataView,
-    template <endianess E, format::type F>
+    template <endianess E, format::type F, typename V>
     typename PcapView,
     endianess E>
 static inline error_code specialize0(
     std::unique_ptr<DataView>&& view, std::uint32_t magic, T&& t ) noexcept {
   switch( magic ) {
     case format::PCAP_NSEC: {
-      using pcap_view_type = PcapView<E, format::PCAP_NSEC>;
+      using pcap_view_type = PcapView<E, format::PCAP_NSEC, DataView>;
       pcap_view_type pv{ std::move( view ) };
       t( pv );
       return error_code::OK;
     }
     case format::PCAP_USEC: {
-      using pcap_view_type = PcapView<E, format::PCAP_USEC>;
+      using pcap_view_type = PcapView<E, format::PCAP_USEC, DataView>;
       pcap_view_type pv{ std::move( view ) };
       t( pv );
       return error_code::OK;
@@ -410,22 +410,22 @@ static inline error_code with( bytestring_view const bs, T&& t ) noexcept {
   }
 }
 
-template <typename T>
-static inline error_code with( std::unique_ptr<block_view> view, T&& t ) noexcept {
+template <typename V, typename T>
+static inline error_code with( std::unique_ptr<V> view, T&& t ) noexcept {
   if( not view->is_ok() ) { return error_code::INVALID_VIEW; }
   auto const bs = view->prefetch( 0 );
   if( bs.size() < PCAP_HEADERSZ ) { return error_code::INVALID_PCAP_FILESIZE; }
   if( bs.rd8() == std::byte( 0xa1 ) ) {
     constexpr endianess BE{ endianess::BE };
-    auto const magic = bs.rd32<BE>();
-    return specialize0<T, block_view, pcap_block_view, BE>(
+    auto const magic = bs.template rd32<BE>();
+    return specialize0<T, V, pcap_block_view, BE>(
         std::move( view ),
         magic,
         std::forward<T>( t ) );
   } else {
     constexpr endianess LE{ endianess::LE };
-    auto const magic = bs.rd32<LE>();
-    return specialize0<T, block_view, pcap_block_view, LE>(
+    auto const magic = bs.template rd32<LE>();
+    return specialize0<T, V, pcap_block_view, LE>(
         std::move( view ),
         magic,
         std::forward<T>( t ) );

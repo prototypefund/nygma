@@ -97,6 +97,7 @@ static_assert( sizeof( pcap_nsec_le_en10mb_with_data_1 ) == 24 + 16 );
 emptyspace::pest::suite basic_mmap( "pcap in-memory suite", []( auto& test ) {
   using namespace emptyspace::pest;
   using namespace nygma;
+
   test( "little-endian", []( auto& expect ) {
     bytestring_view data{ pcap_le_en10mb_1 };
     expected_format f{ pcap::format::PCAP_USEC, 65535 };
@@ -147,38 +148,39 @@ emptyspace::pest::suite basic_mmap( "pcap in-memory suite", []( auto& test ) {
 emptyspace::pest::suite basic_blockio( "pcap blockio suite", []( auto& test ) {
   using namespace emptyspace::pest;
   using namespace nygma;
+
   test( "block view: random-2k.bin", []( auto& expect ) {
-    block_view bv{ "tests/data/random-2k.bin", block_flags::rdd };
+    block_view_2m bv{ "tests/data/random-2k.bin", block_flags::rdd };
     auto const bs = bv.prefetch( 0 );
     expect( bs.size(), equal_to( ( 2ul << 10 ) ) );
   } );
 
   test( "block view: random-2k.bin with invalid offset", []( auto& expect ) {
-    block_view bv{ "tests/data/random-2k.bin", block_flags::rdd };
+    block_view_2m bv{ "tests/data/random-2k.bin", block_flags::rdd };
     auto const bs = bv.prefetch( 4ul << 10 );
     expect( bs.size(), equal_to( 0u ) );
   } );
 
   test( "block view: random-4k.bin", []( auto& expect ) {
-    block_view bv{ "tests/data/random-4k.bin", block_flags::rdd };
+    block_view_2m bv{ "tests/data/random-4k.bin", block_flags::rdd };
     auto const bs = bv.prefetch( 0 );
     expect( bs.size(), equal_to( ( 4ul << 10 ) ) );
   } );
 
   test( "block view: random-4k.bin with offset=2k", []( auto& expect ) {
-    block_view bv{ "tests/data/random-4k.bin", block_flags::rdd };
+    block_view_2m bv{ "tests/data/random-4k.bin", block_flags::rdd };
     auto const bs = bv.prefetch( 2ul << 10 );
     expect( bs.size(), equal_to( ( 2ul << 10 ) ) );
   } );
 
   test( "block view: random-2m.bin", []( auto& expect ) {
-    block_view bv{ "tests/data/random-2m.bin", block_flags::rdd };
+    block_view_2m bv{ "tests/data/random-2m.bin", block_flags::rdd };
     auto const bs = bv.prefetch( 0 );
     expect( bs.size(), equal_to( ( 2ul << 20 ) ) );
   } );
 
   test( "open random-4m.bin", []( auto& expect ) {
-    block_view bv{ "tests/data/random-4m.bin", block_flags::rdd };
+    block_view_2m bv{ "tests/data/random-4m.bin", block_flags::rdd };
     auto const bs1 = bv.prefetch( 0 );
     expect( bs1.size(), equal_to( ( 2ul << 20 ) ) );
     auto const bs2 = bv.prefetch( 2ul << 20 );
@@ -187,13 +189,13 @@ emptyspace::pest::suite basic_blockio( "pcap blockio suite", []( auto& test ) {
   } );
 
   test( "block view: dns-over-tcp6.pcap", []( auto& expect ) {
-    block_view bv{ "tests/data/pcap/dns-over-tcp6.pcap", block_flags::rdd };
+    block_view_2m bv{ "tests/data/pcap/dns-over-tcp6.pcap", block_flags::rdd };
     auto const bs = bv.prefetch( 0 );
     expect( bs.size(), equal_to( 2235u ) );
   } );
 
   test( "parse pcap from `block_view` dns-over-tcp6.pcap", []( auto& expect ) {
-    auto bv = std::make_unique<block_view>( "tests/data/pcap/dns-over-tcp6.pcap", block_flags::rdd );
+    auto bv = std::make_unique<block_view_2m>( "tests/data/pcap/dns-over-tcp6.pcap", block_flags::rdd );
     auto const bs = bv->prefetch( 0 );
     expect( bs.size(), equal_to( 2235u ) );
     expected_format f{ pcap::format::PCAP_USEC, 524288 };
@@ -213,7 +215,7 @@ emptyspace::pest::suite basic_blockio( "pcap blockio suite", []( auto& test ) {
   } );
 
   test( "slice first packet using `block_view{ 1000.pcap }`", []( auto& expect ) {
-    auto bv = std::make_unique<block_view>( "tests/data/pcap/1000.pcap", block_flags::rd );
+    auto bv = std::make_unique<block_view_2m>( "tests/data/pcap/1000.pcap", block_flags::rd );
     pcap::with( std::move( bv ), [&]( auto& pcap ) {
       auto const pkt = pcap.slice( pcap::PCAP_HEADERSZ + pcap::PACKET_HEADERSZ );
       expect( pkt.size(), equal_to( 75u ) );
@@ -235,7 +237,7 @@ emptyspace::pest::suite basic_blockio( "pcap blockio suite", []( auto& test ) {
   test( "bulk replay&slice `block_view{ 1000.pcap }`", []( auto& expect ) {
     std::vector<query> queries;
     {
-      auto bv = std::make_unique<block_view>( "tests/data/pcap/1000.pcap", block_flags::rd );
+      auto bv = std::make_unique<block_view_2m>( "tests/data/pcap/1000.pcap", block_flags::rd );
       pcap::with( std::move( bv ), [&]( auto& pcap ) {
         expect( pcap.valid(), equal_to( true ) );
         if( not pcap.valid() ) { return; }
@@ -244,7 +246,7 @@ emptyspace::pest::suite basic_blockio( "pcap blockio suite", []( auto& test ) {
         } );
       } );
     }
-    auto bv = std::make_unique<block_view>( "tests/data/pcap/1000.pcap", block_flags::rd );
+    auto bv = std::make_unique<block_view_2m>( "tests/data/pcap/1000.pcap", block_flags::rd );
     pcap::with( std::move( bv ), [&]( auto& pcap ) {
       for( auto& q : queries ) {
         auto const pkt = pcap.slice( q._offset );
@@ -259,7 +261,7 @@ emptyspace::pest::suite basic_blockio( "pcap blockio suite", []( auto& test ) {
         // generated using the indexer ( with limit )
         { 40, 75u, 1424219007658518000ull },     { 131, 75u, 1424219007658559000ull },
         { 222, 95u, 1424219007737404000ull },    { 333, 95u, 1424219007737414000ull },
-        { 444, 62u, 1424219007760103000ull },    { 522, 62u, 1424219007760112000ull},
+        { 444, 62u, 1424219007760103000ull },    { 522, 62u, 1424219007760112000ull },
         { 600, 82u, 1424219007800276000ull },    { 698, 82u, 1424219007800286000ull },
         { 796, 60u, 1424219007801348000ull },    { 872, 54u, 1424219007801358000ull },
         { 942, 62u, 1424219007821570000ull },    { 1020, 62u, 1424219007821579000ull },
@@ -270,7 +272,7 @@ emptyspace::pest::suite basic_blockio( "pcap blockio suite", []( auto& test ) {
         { 5470, 1514u, 1424219008033512000ull }, { 7000, 1514u, 1424219008033514000ull },
         { 8530, 1514u, 1424219008033703000ull },
     };
-    auto bv = std::make_unique<block_view>( "tests/data/pcap/1000.pcap", block_flags::rd );
+    auto bv = std::make_unique<block_view_2m>( "tests/data/pcap/1000.pcap", block_flags::rd );
     pcap::with( std::move( bv ), [&]( auto& pcap ) {
       for( auto& q : queries ) {
         auto const pkt = pcap.slice( q._offset );
