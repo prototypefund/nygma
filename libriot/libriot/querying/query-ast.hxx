@@ -54,7 +54,7 @@ inline std::string_view const to_string( kind const t ) noexcept {
 
 } // namespace
 
-enum class query_method { LOOKUP, REVERSE_LOOKUP, COMBINED };
+enum class query_method { LOOKUP, LOOKUP_REVERSE, LOOKUP_COMBINED };
 
 struct expression_coercion_error : std::runtime_error {
   expression_coercion_error( std::string const& msg ) : std::runtime_error( msg ) {}
@@ -93,10 +93,9 @@ struct typed_node : public node {
 };
 
 struct ident : public typed_node<kind::ID> {
-  token _tok;
   std::string _name;
-  ident( token const tok, std::string_view const name )
-    : typed_node<kind::ID>{ source_span::from( tok ) }, _tok{ tok }, _name{ name } {}
+  ident( source_span const span, std::string_view const name )
+    : typed_node<kind::ID>{ span }, _name{ name } {}
 };
 
 template <kind T, typename I>
@@ -125,10 +124,16 @@ struct number : public literal<kind::NUM, std::uint64_t> {
 };
 
 struct query : public typed_node<kind::QUERY> {
+  std::string _name;
   query_method _method;
-  ident _index;
   node_ptr _what;
-  std::uint64_t _limit;
+  std::uint64_t _limit{ 0 };
+  template <typename T>
+  query( source_span const span, query_method method, std::string_view const name, T&& what )
+    : typed_node<kind::QUERY>{ span },
+      _name{ name },
+      _method{ method },
+      _what{ std::forward<T>( what ) } {}
 };
 
 struct binary : public typed_node<kind::BINARY> {
@@ -145,6 +150,18 @@ void node::accept( Visitor const v ) {
   } else if constexpr( T == kind::NUM ) {
     expect_kind( kind::NUM );
     v( static_cast<number&>( *this ) );
+  } else if constexpr( T == kind::BINARY ) {
+    expect_kind( kind::BINARY );
+    v( static_cast<binary&>( *this ) );
+  } else if constexpr( T == kind::IPV4 ) {
+    expect_kind( kind::IPV4 );
+    v( static_cast<ipv4&>( *this ) );
+  } else if constexpr( T == kind::IPV6 ) {
+    expect_kind( kind::IPV6 );
+    v( static_cast<ipv6&>( *this ) );
+  } else if constexpr( T == kind::QUERY ) {
+    expect_kind( kind::QUERY );
+    v( static_cast<query&>( *this ) );
   }
 }
 
@@ -159,6 +176,36 @@ inline node_ptr number( source_span const span, std::uint64_t const value ) noex
 inline node_ptr ipv4( source_span const span, std::uint32_t const value ) noexcept {
   return std::make_unique<riot::ipv4>( span, value );
 }
+
+inline node_ptr ident( source_span const span, std::string_view const name ) noexcept {
+  return std::make_unique<riot::ident>( span, name );
+}
+
+template <typename T>
+inline node_ptr lookup( source_span const span, std::string_view const name, T&& what ) noexcept {
+  return std::make_unique<riot::query>( span, query_method::LOOKUP, name, std::forward<T>( what ) );
+}
+
+template <typename T>
+inline node_ptr lookup_reverse(
+    source_span const span, std::string_view const name, T&& what ) noexcept {
+  return std::make_unique<riot::query>(
+      span,
+      query_method::LOOKUP_REVERSE,
+      name,
+      std::forward<T>( what ) );
+}
+
+template <typename T>
+inline node_ptr lookup_combined(
+    source_span const span, std::string_view const name, T&& what ) noexcept {
+  return std::make_unique<riot::query>(
+      span,
+      query_method::LOOKUP_COMBINED,
+      name,
+      std::forward<T>( what ) );
+}
+
 
 } // namespace
 
