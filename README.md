@@ -230,4 +230,6 @@ magenbluten < mb [ at ] 64k.by > :: <https://64k.by>
 
 ## acknowledgements
 
-![bmbf](https://64k.by/assets/bmbf-gefoerdert.jpg) ![prototypefund](https://64k.by/assets/ptfp.png)
+
+ <a href="https://bmbf.de"><img src="https://64k.by/assets/bmbf-gefoerdert.jpg"></a> <a href="https://prototypefund.de"><img src="https://64k.by/assets/ptfp.png"></a>
+
