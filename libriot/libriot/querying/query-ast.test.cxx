@@ -1,3 +1,4 @@
+
 // SPDX-License-Identifier: UNLICENSE
 
 #pragma once
@@ -36,18 +37,23 @@ emptyspace::pest::suite basic( "query-ast basic suite", []( auto& test ) {
 
   test( "ast-builder: build query", []( auto& expect ) {
     auto what = ast::ipv4( source_span::null(), 0x2342u );
-    auto const query = ast::lookup( source_span::null(), "ix", std::move( what ) );
+    auto ix = ast::ident( source_span::null(), "ix" );
+    auto const query = ast::lookup_forward( source_span::null(), std::move( ix ), std::move( what ) );
     std::string name;
     std::uint32_t ip;
+    query_method m;
     query->accept<kind::QUERY>( [&]( auto const& q ) {
-      name = q._name;
+      q._name->template accept<kind::ID>( [&](auto const& id){ name = id._name; } );
+      m = q._method;
       q._what->template accept<kind::IPV4>( [&]( auto const& w ) { ip = w._value; } );
     } );
     expect( query->type() == kind::QUERY );
+    expect( m == query_method::LOOKUP_FORWARD );
     expect( ip, equal_to( 0x2342u ) );
     expect( name, equal_to( "ix" ) );
     expect( throws<riot::expression_coercion_error>(
-        [&]() { query->accept<kind::NUM>( []( auto const& ) {} ); } ) );
+        [&]() {
+      query->accept<kind::NUM>( []( auto const& ) {} ); } ) );
   } );
 } );
 

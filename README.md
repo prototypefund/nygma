@@ -228,6 +228,6 @@ needed ...
 
 magenbluten < mb [ at ] 64k.by > :: <https://64k.by>
 
-## funding
+## acknowledgements
 
 ![bmbf](https://64k.by/assets/bmbf-gefoerdert.jpg) ![prototypefund](https://64k.by/assets/ptfp.png)

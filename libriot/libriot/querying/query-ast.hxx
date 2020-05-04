@@ -54,7 +54,7 @@ inline std::string_view const to_string( kind const t ) noexcept {
 
 } // namespace
 
-enum class query_method { LOOKUP, LOOKUP_REVERSE, LOOKUP_COMBINED };
+enum class query_method { LOOKUP_FORWARD, LOOKUP_REVERSE, LOOKUP_COMBINED };
 
 struct expression_coercion_error : std::runtime_error {
   expression_coercion_error( std::string const& msg ) : std::runtime_error( msg ) {}
@@ -77,7 +77,7 @@ struct node {
   void accept( Visitor const v );
 };
 
-using node_ptr = std::unique_ptr<node>;
+using expression = std::unique_ptr<node>;
 
 template <kind T>
 struct typed_node : public node {
@@ -124,22 +124,22 @@ struct number : public literal<kind::NUM, std::uint64_t> {
 };
 
 struct query : public typed_node<kind::QUERY> {
-  std::string _name;
+  expression _name;
   query_method _method;
-  node_ptr _what;
+  expression _what;
   std::uint64_t _limit{ 0 };
-  template <typename T>
-  query( source_span const span, query_method method, std::string_view const name, T&& what )
+  template <typename N, typename T>
+  query( source_span const span, N&& name, query_method const method, T&& what )
     : typed_node<kind::QUERY>{ span },
-      _name{ name },
+      _name{ std::forward<N>( name ) },
       _method{ method },
       _what{ std::forward<T>( what ) } {}
 };
 
 struct binary : public typed_node<kind::BINARY> {
   binop _op;
-  node_ptr _left;
-  node_ptr _right;
+  expression _left;
+  expression _right;
 };
 
 template <kind T, typename Visitor>
@@ -169,43 +169,28 @@ namespace ast {
 
 namespace {
 
-inline node_ptr number( source_span const span, std::uint64_t const value ) noexcept {
+inline expression number( source_span const span, std::uint64_t const value ) noexcept {
   return std::make_unique<riot::number>( span, value );
 }
 
-inline node_ptr ipv4( source_span const span, std::uint32_t const value ) noexcept {
+inline expression ipv4( source_span const span, std::uint32_t const value ) noexcept {
   return std::make_unique<riot::ipv4>( span, value );
 }
 
-inline node_ptr ident( source_span const span, std::string_view const name ) noexcept {
+inline expression ident( source_span const span, std::string_view const name ) noexcept {
   return std::make_unique<riot::ident>( span, name );
 }
 
-template <typename T>
-inline node_ptr lookup( source_span const span, std::string_view const name, T&& what ) noexcept {
-  return std::make_unique<riot::query>( span, query_method::LOOKUP, name, std::forward<T>( what ) );
+template <typename N, typename T>
+inline expression lookup( source_span const span, query_method const m, N&& name, T&& what ) noexcept {
+  return std::make_unique<riot::query>( span, std::forward<N>( name ), m, std::forward<T>( what ) );
 }
 
-template <typename T>
-inline node_ptr lookup_reverse(
-    source_span const span, std::string_view const name, T&& what ) noexcept {
-  return std::make_unique<riot::query>(
-      span,
-      query_method::LOOKUP_REVERSE,
-      name,
-      std::forward<T>( what ) );
+template <typename N, typename T>
+inline expression lookup_forward( source_span const span, N&& name, T&& what ) noexcept {
+  using qm = query_method;
+  return lookup( span, qm::LOOKUP_FORWARD, std::forward<N>( name ), std::forward<T>( what ) );
 }
-
-template <typename T>
-inline node_ptr lookup_combined(
-    source_span const span, std::string_view const name, T&& what ) noexcept {
-  return std::make_unique<riot::query>(
-      span,
-      query_method::LOOKUP_COMBINED,
-      name,
-      std::forward<T>( what ) );
-}
-
 
 } // namespace
 
