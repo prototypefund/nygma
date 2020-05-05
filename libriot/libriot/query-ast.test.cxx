@@ -1,11 +1,8 @@
-
 // SPDX-License-Identifier: UNLICENSE
-
-#pragma once
 
 #include <pest/pest.hxx>
 
-#include <libriot/querying/query-ast.hxx>
+#include <libriot/query-ast.hxx>
 
 #include <string_view>
 

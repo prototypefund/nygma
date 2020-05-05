@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include <libriot/querying/query-ast.hxx>
-#include <libriot/querying/query-lexer.hxx>
+#include <libriot/query-ast.hxx>
+#include <libriot/query-lexer.hxx>
 
 #include <deque>
 #include <stdexcept>

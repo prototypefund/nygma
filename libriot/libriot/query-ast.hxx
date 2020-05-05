@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <libriot/querying/query-lexer.hxx>
+#include <libriot/query-lexer.hxx>
 
 #include <memory>
 #include <sstream>
