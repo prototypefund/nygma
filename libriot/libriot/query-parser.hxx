@@ -13,6 +13,23 @@ namespace riot {
 
 namespace detail {
 
+struct precedence {
+  using type = int;
+  enum : type {
+    DEFAULT = 0,
+    CONDITIONAL = 100,
+    ADDITIVE = 200,
+    MULTIPLICATIVE = 300,
+    LOGICAL_OR = 400,
+    LOGICAL_AND = 500,
+    PREFIX = 600,
+    POSTFIX = 700,
+    CALL = 800,
+    MIN = -1,
+    MAX = std::numeric_limits<type>::max(),
+  };
+};
+
 struct parser {
   scanner _s;
   std::deque<token> _stack;
@@ -41,7 +58,7 @@ struct parser {
 
   std::string_view slice_of( token const t ) const noexcept { return _s.slice_of( t ); }
 
-  expression expression( int precedence );
+  expression expression( precedence::type const precedence );
 };
 
 namespace parselet {
@@ -51,7 +68,7 @@ namespace parselet {
 class prefix {
  public:
   virtual expression accept( parser& p, token const t ) const = 0;
-  virtual int precedence() const noexcept = 0;
+  virtual detail::precedence::type precedence() const noexcept = 0;
   virtual ~prefix() = default;
 };
 
@@ -60,14 +77,33 @@ class ident final : public prefix {
   ident() {}
 
  public:
-  virtual expression accept( parser& p, token const t ) const override {
+  expression accept( parser& p, token const t ) const override {
     return ast::ident( source_span::from( t ), p.slice_of( t ) );
   }
 
-  virtual int precedence() const noexcept override { return 0; }
+  precedence::type precedence() const noexcept override { return precedence::DEFAULT; }
 
   static auto const& instance() noexcept {
     static ident _self;
+    return _self;
+  }
+};
+
+class parenthesized final : public prefix {
+ private:
+  parenthesized() {}
+
+ public:
+  expression accept( parser& p, [[maybe_unused]] token const t ) const override {
+    auto e = p.expression( 0 );
+    p.expect( token_type::RP );
+    return e;
+  }
+
+  precedence::type precedence() const noexcept override { return precedence::DEFAULT; }
+
+  static auto const& instance() noexcept {
+    static parenthesized _self;
     return _self;
   }
 };
@@ -77,12 +113,12 @@ class number final : public prefix {
   number() {}
 
  public:
-  virtual expression accept( parser& p, token const t ) const override {
+  expression accept( parser& p, token const t ) const override {
     std::string n{ p.slice_of( t ) };
     return ast::number( source_span::from( t ), std::stoull( n ) );
   }
 
-  virtual int precedence() const noexcept override { return 0; }
+  precedence::type precedence() const noexcept override { return precedence::DEFAULT; }
 
   static auto const& instance() noexcept {
     static number _self;
@@ -95,7 +131,7 @@ class number final : public prefix {
 class infix {
  public:
   virtual expression accept( parser& p, expression e, token const t ) const = 0;
-  virtual int precedence() const noexcept = 0;
+  virtual precedence::type precedence() const noexcept = 0;
   virtual ~infix() = default;
 };
 
@@ -106,7 +142,7 @@ struct query final : public infix {
   query() {}
 
  public:
-  virtual expression accept( parser& p, expression id, token const t ) const override {
+  expression accept( parser& p, expression id, token const t ) const override {
     switch( t.type() ) {
       case token_type::LP: {
         auto e = p.expression( 0 );
@@ -117,7 +153,7 @@ struct query final : public infix {
     }
   }
 
-  virtual int precedence() const noexcept override { return std::numeric_limits<int>::max(); }
+  precedence::type precedence() const noexcept override { return precedence::CALL; }
 
   static auto const& instance() noexcept {
     static query _self;
@@ -130,11 +166,11 @@ class eos final : public infix {
   eos() {}
 
  public:
-  virtual expression accept( parser&, expression, token const ) const override {
+  expression accept( parser&, expression, token const ) const override {
     throw std::runtime_error( "eos-parselet: unexpected end of input " );
   }
 
-  virtual int precedence() const noexcept override { return -1; }
+  precedence::type precedence() const noexcept override { return precedence::MIN; }
 
   static auto const& instance() noexcept {
     static eos _self;
@@ -152,6 +188,7 @@ parselet::prefix const& parselet_for_prefixes( token const t ) {
   switch( t.type() ) {
     case token_type::ID: return parselet::ident::instance();
     case token_type::NUM: return parselet::number::instance();
+    case token_type::LP: return parselet::parenthesized::instance();
     default: throw std::runtime_error( "parslet-prefix-select: unexpected token" );
   }
 }
@@ -168,7 +205,7 @@ parselet::infix const& parselet_for_infixes( token const t ) {
 } // namespace
 
 //--pratt-parser-loop
-expression parser::expression( int precedence ) {
+expression parser::expression( precedence::type const precedence ) {
   auto const& parselet = parselet_for_prefixes( peek() );
   auto e = parselet.accept( *this, pop() );
   while( true ) {

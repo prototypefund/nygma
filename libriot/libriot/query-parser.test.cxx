@@ -19,8 +19,20 @@ emptyspace::pest::suite basic( "query-ast basic suite", []( auto& test ) {
     q->accept<kind::ID>( [&]( auto const& id ) { expect( id._name, equal_to( "ix" ) ); } );
   } );
 
-  test( "lookup forward port 53", []( auto& expect ) {
+  test( "expression: 'ix( 53 )'", []( auto& expect ) {
     std::string_view const input{ "ix( 53 )" };
+    auto q = riot::parse( input );
+    expect( ! ! q );
+    q->accept<kind::QUERY>( [&]( auto const& query ) {
+      query._name->template accept<kind::ID>(
+          [&]( auto const& id ) { expect( id._name, equal_to( "ix" ) ); } );
+      query._what->template accept<kind::NUM>(
+          [&]( auto const& n ) { expect( n._value, equal_to( 53u ) ); } );
+    } );
+  } );
+
+  test( "expression: '( ix( 53 ) )' ", []( auto& expect ) {
+    std::string_view const input{ "( ix( 53 ) )" };
     auto q = riot::parse( input );
     expect( ! ! q );
     q->accept<kind::QUERY>( [&]( auto const& query ) {

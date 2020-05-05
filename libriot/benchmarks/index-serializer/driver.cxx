@@ -6,8 +6,8 @@
 #include <pest/pnch.hxx>
 #include <pest/zipfian-distribution.hxx>
 
-#include <libriot/indexing/index-compressor.hxx>
-#include <libriot/indexing/index-serializer.hxx>
+#include <libriot/index-compressor.hxx>
+#include <libriot/index-serializer.hxx>
 
 #include <array>
 #include <filesystem>
