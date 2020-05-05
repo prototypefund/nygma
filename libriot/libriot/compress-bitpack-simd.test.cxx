@@ -2,7 +2,7 @@
 
 #include <pest/pest.hxx>
 
-#include <libriot/compression/bitpack-simd.hxx>
+#include <libriot/compress-bitpack-simd.hxx>
 
 #include <array>
 #include <random>

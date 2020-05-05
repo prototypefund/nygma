@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <libriot/compression/integer.hxx>
+#include <libriot/compress-integer.hxx>
 
 #include <algorithm>
 #include <cstddef>

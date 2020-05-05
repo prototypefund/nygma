@@ -9,8 +9,8 @@
 // this implementation differs from the original streamvbyte in that
 // the control bytes get stored interleaved with the data bytes
 
-#include <libriot/compression/delta-simd.hxx>
-#include <libriot/compression/integer.hxx>
+#include <libriot/compress-delta-simd.hxx>
+#include <libriot/compress-integer.hxx>
 
 #include <cstddef>
 #include <cstdint>

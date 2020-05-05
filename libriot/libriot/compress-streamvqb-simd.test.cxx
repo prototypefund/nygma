@@ -2,7 +2,7 @@
 
 #include <pest/pest.hxx>
 
-#include <libriot/compression/streamvqb-simd.hxx>
+#include <libriot/compress-streamvqb-simd.hxx>
 
 #include <array>
 #include <iomanip>

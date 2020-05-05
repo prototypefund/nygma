@@ -2,7 +2,7 @@
 
 #include <pest/pest.hxx>
 
-#include <libriot/compression/vbyte.hxx>
+#include <libriot/compress-vbyte.hxx>
 #include <libunclassified/format-timestamp.hxx>
 
 #include <bitset>

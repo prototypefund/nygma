@@ -4,7 +4,7 @@
 
 #include <libnygma/bytestream.hxx>
 #include <libriot/index-builder.hxx>
-#include <libriot/compression/vbyte.hxx>
+#include <libriot/compress-vbyte.hxx>
 
 #include <array>
 #include <vector>

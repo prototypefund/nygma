@@ -2,7 +2,7 @@
 
 #include <pest/pest.hxx>
 
-#include <libriot/compression/delta-simd.hxx>
+#include <libriot/compress-delta-simd.hxx>
 
 #include <array>
 #include <random>

@@ -3,9 +3,9 @@
 #pragma once
 
 #include <libnygma/mmap.hxx>
-#include <libriot/compression/bitpack-simd.hxx>
-#include <libriot/compression/streamvbyte-simd.hxx>
-#include <libriot/compression/vbyte.hxx>
+#include <libriot/compress-bitpack-simd.hxx>
+#include <libriot/compress-streamvbyte-simd.hxx>
+#include <libriot/compress-vbyte.hxx>
 #include <libriot/index-builder.hxx>
 #include <libriot/index-serializer.hxx>
 #include <libunclassified/bytestring.hxx>

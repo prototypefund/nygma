@@ -2,10 +2,10 @@
 
 #pragma once
 
-#include <libriot/compression/bitpack-simd-i128.hxx>
-#include <libriot/compression/bitpack-simd-i256.hxx>
-#include <libriot/compression/delta-simd.hxx>
-#include <libriot/compression/integer.hxx>
+#include <libriot/compress-bitpack-simd-i128.hxx>
+#include <libriot/compress-bitpack-simd-i256.hxx>
+#include <libriot/compress-delta-simd.hxx>
+#include <libriot/compress-integer.hxx>
 
 #include <algorithm>
 #include <cstddef>

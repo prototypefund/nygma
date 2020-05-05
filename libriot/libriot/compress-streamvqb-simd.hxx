@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include <libriot/compression/delta-simd.hxx>
-#include <libriot/compression/vbyte.hxx>
+#include <libriot/compress-delta-simd.hxx>
+#include <libriot/compress-vbyte.hxx>
 
 #include <cstddef>
 

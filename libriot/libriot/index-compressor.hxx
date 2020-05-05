@@ -5,9 +5,9 @@
 #include <libriot/index-builder.hxx>
 #include <libriot/index-serializer.hxx>
 
-#include <libriot/compression/bitpack-simd.hxx>
-#include <libriot/compression/streamvbyte-simd.hxx>
-#include <libriot/compression/streamvqb-simd.hxx>
+#include <libriot/compress-bitpack-simd.hxx>
+#include <libriot/compress-streamvbyte-simd.hxx>
+#include <libriot/compress-streamvqb-simd.hxx>
 
 #include <array>
 #include <vector>

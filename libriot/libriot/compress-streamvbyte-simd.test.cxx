@@ -2,7 +2,7 @@
 
 #include <pest/pest.hxx>
 
-#include <libriot/compression/streamvbyte-simd.hxx>
+#include <libriot/compress-streamvbyte-simd.hxx>
 
 #include <array>
 #include <random>
