@@ -1,5 +1,6 @@
 libs =
 import libs += libunclassified%lib{unclassified}
+import libs += libnygma%lib{nygma}
 import libs += libriot%lib{riot}
 
 exe{driver}: {hxx ixx txx cxx}{**} $libs testscript
