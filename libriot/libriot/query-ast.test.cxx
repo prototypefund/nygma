@@ -45,7 +45,7 @@ emptyspace::pest::suite basic( "query-ast basic suite", []( auto& test ) {
       q._what->template accept<kind::IPV4>( [&]( auto const& w ) { ip = w._value; } );
     } );
     expect( query->type() == kind::QUERY );
-    expect( m == query_method::LOOKUP_FORWARD );
+    expect( m == query_method::FORWARD );
     expect( ip, equal_to( 0x2342u ) );
     expect( name, equal_to( "ix" ) );
     expect( throws<riot::expression_coercion_error>(

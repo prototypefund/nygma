@@ -9,7 +9,30 @@ namespace riot {
 
 struct token_type {
   using type = unsigned;
-  enum : type { LB, RB, LP, RP, LT, GT, LS, RS, ID, AND, OR, NUM, IPV4, IPV6, EOS, BAD };
+  enum : type {
+    LB,
+    RB,
+    LP,
+    RP,
+    LT,
+    GT,
+    LS,
+    RS,
+    EQ,
+    ID,
+    MINUS,
+    STAR,
+    PLUS,
+    BACKSLASH,
+    SLASH,
+    AMP,
+    OR,
+    NUM,
+    IPV4,
+    IPV6,
+    EOS,
+    BAD
+  };
 };
 
 struct token {
@@ -118,6 +141,13 @@ struct scanner {
       case ']': return one<token_type::RS>();
       case '<': return one<token_type::LT>();
       case '>': return one<token_type::GT>();
+      case '*': return one<token_type::STAR>();
+      case '-': return one<token_type::MINUS>();
+      case '/': return one<token_type::SLASH>();
+      case '+': return one<token_type::PLUS>();
+      case '=': return one<token_type::EQ>();
+      case '&': return one<token_type::AMP>();
+      case '\\': return one<token_type::BACKSLASH>();
       case ':': return consume_ipv6_literal();
       case '0' ... '9': return consume_literal();
       case -1: return { token_type::EOS, begin, _offset - begin };

@@ -16,16 +16,17 @@ namespace detail {
 struct precedence {
   using type = int;
   enum : type {
-    DEFAULT = 0,
-    CONDITIONAL = 100,
-    ADDITIVE = 200,
-    MULTIPLICATIVE = 300,
-    LOGICAL_OR = 400,
-    LOGICAL_AND = 500,
-    PREFIX = 600,
-    POSTFIX = 700,
-    CALL = 800,
     MIN = -1,
+    DEFAULT = 0,
+    ASSIGNMENT = 100,
+    COMPLEMENT = 200,
+    INCLUSIVE = 300,
+    EXCLUSIVE = 400,
+    ADDITIVE = 500,
+    MULTIPLCATIVE = 600,
+    PREFIX = 700,
+    POSTFIX = 800,
+    CALL = 900,
     MAX = std::numeric_limits<type>::max(),
   };
 };
@@ -95,7 +96,7 @@ class parenthesized final : public prefix {
 
  public:
   expression accept( parser& p, [[maybe_unused]] token const t ) const override {
-    auto e = p.expression( 0 );
+    auto e = p.expression( precedence::DEFAULT );
     p.expect( token_type::RP );
     return e;
   }
@@ -135,6 +136,7 @@ class infix {
   virtual ~infix() = default;
 };
 
+template<query_method Qm, token_type::type ClosingParen>
 struct query final : public infix {
   using qm = query_method;
 
@@ -142,21 +144,37 @@ struct query final : public infix {
   query() {}
 
  public:
-  expression accept( parser& p, expression id, token const t ) const override {
-    switch( t.type() ) {
-      case token_type::LP: {
-        auto e = p.expression( 0 );
-        p.expect( token_type::RP );
-        return ast::lookup_forward( source_span::from( t ), std::move( id ), std::move( e ) );
-      }
-      default: throw std::runtime_error( "query-parselet: unexpected token" );
-    }
+  expression accept( parser& p, expression index, token const t ) const override {
+    auto const span = source_span::from( t );
+    auto what = p.expression( precedence::DEFAULT );
+    p.expect( ClosingParen );
+    return ast::lookup( span, std::move( index ), Qm, std::move( what ) );
   }
 
   precedence::type precedence() const noexcept override { return precedence::CALL; }
 
   static auto const& instance() noexcept {
     static query _self;
+    return _self;
+  }
+};
+
+template <binop Op, precedence::type Precedence>
+struct binary final : public infix {
+ private:
+  binary() {}
+
+ public:
+  expression accept( parser& p, expression a, token const t ) const override {
+    auto const span = source_span::from( t );
+    auto b = p.expression( precedence::DEFAULT );
+    return ast::binary( span, std::move( a ), Op, std::move( b ) );
+  }
+
+  precedence::type precedence() const noexcept override { return Precedence; }
+
+  static auto const& instance() noexcept {
+    static binary _self;
     return _self;
   }
 };
@@ -194,10 +212,17 @@ parselet::prefix const& parselet_for_prefixes( token const t ) {
 }
 
 parselet::infix const& parselet_for_infixes( token const t ) {
+  using b = binop;
+  using p = precedence;
+  using q = query_method;
   switch( t.type() ) {
-    case token_type::LP: return parselet::query::instance();
+    case token_type::LP: return parselet::query<q::FORWARD, token_type::RP>::instance();
     case token_type::RP: return parselet::eos::instance();
     case token_type::EOS: return parselet::eos::instance();
+    case token_type::BACKSLASH: return parselet::binary<b::COMPLEMENT, p::COMPLEMENT>::instance();
+    case token_type::MINUS: return parselet::binary<b::COMPLEMENT, p::ADDITIVE>::instance();
+    case token_type::PLUS: return parselet::binary<b::UNION, p::INCLUSIVE>::instance();
+    case token_type::AMP: return parselet::binary<b::INTERSECTION, p::EXCLUSIVE>::instance();
     default: throw std::runtime_error( "parselet-infix-select: unexpected token" );
   }
 }
@@ -221,7 +246,7 @@ namespace {
 
 expression const parse( std::string_view const query ) {
   detail::parser parser{ query };
-  return parser.expression( 0 );
+  return parser.expression( detail::precedence::DEFAULT );
 }
 } // namespace
 } // namespace riot

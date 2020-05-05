@@ -8,7 +8,7 @@
 
 namespace {
 
-emptyspace::pest::suite basic( "query-ast basic suite", []( auto& test ) {
+emptyspace::pest::suite basic( "query-parser basic suite", []( auto& test ) {
   using namespace emptyspace::pest;
   using namespace riot;
 
@@ -31,7 +31,7 @@ emptyspace::pest::suite basic( "query-ast basic suite", []( auto& test ) {
     } );
   } );
 
-  test( "expression: '( ix( 53 ) )' ", []( auto& expect ) {
+  test( "expression: '( ix( 53 ) )'", []( auto& expect ) {
     std::string_view const input{ "( ix( 53 ) )" };
     auto q = riot::parse( input );
     expect( ! ! q );
@@ -40,6 +40,50 @@ emptyspace::pest::suite basic( "query-ast basic suite", []( auto& test ) {
           [&]( auto const& id ) { expect( id._name, equal_to( "ix" ) ); } );
       query._what->template accept<kind::NUM>(
           [&]( auto const& n ) { expect( n._value, equal_to( 53u ) ); } );
+    } );
+  } );
+
+  test( "expression: 'ix( 53 ) & ix( 80 )'", []( auto& expect ) {
+    std::string_view const input{ "ix( 53 ) & ix( 80 )" };
+    auto q = riot::parse( input );
+    expect( ! ! q );
+    q->accept<kind::BINARY>( [&]( auto const& binary ) {
+      expect( binary._op == binop::INTERSECTION );
+      expect( binary._a->type() == kind::QUERY );
+      expect( binary._b->type() == kind::QUERY );
+    } );
+  } );
+
+  test( "expression: 'ix( 53 ) \\ ix( 80 )'", []( auto& expect ) {
+    std::string_view const input{ "ix( 53 ) \\ ix( 80 )" };
+    auto q = riot::parse( input );
+    expect( ! ! q );
+    q->accept<kind::BINARY>( [&]( auto const& binary ) {
+      expect( binary._op == binop::COMPLEMENT );
+      expect( binary._a->type() == kind::QUERY );
+      expect( binary._b->type() == kind::QUERY );
+    } );
+  } );
+
+  test( "expression: 'ix( 53 ) - ix( 80 )'", []( auto& expect ) {
+    std::string_view const input{ "ix( 53 ) - ix( 80 )" };
+    auto q = riot::parse( input );
+    expect( ! ! q );
+    q->accept<kind::BINARY>( [&]( auto const& binary ) {
+      expect( binary._op == binop::COMPLEMENT );
+      expect( binary._a->type() == kind::QUERY );
+      expect( binary._b->type() == kind::QUERY );
+    } );
+  } );
+
+  test( "expression: 'ix( 53 ) + ix( 80 )'", []( auto& expect ) {
+    std::string_view const input{ "ix( 53 ) + ix( 80 )" };
+    auto q = riot::parse( input );
+    expect( ! ! q );
+    q->accept<kind::BINARY>( [&]( auto const& binary ) {
+      expect( binary._op == binop::UNION );
+      expect( binary._a->type() == kind::QUERY );
+      expect( binary._b->type() == kind::QUERY );
     } );
   } );
 } );

@@ -20,12 +20,9 @@ enum class kind {
 };
 
 enum class binop {
-  AND,
-  OR,
-  PLUS,
-  MINUS,
-  SLASH,
-  BACKSLASH,
+  COMPLEMENT,
+  INTERSECTION,
+  UNION,
 };
 
 struct source_span {
@@ -54,7 +51,7 @@ inline std::string_view const to_string( kind const t ) noexcept {
 
 } // namespace
 
-enum class query_method { LOOKUP_FORWARD, LOOKUP_REVERSE, LOOKUP_COMBINED };
+enum class query_method { FORWARD, REVERSE, COMBINED };
 
 struct expression_coercion_error : std::runtime_error {
   expression_coercion_error( std::string const& msg ) : std::runtime_error( msg ) {}
@@ -138,8 +135,14 @@ struct query : public typed_node<kind::QUERY> {
 
 struct binary : public typed_node<kind::BINARY> {
   binop _op;
-  expression _left;
-  expression _right;
+  expression _a;
+  expression _b;
+  template <typename A, typename B>
+  binary( source_span const span, A&& a, binop const op, B&& b )
+    : typed_node<kind::BINARY>{ span },
+      _op{ op },
+      _a{ std::forward<A>( a ) },
+      _b{ std::forward<B>( b ) } {}
 };
 
 template <kind T, typename Visitor>
@@ -181,15 +184,20 @@ inline expression ident( source_span const span, std::string_view const name ) n
   return std::make_unique<riot::ident>( span, name );
 }
 
+template <typename A, typename B>
+inline expression binary( source_span const span, A&& a, binop const op, B&& b ) noexcept {
+  return std::make_unique<riot::binary>( span, std::forward<A>( a ), op, std::forward<B>( b ) );
+}
+
 template <typename N, typename T>
-inline expression lookup( source_span const span, query_method const m, N&& name, T&& what ) noexcept {
+inline expression lookup( source_span const span, N&& name, query_method const m, T&& what ) noexcept {
   return std::make_unique<riot::query>( span, std::forward<N>( name ), m, std::forward<T>( what ) );
 }
 
 template <typename N, typename T>
 inline expression lookup_forward( source_span const span, N&& name, T&& what ) noexcept {
   using qm = query_method;
-  return lookup( span, qm::LOOKUP_FORWARD, std::forward<N>( name ), std::forward<T>( what ) );
+  return lookup( span, std::forward<N>( name ), qm::FORWARD, std::forward<T>( what ) );
 }
 
 } // namespace
