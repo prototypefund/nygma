@@ -193,7 +193,6 @@ class poly_index_view {
     virtual std::size_t size() const noexcept = 0;
     virtual bool is_ex() const noexcept = 0;
     virtual std::uint64_t segment_offset() const noexcept = 0;
-
   };
 
   template <typename T, typename VC>
@@ -222,9 +221,7 @@ class poly_index_view {
       return false;
     }
 
-    std::uint64_t segment_offset() const noexcept override {
-      return _view.segment_offset();
-    }
+    std::uint64_t segment_offset() const noexcept override { return _view.segment_offset(); }
   };
 
   std::unique_ptr<base> _p;
@@ -354,47 +351,25 @@ static auto from( bytestring_view const data, F const f ) {
   if( meta.magic0 != MAGIC ) { throw std::runtime_error( "INVALID_MAGIC" ); }
   if( meta.keyty != 0b01 && meta.keyty != 0b11 ) { throw std::runtime_error( "INVALID_KEYTYPE" ); }
 
+  // clang-format off
   if( meta.keyty == 0b01 ) {
     switch( meta.kmethod ) {
-      case method::UC128: {
-        using KC = detail::raw<128>;
-        _vmethod_;
-      }
-      case method::UC256: {
-        using KC = detail::raw<256>;
-        _vmethod_;
-      }
-      case method::SVB128D1: {
-        using KC = detail::svb128d1;
-        _vmethod_;
-      }
-      case method::SVB256D1: {
-        using KC = detail::svb256d1;
-        _vmethod_;
-      }
-      case method::BP128D1: {
-        using KC = detail::bp128d1;
-        _vmethod_;
-      }
-      case method::BP256D1: {
-        using KC = detail::bp256d1;
-        _vmethod_;
-      }
+      case method::UC128: { using KC = detail::raw<128>; _vmethod_; }
+      case method::UC256: { using KC = detail::raw<256>; _vmethod_; }
+      case method::SVB128D1: { using KC = detail::svb128d1; _vmethod_; }
+      case method::SVB256D1: { using KC = detail::svb256d1; _vmethod_; }
+      case method::BP128D1: { using KC = detail::bp128d1; _vmethod_; }
+      case method::BP256D1: { using KC = detail::bp256d1; _vmethod_; }
       default: throw std::runtime_error( "UNSUPPORTED_32BIT_KEY_COMPRESSION_METHOD" );
     }
   } else {
     switch( meta.kmethod ) {
-      case method::UC128: {
-        using KC = detail::raw128<128>;
-        _vmethod_;
-      }
-      case method::UC256: {
-        using KC = detail::raw128<256>;
-        _vmethod_;
-      }
+      case method::UC128: { using KC = detail::raw128<128>; _vmethod_; }
+      case method::UC256: { using KC = detail::raw128<256>; _vmethod_; }
       default: throw std::runtime_error( "UNSUPPORTED_128BIT_KEY_COMPRESSION_METHOD" );
     }
   }
+  // clang-format on
 }
 
 #undef _vmethod_
@@ -428,12 +403,11 @@ class index_view_handle {
 };
 
 namespace {
-inline auto make_poly_index_view( std::filesystem::path const& path ) {
-  return ( index_view_handle{ path } );
-}
-inline auto make_poly_index_view( bytestring_view const data ) {
-  return ( index_view_handle{ data } );
-}
+
+inline auto make_poly_index_view( std::filesystem::path const& p ) { return index_view_handle{ p }; }
+
+inline auto make_poly_index_view( bytestring_view const data ) { return index_view_handle{ data }; }
+
 } // namespace
 
-} // namespace emptyspace::index
+} // namespace riot
