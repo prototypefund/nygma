@@ -3,7 +3,7 @@
 #pragma once
 
 #include <libnygma/dissect.hxx>
-#include <libriot/indexing/index-builder.hxx>
+#include <libriot/index-builder.hxx>
 #include <libunclassified/bytestring.hxx>
 
 namespace riot {

@@ -3,8 +3,8 @@
 #include <pest/pest.hxx>
 #include <pest/xoshiro.hxx>
 
-#include <libriot/indexing/index-compressor.hxx>
-#include <libriot/indexing/index-view.hxx>
+#include <libriot/index-compressor.hxx>
+#include <libriot/index-view.hxx>
 #include <libunclassified/bytestring.hxx>
 
 #include <cassert>

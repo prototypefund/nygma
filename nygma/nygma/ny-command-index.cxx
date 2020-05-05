@@ -2,10 +2,10 @@
 
 #include <libnygma/dissect.hxx>
 #include <libnygma/pcap-view.hxx>
-#include <libriot/indexing/index-builder.hxx>
-#include <libriot/indexing/index-compressor.hxx>
-#include <libriot/indexing/index-cycler.hxx>
-#include <libriot/indexing/index-trace.hxx>
+#include <libriot/index-builder.hxx>
+#include <libriot/index-compressor.hxx>
+#include <libriot/index-cycler.hxx>
+#include <libriot/index-trace.hxx>
 #include <libunclassified/femtolog.hxx>
 #include <libunclassified/format-timestamp.hxx>
 

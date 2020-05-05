@@ -3,7 +3,7 @@
 #include <libnygma/dissect.hxx>
 #include <libnygma/pcap-reassembler.hxx>
 #include <libnygma/pcap-view.hxx>
-#include <libriot/indexing/index-view.hxx>
+#include <libriot/index-view.hxx>
 #include <libunclassified/femtolog.hxx>
 #include <libunclassified/format-timestamp.hxx>
 

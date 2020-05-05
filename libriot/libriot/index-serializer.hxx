@@ -3,7 +3,7 @@
 #pragma once
 
 #include <libnygma/bytestream.hxx>
-#include <libriot/indexing/index-builder.hxx>
+#include <libriot/index-builder.hxx>
 #include <libriot/compression/vbyte.hxx>
 
 #include <array>

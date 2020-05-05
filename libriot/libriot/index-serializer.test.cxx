@@ -3,9 +3,9 @@
 #include <pest/pest.hxx>
 #include <pest/xoshiro.hxx>
 
-#include <libriot/indexing/index-builder.hxx>
-#include <libriot/indexing/index-serializer.hxx>
-#include <libriot/indexing/index-view.hxx>
+#include <libriot/index-builder.hxx>
+#include <libriot/index-serializer.hxx>
+#include <libriot/index-view.hxx>
 
 #include <cassert>
 #include <map>

@@ -3,7 +3,7 @@
 #include <pest/pest.hxx>
 #include <pest/xoshiro.hxx>
 
-#include <libriot/indexing/index-builder.hxx>
+#include <libriot/index-builder.hxx>
 
 #include <cassert>
 #include <map>

@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include <libriot/indexing/index-builder.hxx>
-#include <libriot/indexing/index-serializer.hxx>
+#include <libriot/index-builder.hxx>
+#include <libriot/index-serializer.hxx>
 
 #include <libriot/compression/bitpack-simd.hxx>
 #include <libriot/compression/streamvbyte-simd.hxx>

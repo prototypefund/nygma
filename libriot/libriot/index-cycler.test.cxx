@@ -2,8 +2,8 @@
 
 #include <pest/pest.hxx>
 
-#include <libriot/indexing/index-cycler.hxx>
-#include <libriot/indexing/index-serializer.hxx>
+#include <libriot/index-cycler.hxx>
+#include <libriot/index-serializer.hxx>
 
 #include <map>
 
