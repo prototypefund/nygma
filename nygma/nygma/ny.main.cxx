@@ -53,9 +53,9 @@ void ny_show_version() {
 void ny_index_pcap( argh::Subparser& argh ) {
   auto const methods = "NONE|BITPACK|STREAMVBYTE";
   argh::HelpFlag help( argh, "help", "show this help message", { 'h', "help" } );
-  argh::ValueFlag<std::string> method_4( argh, "compression-method", methods, { "i4" }, "BITPACK" );
-  argh::ValueFlag<std::string> method_6( argh, "compression-method", methods, { "i6" }, "BITPACK" );
-  argh::ValueFlag<std::string> method_x( argh, "compression-method", methods, { "ix" }, "BITPACK" );
+  argh::ValueFlag<std::string> method_4( argh, "compression", methods, { "i4" }, "STREAMVBYTE" );
+  argh::ValueFlag<std::string> method_6( argh, "compression", methods, { "i6" }, "STREAMVBYTE" );
+  argh::ValueFlag<std::string> method_x( argh, "compression", methods, { "ix" }, "STREAMVBYTE" );
   argh::Positional<std::string> path( argh, "path", "path to the pcap to index" );
 
   argh.Parse();
