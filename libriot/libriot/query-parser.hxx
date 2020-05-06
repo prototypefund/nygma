@@ -9,6 +9,13 @@
 #include <stdexcept>
 #include <string_view>
 
+// TODO: get rid of this headers
+extern "C" {
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
+}
+
 namespace riot {
 
 namespace detail {
@@ -127,6 +134,54 @@ class number final : public prefix {
   }
 };
 
+class ipv4 final : public prefix {
+ private:
+  ipv4() {}
+
+ public:
+  expression accept( parser& p, token const t ) const override {
+    // the {string_view} of `p.slice_of(...)` is not zero terminated
+    std::string lit{ p.slice_of( t ) };
+    auto const addr = ntohl( ::inet_addr( lit.c_str() ) );
+    if( addr == INADDR_NONE ) { throw std::runtime_error( "invalid ipv4 address literal" ); }
+    return ast::ipv4( source_span::from( t ), addr );
+  }
+
+  precedence::type precedence() const noexcept override { return precedence::DEFAULT; }
+
+  static auto const& instance() noexcept {
+    static ipv4 _self;
+    return _self;
+  }
+};
+
+class ipv6 final : public prefix {
+ private:
+  ipv6() {}
+
+ public:
+  expression accept( parser& p, token const t ) const override {
+    static_assert( sizeof( in6_addr ) == sizeof( __uint128_t ) );
+    // the {string_view} of `p.slice_of(...)` is not zero terminated
+    std::string lit{ p.slice_of( t ) };
+    in6_addr addr_in;
+    if( auto const rc = inet_pton(AF_INET6, lit.c_str(), &addr_in); rc != 1 ) {
+      throw std::runtime_error( "invalid ipv6 address literal" );
+    }
+    // TODO: verify endianess conversions ( needs to be in sync with the indexer )
+    __uint128_t addr;
+    std::memcpy(&addr, &addr_in, sizeof( __uint128_t) );
+    return ast::ipv6( source_span::from( t ), addr );
+  }
+
+  precedence::type precedence() const noexcept override { return precedence::DEFAULT; }
+
+  static auto const& instance() noexcept {
+    static ipv6 _self;
+    return _self;
+  }
+};
+
 //--infix-like-parselets------------------------------------------------------
 
 class infix {
@@ -136,7 +191,7 @@ class infix {
   virtual ~infix() = default;
 };
 
-template<query_method Qm, token_type::type ClosingParen>
+template <query_method Qm, token_type::type ClosingParen>
 struct query final : public infix {
   using qm = query_method;
 
@@ -207,6 +262,8 @@ parselet::prefix const& parselet_for_prefixes( token const t ) {
     case token_type::ID: return parselet::ident::instance();
     case token_type::NUM: return parselet::number::instance();
     case token_type::LP: return parselet::parenthesized::instance();
+    case token_type::IPV4: return parselet::ipv4::instance();
+    case token_type::IPV6: return parselet::ipv6::instance();
     default: throw std::runtime_error( "parslet-prefix-select: unexpected token" );
   }
 }

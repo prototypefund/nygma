@@ -8,6 +8,12 @@
 
 namespace {
 
+auto hexify_v6( __uint128_t const value ) noexcept {
+  std::byte buf[sizeof( __uint128_t )];
+  std::memcpy( buf, &value, sizeof( __uint128_t ) );
+  return emptyspace::pest::hexify( buf );
+};
+
 emptyspace::pest::suite basic( "query-parser basic suite", []( auto& test ) {
   using namespace emptyspace::pest;
   using namespace riot;
@@ -17,6 +23,49 @@ emptyspace::pest::suite basic( "query-parser basic suite", []( auto& test ) {
     auto q = riot::parse( query );
     expect( ! ! q );
     q->accept<kind::ID>( [&]( auto const& id ) { expect( id._name, equal_to( "ix" ) ); } );
+  } );
+
+  test( "ipv4 literal 127.0.0.1", []( auto& expect ) {
+    std::string_view const query{ "127.0.0.1" };
+    auto q = riot::parse( query );
+    expect( ! ! q );
+    q->accept<kind::IPV4>( [&]( auto const& ip ) { expect( ip._value, equal_to( 2130706433u ) ); } );
+  } );
+
+  test( "ipv6 literal ::1:2:3:4:5", []( auto& expect ) {
+    std::string_view const query{ "::1:2:3:4:5" };
+    auto q = riot::parse( query );
+    expect( ! ! q );
+    q->accept<kind::IPV6>( [&]( auto const& ip ) {
+      expect( hexify_v6( ip._value ), equal_to( "00000000000000010002000300040005" ) );
+    } );
+  } );
+  
+  test( "ipv6 literal 2606:2800:220:1:248:1893:25c8:1946", []( auto& expect ) {
+    std::string_view const query{ "2606:2800:220:1:248:1893:25c8:1946" };
+    auto q = riot::parse( query );
+    expect( ! ! q );
+    q->accept<kind::IPV6>( [&]( auto const& ip ) {
+      expect( hexify_v6( ip._value ), equal_to( "26062800022000010248189325c81946" ) );
+    } );
+  } );
+  
+  test( "ipv6 literal 2001:41c0::645:a65e:60ff:feda:589d", []( auto& expect ) {
+    std::string_view const query{ "2001:41c0::645:a65e:60ff:feda:589d" };
+    auto q = riot::parse( query );
+    expect( ! ! q );
+    q->accept<kind::IPV6>( [&]( auto const& ip ) {
+      expect( hexify_v6( ip._value ), equal_to( "200141c000000645a65e60fffeda589d" ) );
+    } );
+  } );
+
+  test( "ipv6 literal ::", []( auto& expect ) {
+    std::string_view const query{ "::" };
+    auto q = riot::parse( query );
+    expect( ! ! q );
+    q->accept<kind::IPV6>( [&]( auto const& ip ) {
+      expect( hexify_v6( ip._value ), equal_to( "00000000000000000000000000000000" ) );
+    } );
   } );
 
   test( "expression: 'ix( 53 )'", []( auto& expect ) {
@@ -88,7 +137,7 @@ emptyspace::pest::suite basic( "query-parser basic suite", []( auto& test ) {
   } );
 } );
 
-}
+} // namespace
 
 int main() {
   basic( std::clog );

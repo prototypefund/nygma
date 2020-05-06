@@ -72,6 +72,9 @@ struct node {
 
   template <kind T, typename Visitor>
   void accept( Visitor const v );
+  
+  template <kind T, typename Visitor>
+  auto eval( Visitor const v );
 };
 
 using expression = std::unique_ptr<node>;
@@ -168,6 +171,29 @@ void node::accept( Visitor const v ) {
   }
 }
 
+template <kind T, typename Visitor>
+auto node::eval( Visitor const v ) {
+  if constexpr( T == kind::ID ) {
+    expect_kind( kind::ID );
+    return v( static_cast<ident&>( *this ) );
+  } else if constexpr( T == kind::NUM ) {
+    expect_kind( kind::NUM );
+    return v( static_cast<number&>( *this ) );
+  } else if constexpr( T == kind::BINARY ) {
+    expect_kind( kind::BINARY );
+    return v( static_cast<binary&>( *this ) );
+  } else if constexpr( T == kind::IPV4 ) {
+    expect_kind( kind::IPV4 );
+    return v( static_cast<ipv4&>( *this ) );
+  } else if constexpr( T == kind::IPV6 ) {
+    expect_kind( kind::IPV6 );
+    return v( static_cast<ipv6&>( *this ) );
+  } else if constexpr( T == kind::QUERY ) {
+    expect_kind( kind::QUERY );
+    return v( static_cast<query&>( *this ) );
+  }
+}
+
 namespace ast {
 
 namespace {
@@ -178,6 +204,10 @@ inline expression number( source_span const span, std::uint64_t const value ) no
 
 inline expression ipv4( source_span const span, std::uint32_t const value ) noexcept {
   return std::make_unique<riot::ipv4>( span, value );
+}
+
+inline expression ipv6( source_span const span, __uint128_t const value ) noexcept {
+  return std::make_unique<riot::ipv6>( span, value );
 }
 
 inline expression ident( source_span const span, std::string_view const name ) noexcept {

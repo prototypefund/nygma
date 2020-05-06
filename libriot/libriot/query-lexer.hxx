@@ -149,10 +149,12 @@ struct scanner {
       case '&': return one<token_type::AMP>();
       case '\\': return one<token_type::BACKSLASH>();
       case ':': return consume_ipv6_literal();
+      case 'a' ... 'f': return consume_ipv6_literal();
+      case 'A' ... 'F': return consume_ipv6_literal();
       case '0' ... '9': return consume_literal();
       case -1: return { token_type::EOS, begin, _offset - begin };
       default:
-        if( ::isalnum( c ) ) {
+        if( ::isalpha( c ) ) {
           return consume<token_type::ID>( []( auto const _ ) { return ::isalnum( _ ); } );
         }
         return { token_type::BAD, _offset, std::max( _offset - begin, 1ul ) };
