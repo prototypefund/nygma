@@ -36,6 +36,11 @@ struct source_span {
   }
 };
 
+// clang-format off
+template <class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
+template <class... Ts> overloaded( Ts... ) -> overloaded<Ts...>;
+// clang-format on
+
 namespace {
 
 inline std::string_view const to_string( kind const t ) noexcept {
@@ -75,6 +80,9 @@ struct node {
   
   template <kind T, typename Visitor>
   auto eval( Visitor const v );
+
+  template <typename Visitor>
+  auto eval( Visitor const v) const;
 };
 
 using expression = std::unique_ptr<node>;
@@ -191,6 +199,18 @@ auto node::eval( Visitor const v ) {
   } else if constexpr( T == kind::QUERY ) {
     expect_kind( kind::QUERY );
     return v( static_cast<query&>( *this ) );
+  }
+}
+
+template <typename Visitor>
+auto node::eval( Visitor const v ) const {
+  switch( type() ) {
+    case kind::ID: return v( static_cast<ident const&>( *this ) );
+    case kind::NUM: return v( static_cast<number const&>( *this ) );
+    case kind::IPV4: return v( static_cast<ipv4 const&>( *this ) );
+    case kind::IPV6: return v( static_cast<ipv6 const&>( *this ) );
+    case kind::BINARY: return v( static_cast<binary const&>( *this ) );
+    case kind::QUERY: return v( static_cast<query const&>( *this ) );
   }
 }
 
