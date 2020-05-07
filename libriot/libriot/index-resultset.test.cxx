@@ -66,6 +66,14 @@ emptyspace::pest::suite basic( "index-resultset basic suite", []( auto& test ) {
     auto const c = a & b;
     expect( c.empty() );
   } );
+  
+  test( "union of 2 sets with different segment offset is empty", []( auto& expect ) {
+    resultset32 const a{ 23u, true, 3u, 6u, 9u, 10u };
+    resultset32 const b{ 42u, true, 2u, 6u, 11u, 12u };
+    auto const c = a + b;
+    expect( ! c );
+    expect( c.empty() );
+  } );
 
   test( "detail::resultset intersection of 2 disjoint sets", []( auto& expect ) {
     resultset32 const a{ 0, 3u, 5u, 9u, 10u };

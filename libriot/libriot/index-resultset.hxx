@@ -125,22 +125,22 @@ struct resultset {
   resultset( resultset const&& ) noexcept = default;
   resultset& operator=( resultset const&& ) noexcept = default;
 
-  resultset_type operator+( resultset_type const& o ) const noexcept {
+  resultset_type set_union( resultset_type const& o ) const noexcept {
     return resultset_type{ _segment_offset, traits_type::set_union( _values, o._values ) };
   }
 
-  resultset_type operator&( resultset_type const& o ) const noexcept {
+  resultset_type set_intersection( resultset_type const& o ) const noexcept {
     return resultset_type{ _segment_offset, traits_type::set_intersection( _values, o._values ) };
   }
 
-  resultset_type operator-( resultset_type const& o ) const noexcept {
+  resultset_type set_complement( resultset_type const& o ) const noexcept {
     return resultset_type{ _segment_offset, traits_type::set_complement( _values, o._values ) };
   }
 
   template <typename OT, detail::resultset_kind OK>
   resultset_type operator-( resultset<OT, OK> const& o ) const noexcept {
     if constexpr( std::is_same_v<OT, traits_type> and OK == KIND ) {
-      if( _segment_offset == o._segment_offset ) { return this->operator-( o ); }
+      if( _segment_offset == o._segment_offset ) { return set_complement( o ); }
     }
     return resultset_type{ _segment_offset };
   }
@@ -148,7 +148,7 @@ struct resultset {
   template <typename OT, detail::resultset_kind OK>
   resultset_type operator+( resultset<OT, OK> const& o ) const noexcept {
     if constexpr( std::is_same_v<OT, traits_type> and OK == KIND ) {
-      if( _segment_offset == o._segment_offset ) { return this->operator+( o ); }
+      if( _segment_offset == o._segment_offset ) { return set_union( o ); }
     }
     return resultset_type{ _segment_offset };
   }
@@ -156,7 +156,7 @@ struct resultset {
   template <typename OT, detail::resultset_kind OK>
   resultset_type operator&( resultset<OT, OK> const& o ) const noexcept {
     if constexpr( std::is_same_v<OT, traits_type> and OK == KIND ) {
-      if( _segment_offset == o._segment_offset ) { return this->operator&( o ); }
+      if( _segment_offset == o._segment_offset ) { return set_intersection( o ); }
     }
     return resultset_type{ _segment_offset };
   }
@@ -164,7 +164,7 @@ struct resultset {
   template <typename OT, detail::resultset_kind OK>
   resultset<OT, OK> const& coerce( resultset<OT, OK> const& dummy ) {
     if constexpr( std::is_same_v<OT, traits_type> and OK == KIND ) {
-      if( _segment_offset == dummy._segment_offset ) { return { *this, true }; }
+      return { *this, _success };
     }
     return dummy;
   }
