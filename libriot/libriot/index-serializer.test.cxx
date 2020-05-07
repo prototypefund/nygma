@@ -71,11 +71,11 @@ emptyspace::pest::suite basic( "index-builder basic suite", []( auto& test ) {
     auto const iv = riot::make_poly_index_view( unclassified::bytestring_view{ data, len } );
 
     expect( iv->size(), equal_to( 3u ) );
-    expect( iv->is_ex(), equal_to( false ) );
-    expect( iv->query( 1 ), equal_to( { 300u } ) );
-    expect( iv->query_ex( 1 ).size(), equal_to( 0u ) );
-    expect( iv->query( 13372342u ), equal_to( { 24u, 3000u } ) );
-    expect( iv->query( 23421337u ), equal_to( { 16u, 400u } ) );
+    expect( iv->sizeof_domain_value(), equal_to( 4u ) );
+    expect( iv->lookup_forward_32( 1 ).values(), equal_to( { 300u } ) );
+    expect( iv->lookup_forward_32( 13372342u ).values(), equal_to( { 24u, 3000u } ) );
+    expect( iv->lookup_forward_32( 23421337u ).values(), equal_to( { 16u, 400u } ) );
+    expect( not iv->lookup_forward_128( 1 ) );
   } );
 
   test( "index_builder for 16bit keys", []( auto& expect ) {
@@ -158,11 +158,11 @@ emptyspace::pest::suite basic( "index-builder basic suite", []( auto& test ) {
     auto const iv = riot::make_poly_index_view( unclassified::bytestring_view{ data, len } );
 
     expect( iv->size(), equal_to( 3u ) );
-    expect( iv->is_ex(), equal_to( true ) );
-    expect( iv->query_ex( 1 ), equal_to( { 300u } ) );
-    expect( iv->query( 1 ).size(), equal_to( 0u ) );
-    expect( iv->query_ex( 13372342u ), equal_to( { 24u, 3000u } ) );
-    expect( iv->query_ex( 23421337u ), equal_to( { 16u, 400u } ) );
+    expect( iv->sizeof_domain_value(), equal_to( 16u ) );
+    expect( iv->lookup_forward_128( 1 ).values(), equal_to( { 300u } ) );
+    expect( iv->lookup_forward_128( 13372342u ).values(), equal_to( { 24u, 3000u } ) );
+    expect( iv->lookup_forward_128( 23421337u ).values(), equal_to( { 16u, 400u } ) );
+    expect( not iv->lookup_forward_32( 1 ) );
   } );
 } );
 

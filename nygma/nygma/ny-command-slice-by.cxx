@@ -46,31 +46,29 @@ void ny_command_slice_by( slice_config const& config ) {
                                  : nygma::pcap_ostream{ config._out };
     pcap::reassemble_begin( pcap, os );
 
-    auto const stream = [&pcap, &os]( auto const& p, auto const key, auto& offsets ) {
+    auto const stream = [&pcap, &os]( auto const& p, auto const key ) {
       flog( lvl::v, "executing query on index file = ", p );
       auto iv = riot::make_poly_index_view( p );
       flog( lvl::v, "@segment offset = ", iv->segment_offset() );
-      iv->query( key, offsets );
-      flog( lvl::v, "hits = ", offsets.size() );
-      pcap::reassemble_stream( pcap, iv->segment_offset(), offsets.cbegin(), offsets.cend(), os );
+      auto const rs = iv->lookup_forward_32( key );
+      flog( lvl::v, "hits = ", rs.values().size() );
+      pcap::reassemble_stream( pcap, rs.segment_offset(), rs.cbegin(), rs.cend(), os );
     };
 
-    auto const stream_ex = [&pcap, &os]( auto const& p, auto const key, auto& offsets ) {
+    auto const stream_ex = [&pcap, &os]( auto const& p, auto const key ) {
       flog( lvl::v, "executing query on index file = ", p );
       auto iv = riot::make_poly_index_view( p );
       flog( lvl::v, "@segment offset = ", iv->segment_offset() );
-      iv->query_ex( key, offsets );
-      flog( lvl::v, "hits = ", offsets.size() );
-      pcap::reassemble_stream( pcap, iv->segment_offset(), offsets.cbegin(), offsets.cend(), os );
+      auto const rs = iv->lookup_forward_128( key );
+      flog( lvl::v, "hits = ", rs.values().size() );
+      pcap::reassemble_stream( pcap, rs.segment_offset(), rs.cbegin(), rs.cend(), os );
     };
 
-    std::vector<std::uint32_t> offsets;
     if( not config._key_i4.empty() ) {
       auto const key = ntohl( ::inet_addr( config._key_i4.c_str() ) );
       flog( lvl::i, "executing query = i4( ", config._key_i4, " ) ( ", key, " )" );
       for( auto& p : deps._i4 ) {
-        offsets.clear();
-        stream( p, key, offsets );
+        stream( p, key );
       }
     }
 
@@ -82,8 +80,7 @@ void ny_command_slice_by( slice_config const& config ) {
       }
       flog( lvl::i, "executing query = i6( ", config._key_i6, " )" );
       for( auto& p : deps._i6 ) {
-        offsets.clear();
-        stream_ex( p, key, offsets );
+        stream_ex( p, key );
       }
     }
 
@@ -91,8 +88,7 @@ void ny_command_slice_by( slice_config const& config ) {
       auto const key = static_cast<std::uint32_t>( std::stoul( config._key_ix ) );
       flog( lvl::i, "executing query = ix( ", config._key_ix, " ) ( ", key, " )" );
       for( auto& p : deps._ix ) {
-        offsets.clear();
-        stream( p, key, offsets );
+        stream( p, key );
       }
     }
 
@@ -100,8 +96,7 @@ void ny_command_slice_by( slice_config const& config ) {
       auto const key = static_cast<std::uint32_t>( std::stoul( config._key_iy ) );
       flog( lvl::i, "executing query = iy( ", config._key_iy, " ) ( ", key, " )" );
       for( auto& p : deps._iy ) {
-        offsets.clear();
-        stream( p, key, offsets );
+        stream( p, key );
       }
     }
   } );

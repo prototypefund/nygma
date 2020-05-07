@@ -24,9 +24,10 @@ extern "C" int LLVMFuzzerTestOneInput( uint8_t const* p, size_t const sz ) {
     auto const index = riot::make_poly_index_view( bs );
     auto const v4 = "149.171.126.16";
     auto const ip = __bswap32( ::inet_addr( v4 ) );
-    std::vector<std::uint32_t> offsets;
-    index->query( ip, offsets );
-    index->query( 80, offsets );
+    auto const a = index->lookup_forward_32( ip );
+    auto const b = index->lookup_forward_32( 80 );
+    auto const c = index->lookup_forward_64( static_cast<std::uint64_t>( ip ) );
+    auto const d = index->lookup_forward_128( __uint128_t( ip ) );
     return 0;
   } catch( ... ) { return 0; }
 }

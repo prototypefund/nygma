@@ -7,6 +7,7 @@
 #include <libriot/compress-streamvbyte-simd.hxx>
 #include <libriot/compress-vbyte.hxx>
 #include <libriot/index-builder.hxx>
+#include <libriot/index-resultset.hxx>
 #include <libriot/index-serializer.hxx>
 #include <libunclassified/bytestring.hxx>
 
@@ -103,11 +104,29 @@ constexpr std::uint32_t MAGIC = 0x13371337u;
 constexpr std::uint32_t MAGIC2 = 0x41414141u;
 constexpr endianess LE = endianess::LE;
 
+// for forward lookups these are same always the same ...
+using resultset_forward_value_type = std::uint32_t;
+using resultset_forward_traits = detail::std_vector_traits<resultset_forward_value_type>;
+using resultset_forward_type = resultset<resultset_forward_traits, detail::resultset_kind::FORWARD>;
+
+// ... for reverse lookup not so much ...
+using resultset_reverse_value_32 = std::uint32_t;
+using resultset_reverse_value_64 = std::uint64_t;
+using resultset_reverse_value_128 = __uint128_t;
+using resultset_reverse_traits_32 = detail::std_vector_traits<resultset_reverse_value_32>;
+using resultset_reverse_traits_64 = detail::std_vector_traits<resultset_reverse_value_64>;
+using resultset_reverse_traits_128 = detail::std_vector_traits<resultset_reverse_value_128>;
+using resultset_reverse_32 = resultset<resultset_reverse_traits_32, detail::resultset_kind::REVERSE>;
+using resultset_reverse_64 = resultset<resultset_reverse_traits_64, detail::resultset_kind::REVERSE>;
+using resultset_reverse_128 = resultset<resultset_reverse_traits_128, detail::resultset_kind::REVERSE>;
+
 template <typename KeyType, typename VC>
 class index_view {
  public:
   using key_type = KeyType;
-  using value_type = std::uint32_t;
+  using value_type = resultset_forward_value_type;
+  using resultset_reverse_traits = detail::std_vector_traits<key_type>;
+  using resultset_reverse_type = resultset<resultset_reverse_traits, detail::resultset_kind::REVERSE>;
 
  private:
   bytestring_view const _data;
@@ -141,7 +160,7 @@ class index_view {
   auto segment_offset() const noexcept { return _segment_offset; }
 
   template <typename OutIt>
-  bool query( key_type const k, OutIt out ) const noexcept {
+  bool lookup_forward( key_type const k, OutIt out ) const noexcept {
     auto it = std::lower_bound( _keys.begin(), _keys.end(), k );
     if( it == _keys.end() || k < *it ) { return false; }
     auto const o = static_cast<std::size_t>( it - _keys.begin() );
@@ -166,32 +185,44 @@ class index_view {
     return true;
   }
 
-  std::vector<value_type> query( key_type const k ) const noexcept {
-    std::vector<value_type> out;
-    query( k, std::back_inserter( out ) );
-    return out;
+  resultset_forward_type lookup_forward( key_type const k ) const noexcept {
+    resultset_forward_type::container_type values;
+    auto const rc = lookup_forward( k, std::back_inserter( values ) );
+    return resultset_forward_type{ _segment_offset, rc, std::move( values ) };
   }
 
-  bool query( key_type const k, std::vector<value_type>& out ) const noexcept {
-    return query( k, std::back_inserter( out ) );
+  // TODO: implement ( maybe lazy constructed ) reverse lookup
+  //   - for lazy construction maybe use a helper function
+  //     otherwise the lookup could not be `const`
+  resultset_reverse_type lookup_reverse( value_type const k ) const noexcept {
+    unused( k );
+    return resultset_reverse_type{ _segment_offset };
   }
 };
 
 //--type-erasure-of-index_view<>----------------------------------------------
 
-// XXX: instead of hardcoding std::vector<value_type> make this a template parameter
 class poly_index_view {
-  using key_t = std::uint32_t;
-  using key_ex_t = __uint128_t;
-  using value_type = std::uint32_t;
-  using container_type = std::vector<value_type>;
+  using key32_t = std::uint32_t;
+  using key64_t = std::uint64_t;
+  using key128_t = __uint128_t;
+
+  using value_type = resultset_forward_type::value_type;
+  using container_type = resultset_forward_traits::container_type;
 
   struct base {
     virtual ~base() = default;
-    virtual bool query( key_t const k, container_type& out ) noexcept = 0;
-    virtual bool query_ex( key_ex_t const k, container_type& out ) noexcept = 0;
+
+    virtual resultset_forward_type lookup_forward_32( key32_t const k ) noexcept = 0;
+    virtual resultset_forward_type lookup_forward_64( key64_t const k ) noexcept = 0;
+    virtual resultset_forward_type lookup_forward_128( key128_t const k ) noexcept = 0;
+
+    virtual resultset_reverse_32 lookup_reverse_32( value_type const v ) noexcept = 0;
+    virtual resultset_reverse_64 lookup_reverse_64( value_type const v ) noexcept = 0;
+    virtual resultset_reverse_128 lookup_reverse_128( value_type const v ) noexcept = 0;
+
+    virtual std::size_t sizeof_domain_value() const noexcept = 0;
     virtual std::size_t size() const noexcept = 0;
-    virtual bool is_ex() const noexcept = 0;
     virtual std::uint64_t segment_offset() const noexcept = 0;
   };
 
@@ -203,25 +234,63 @@ class poly_index_view {
 
     std::size_t size() const noexcept override { return _view.key_count(); }
 
-    bool is_ex() const noexcept override {
-      return std::is_same_v<key_ex_t, typename index_view<T, VC>::key_type>;
-    }
-
-    bool query( key_t const k, container_type& out ) noexcept override {
-      if constexpr( std::is_same_v<key_t, typename index_view<T, VC>::key_type> ) {
-        return _view.query( k, std::back_inserter( out ) );
-      }
-      return false;
-    }
-
-    bool query_ex( key_ex_t const k, container_type& out ) noexcept override {
-      if constexpr( std::is_same_v<key_ex_t, typename index_view<T, VC>::key_type> ) {
-        return _view.query( k, std::back_inserter( out ) );
-      }
-      return false;
+    std::size_t sizeof_domain_value() const noexcept override {
+      return sizeof( typename index_view<T, VC>::key_type );
     }
 
     std::uint64_t segment_offset() const noexcept override { return _view.segment_offset(); }
+
+    //--forward-lookup-wrappers-----------------------------------------------
+
+    resultset_forward_type lookup_forward_32( key32_t const k ) noexcept override {
+      if constexpr( std::is_same_v<key32_t, typename index_view<T, VC>::key_type> ) {
+        return _view.lookup_forward( k );
+      }
+      return resultset_forward_type{ 0 };
+    }
+
+    resultset_forward_type lookup_forward_64( key64_t const k ) noexcept override {
+      if constexpr( std::is_same_v<key64_t, typename index_view<T, VC>::key_type> ) {
+        return _view.lookup_forward( k );
+      }
+      return resultset_forward_type{ 0 };
+    }
+
+    resultset_forward_type lookup_forward_128( key128_t const k ) noexcept override {
+      if constexpr( std::is_same_v<key128_t, typename index_view<T, VC>::key_type> ) {
+        return _view.lookup_forward( k );
+      }
+      return resultset_forward_type{ 0 };
+    }
+
+    //--reverse-lookup-wrappers-----------------------------------------------
+
+    resultset_reverse_32 lookup_reverse_32( value_type const v ) noexcept override {
+      if constexpr( std::is_same_v<
+                        resultset_reverse_32,
+                        typename index_view<T, VC>::resultset_reverse_type> ) {
+        return _view.lookup_reverse( v );
+      }
+      return resultset_reverse_32{ 0 };
+    }
+
+    resultset_reverse_64 lookup_reverse_64( value_type const v ) noexcept override {
+      if constexpr( std::is_same_v<
+                        resultset_reverse_64,
+                        typename index_view<T, VC>::resultset_reverse_type> ) {
+        return _view.lookup_reverse( v );
+      }
+      return resultset_reverse_64{ 0 };
+    }
+
+    resultset_reverse_128 lookup_reverse_128( value_type const v ) noexcept override {
+      if constexpr( std::is_same_v<
+                        resultset_reverse_128,
+                        typename index_view<T, VC>::resultset_reverse_type> ) {
+        return _view.lookup_reverse( v );
+      }
+      return resultset_reverse_128{ 0 };
+    }
   };
 
   std::unique_ptr<base> _p;
@@ -232,29 +301,35 @@ class poly_index_view {
 
   auto size() const noexcept { return _p->size(); }
   auto key_count() const noexcept { return _p->size(); }
-  bool is_ex() const noexcept { return _p->is_ex(); }
+  auto sizeof_domain_value() const noexcept { return _p->sizeof_domain_value(); }
   std::uint64_t segment_offset() const noexcept { return _p->segment_offset(); }
 
-  bool query( key_t const k, container_type& out ) const noexcept { return _p->query( k, out ); }
-
-  bool query_ex( key_ex_t const k, container_type& out ) const noexcept {
-    return _p->query_ex( k, out );
+  resultset_forward_type lookup_forward_32( key32_t const k ) const noexcept {
+    return _p->lookup_forward_32( k );
   }
 
-  container_type const query( key_t const k ) const noexcept {
-    container_type out;
-    query( k, out );
-    return out;
+  resultset_forward_type lookup_forward_64( key64_t const k ) const noexcept {
+    return _p->lookup_forward_64( k );
   }
 
-  container_type const query_ex( key_ex_t const k ) const noexcept {
-    container_type out;
-    query_ex( k, out );
-    return out;
+  resultset_forward_type lookup_forward_128( key128_t const k ) const noexcept {
+    return _p->lookup_forward_128( k );
+  }
+
+  resultset_reverse_32 lookup_reverse_32( value_type const v ) const noexcept {
+    return _p->lookup_reverse_32( v );
+  }
+
+  resultset_reverse_64 lookup_reverse_64( value_type const v ) const noexcept {
+    return _p->lookup_reverse_64( v );
+  }
+
+  resultset_reverse_128 lookup_reverse_128( value_type const v ) const noexcept {
+    return _p->lookup_reverse_128( v );
   }
 };
 
-//--building-an-index-view----------------------------------------------------
+//--opening-/-constructing-an-index-view----------------------------------------------------
 
 namespace detail {
 
@@ -374,28 +449,29 @@ static auto from( bytestring_view const data, F const f ) {
 
 #undef _vmethod_
 
-using mmap_view = nygma::mmap_view;
-
 namespace {
+
 inline auto make_poly_index_view( bytestring_view const data ) {
   return detail::from( data, []( auto&& iv ) { return poly_index_view( std::move( iv ) ); } );
 }
+
 } // namespace
 
 } // namespace detail
 
 class index_view_handle {
 
-  std::unique_ptr<detail::mmap_view> _map;
+  std::unique_ptr<nygma::mmap_view> _map;
   poly_index_view _index;
 
  public:
   index_view_handle( std::filesystem::path const& path )
-    : _map{ std::make_unique<detail::mmap_view>( path ) },
+    : _map{ std::make_unique<nygma::mmap_view>( path ) },
       _index{ detail::make_poly_index_view( _map->view() ) } {}
 
-  // the index view wraps `data` non-owning. make sure it is valid
-  // as long as the constructed is used / valid.
+  // the index view wraps `data` non-owning. make sure it outlasts
+  // the lifetime of the index view
+  //
   index_view_handle( bytestring_view const data ) : _index{ detail::make_poly_index_view( data ) } {}
 
   auto const& operator*() const noexcept { return _index; }
@@ -406,6 +482,9 @@ namespace {
 
 inline auto make_poly_index_view( std::filesystem::path const& p ) { return index_view_handle{ p }; }
 
+// the index view wraps `data` non-owning. make sure it outlasts
+// the lifetime of the index view
+//
 inline auto make_poly_index_view( bytestring_view const data ) { return index_view_handle{ data }; }
 
 } // namespace
