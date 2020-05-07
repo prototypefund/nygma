@@ -43,6 +43,23 @@ emptyspace::pest::suite basic( "query-ast basic suite", []( auto& test ) {
         [&]() { node->accept<kind::ID>( []( auto const& ) {} ); } ) );
   } );
 
+  test( "ast-builder: mock evalutator", []( auto& expect ) {
+    auto const node = ast::number( source_span::null(), 0x2343u );
+    struct mock {
+      int operator()( ident const& ) const { return 1; }
+      int operator()( number const& ) const { return 1; }
+      int operator()( ipv4 const& ) const { return 1; }
+      int operator()( ipv6 const& ) const { return 1; }
+      int operator()( query const& q ) const {
+        return q._name->eval( *this ) + q._what->eval( *this );
+      }
+      int operator()( binary const& b ) const { return b._a->eval( *this ) + b._b->eval( *this ); }
+    };
+    auto const n = node->eval( mock{} );
+    expect( node->type() == kind::NUM );
+    expect( n, equal_to( 1 ) );
+  } );
+
   test( "ast-builder: build ident", []( auto& expect ) {
     auto const node = ast::ident( source_span::null(), "ix" );
     std::string name;

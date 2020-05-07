@@ -77,12 +77,12 @@ struct node {
 
   template <kind T, typename Visitor>
   void accept( Visitor const v );
-  
+
   template <kind T, typename Visitor>
   auto eval( Visitor const v );
 
   template <typename Visitor>
-  auto eval( Visitor const v) const;
+  auto eval( Visitor&& v ) const;
 };
 
 using expression = std::unique_ptr<node>;
@@ -203,7 +203,7 @@ auto node::eval( Visitor const v ) {
 }
 
 template <typename Visitor>
-auto node::eval( Visitor const v ) const {
+auto node::eval( Visitor&& v ) const {
   switch( type() ) {
     case kind::ID: return v( static_cast<ident const&>( *this ) );
     case kind::NUM: return v( static_cast<number const&>( *this ) );
