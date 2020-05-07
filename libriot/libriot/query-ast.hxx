@@ -70,7 +70,7 @@ struct node {
   void expect_kind( kind const t ) const {
     if( type() == t ) { return; }
     std::ostringstream msg;
-    msg << "expression coercion failed: exptected = " << to_string( t )
+    msg << "expression coercion failed: expected = " << to_string( t )
         << " actual = " << to_string( type() );
     throw expression_coercion_error( msg.str() );
   }

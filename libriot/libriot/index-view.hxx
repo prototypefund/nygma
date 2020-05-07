@@ -58,7 +58,7 @@ struct raw128 {
     auto const* const end = p + ( ( n >> 4 ) << 4 );
     auto i = m;
     while( p < end && i-- > 0 ) {
-      // TODO: ensure endianess
+      // TODO: ensure correct endianess
       __uint128_t x;
       std::memcpy( &x, p, 16 );
       *out++ = x;
@@ -191,9 +191,14 @@ class index_view {
     return resultset_forward_type{ _segment_offset, rc, std::move( values ) };
   }
 
+  // TODO
+  //
+  bool prepare_reverse_lookups() const noexcept { return true; }
+
   // TODO: implement ( maybe lazy constructed ) reverse lookup
   //   - for lazy construction maybe use a helper function
   //     otherwise the lookup could not be `const`
+  //
   resultset_reverse_type lookup_reverse( value_type const k ) const noexcept {
     unused( k );
     return resultset_reverse_type{ _segment_offset };
