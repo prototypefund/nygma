@@ -345,7 +345,7 @@ struct dns {
     |                    ARCOUNT                    |
     +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
     */
-    if( p + 12 > end ) return dns_dissect_rc::HEADER_UNDERFLOW;
+    if( p + 12 > end ) { return dns_dissect_rc::HEADER_UNDERFLOW; }
 
     _id = detail::rd16( p );
     _qr = ( p[2] >> 7 ) & 1;
@@ -383,7 +383,7 @@ struct dns {
     */
 
     for( unsigned i = 0; i < _qdcount && p < end; i++ ) {
-      if( _rr_count >= RecordCnt ) return dns_dissect_rc::RECORD_OVERFLOW;
+      if( _rr_count >= RecordCnt ) { return dns_dissect_rc::RECORD_OVERFLOW; }
       auto& rr = _rr[_rr_count];
       rr._is_edns0 = 0;
       rr._rr_begin = p;
@@ -422,7 +422,7 @@ struct dns {
     +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
     */
     for( unsigned i = 0; i < _ancount + _nscount && p < end; i++ ) {
-      if( _rr_count >= RecordCnt ) return dns_dissect_rc::RECORD_OVERFLOW;
+      if( _rr_count >= RecordCnt ) { return dns_dissect_rc::RECORD_OVERFLOW; }
       auto& rr = _rr[_rr_count];
       rr._is_edns0 = 0;
       rr._rr_begin = p;
@@ -439,7 +439,7 @@ struct dns {
     }
 
     for( unsigned i = 0; i < _arcount && p < end; i++ ) {
-      if( _rr_count >= RecordCnt ) return dns_dissect_rc::RECORD_OVERFLOW;
+      if( _rr_count >= RecordCnt ) { return dns_dissect_rc::RECORD_OVERFLOW; }
       auto& rr = _rr[_rr_count];
       rr._is_edns0 = 0;
       rr._rr_begin = p;
@@ -458,7 +458,7 @@ struct dns {
         rr._edns0._cache_flush = ( clazz >> 31 ) & 1;
       }
       p = extract_name( p, end, rr );
-      if( p + 10 > end ) return dns_dissect_rc::RNAME_OVERFLOW;
+      if( p + 10 > end ) { return dns_dissect_rc::RNAME_OVERFLOW; }
       rr._type = detail::rd16( p );
       rr._class = detail::rd16( p + 2 );
       rr._ttl = detail::rd32( p + 4 );

@@ -43,7 +43,7 @@ emptyspace::pest::suite basic( "query-ast basic suite", []( auto& test ) {
         [&]() { node->accept<kind::ID>( []( auto const& ) {} ); } ) );
   } );
 
-  test( "ast-builder: mock evalutator", []( auto& expect ) {
+  test( "ast-builder: mock evaluator", []( auto& expect ) {
     auto const node = ast::number( source_span::null(), 0x2343u );
     struct mock {
       int operator()( ident const& ) const { return 1; }
