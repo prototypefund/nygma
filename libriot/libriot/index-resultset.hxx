@@ -20,41 +20,7 @@ struct std_vector_traits {
   static container_type set_union( container_type const& a, container_type const& b ) noexcept {
     container_type r;
     r.reserve( a.size() + b.size() );
-
-    if( a.empty() ) {
-      r = b;
-      return r;
-    } else if( b.empty() ) {
-      r = a;
-      return r;
-    }
-
-    auto it_a = a.cbegin();
-    auto it_b = b.cbegin();
-
-    // {a} and {b} both not empty
-    //
-    r.push_back( std::min( *it_a, *it_b ) );
-    while( it_a != a.cend() and it_b != b.cend() ) {
-      if( *it_a < *it_b ) {
-        if( r.back() < *it_a ) { r.push_back( *it_a ); }
-        ++it_a;
-      } else {
-        if( r.back() < *it_b ) { r.push_back( *it_b ); }
-        ++it_b;
-      }
-    }
-
-    while( it_a != a.cend() ) {
-      r.push_back( *it_a );
-      ++it_a;
-    }
-
-    while( it_b != b.cend() ) {
-      r.push_back( *it_b );
-      ++it_b;
-    }
-
+    std::set_union( a.cbegin(), a.cend(), b.cbegin(), b.cend(), std::back_inserter( r ) );
     return r;
   }
 
@@ -119,6 +85,8 @@ struct resultset {
   constexpr explicit resultset( segment_offset_type const so, bool const rc, Args&&... args )
     : _segment_offset{ so }, _success{ rc }, _values{ std::forward<Args>( args )... } {}
 
+  constexpr resultset() : _segment_offset{ 0 }, _success{ false } {}
+
   resultset( resultset& ) = delete;
   resultset& operator=( resultset& ) = delete;
 
@@ -126,15 +94,15 @@ struct resultset {
   resultset& operator=( resultset const&& ) noexcept = default;
 
   resultset_type set_union( resultset_type const& o ) const noexcept {
-    return resultset_type{ _segment_offset, traits_type::set_union( _values, o._values ) };
+    return resultset_type{ _segment_offset, true, traits_type::set_union( _values, o._values ) };
   }
 
   resultset_type set_intersection( resultset_type const& o ) const noexcept {
-    return resultset_type{ _segment_offset, traits_type::set_intersection( _values, o._values ) };
+    return resultset_type{ _segment_offset, true, traits_type::set_intersection( _values, o._values ) };
   }
 
   resultset_type set_complement( resultset_type const& o ) const noexcept {
-    return resultset_type{ _segment_offset, traits_type::set_complement( _values, o._values ) };
+    return resultset_type{ _segment_offset, true, traits_type::set_complement( _values, o._values ) };
   }
 
   template <typename OT, detail::resultset_kind OK>
@@ -163,9 +131,7 @@ struct resultset {
 
   template <typename OT, detail::resultset_kind OK>
   resultset<OT, OK> const& coerce( resultset<OT, OK> const& dummy ) {
-    if constexpr( std::is_same_v<OT, traits_type> and OK == KIND ) {
-      return { *this, _success };
-    }
+    if constexpr( std::is_same_v<OT, traits_type> and OK == KIND ) { return { *this, _success }; }
     return dummy;
   }
 
@@ -179,6 +145,8 @@ struct resultset {
 
   constexpr auto cbegin() const noexcept { return _values.cbegin(); }
   constexpr auto cend() const noexcept { return _values.cend(); }
+
+  static constexpr resultset_type none() noexcept { return resultset{}; }
 
   static auto const& dummy() noexcept {
     static const resultset_type DUMMY = resultset_type{ 0 };

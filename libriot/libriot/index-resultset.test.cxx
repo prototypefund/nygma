@@ -10,7 +10,7 @@ namespace {
 
 emptyspace::pest::suite basic( "index-resultset basic suite", []( auto& test ) {
   using namespace emptyspace::pest;
-  using namespace riot; 
+  using namespace riot;
   constexpr auto F = detail::resultset_kind::FORWARD;
   constexpr auto R = detail::resultset_kind::REVERSE;
   using resultset32 = resultset<detail::std_vector_traits<std::uint32_t>, F>;
@@ -20,17 +20,17 @@ emptyspace::pest::suite basic( "index-resultset basic suite", []( auto& test ) {
     resultset32 const rs{ 0 };
     expect( rs.empty() );
   } );
-  
+
   test( "detail::resultset<reverse> constructor", []( auto& expect ) {
     resultset<detail::std_vector_traits<std::uint32_t>, R> r{ 0 };
     expect( r.empty() );
     expect( ! r );
   } );
-  
+
   test( "union of empty forward and reverse sets", []( auto& expect ) {
     resultset<detail::std_vector_traits<std::uint32_t>, R> r{ 0 };
     resultset<detail::std_vector_traits<std::uint32_t>, F> f{ 0 };
-    auto const x  = r + f;
+    auto const x = r + f;
     expect( r.empty() );
     expect( ! r );
     expect( ! f );
@@ -42,6 +42,13 @@ emptyspace::pest::suite basic( "index-resultset basic suite", []( auto& test ) {
     resultset32 const b{ 0 };
     auto const c = a + b;
     expect( c.empty() );
+  } );
+
+  test( "detail::resultset union with self", []( auto& expect ) {
+    resultset32 const a{ 0, 3u };
+    auto const c = a + a;
+    expect( c.size(), equal_to( 1u ) );
+    expect( c.values(), equal_to( { 3u } ) );
   } );
 
   test( "detail::resultset union of 2 disjoint sets", []( auto& expect ) {
@@ -66,7 +73,7 @@ emptyspace::pest::suite basic( "index-resultset basic suite", []( auto& test ) {
     auto const c = a & b;
     expect( c.empty() );
   } );
-  
+
   test( "union of 2 sets with different segment offset is empty", []( auto& expect ) {
     resultset32 const a{ 23u, true, 3u, 6u, 9u, 10u };
     resultset32 const b{ 42u, true, 2u, 6u, 11u, 12u };
@@ -103,14 +110,14 @@ emptyspace::pest::suite basic( "index-resultset basic suite", []( auto& test ) {
     auto const c = a - b;
     expect( c.values(), equal_to( { 3u, 5u, 9u, 10u } ) );
   } );
-  
+
   test( "detail::resultset complement of non disjoint sets", []( auto& expect ) {
     resultset32 const a{ 0, 3u, 5u, 9u, 10u };
     resultset32 const b{ 0, 2u, 5u, 8u, 10u };
     auto const c = a - b;
     expect( c.values(), equal_to( { 3u, 9u } ) );
   } );
-  
+
   test( "set operation on incompatible resultsets return empty set of first", []( auto& expect ) {
     resultset32 const a{ 0, 3u, 5u, 9u, 10u };
     resultset64 const b{ 0, 2u, 5u, 8u, 10u };

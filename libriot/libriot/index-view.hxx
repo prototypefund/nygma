@@ -302,7 +302,14 @@ class poly_index_view {
 
  public:
   template <typename T, typename VC>
-  poly_index_view( index_view<T, VC> iv ) : _p{ std::make_unique<view<T, VC>>( std::move( iv ) ) } {}
+  poly_index_view( index_view<T, VC>&& iv )
+    : _p{ std::make_unique<view<T, VC>>( std::forward<index_view<T, VC>>( iv ) ) } {}
+
+  poly_index_view( poly_index_view const& ) = delete;
+  poly_index_view& operator=( poly_index_view const& ) = delete;
+
+  poly_index_view( poly_index_view&& ) noexcept = default;
+  poly_index_view& operator=( poly_index_view&& ) noexcept = default;
 
   auto size() const noexcept { return _p->size(); }
   auto key_count() const noexcept { return _p->size(); }
@@ -478,6 +485,12 @@ class index_view_handle {
   // the lifetime of the index view
   //
   index_view_handle( bytestring_view const data ) : _index{ detail::make_poly_index_view( data ) } {}
+
+  index_view_handle( index_view_handle const& ) = delete;
+  index_view_handle& operator=( index_view_handle const& ) = delete;
+
+  index_view_handle( index_view_handle&& ) noexcept = default;
+  index_view_handle& operator=( index_view_handle&& ) noexcept = default;
 
   auto const& operator*() const noexcept { return _index; }
   auto const* operator->() const noexcept { return &_index; }
