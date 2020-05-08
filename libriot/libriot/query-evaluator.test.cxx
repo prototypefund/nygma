@@ -133,7 +133,7 @@ emptyspace::pest::suite basic( "query-evaluator basic suite", []( auto& test ) {
     expect( rs.values(), equal_to( { 16u } ) );
   } );
 
-  test( "evaluate: 'ix( 1 ) & iy( 2 )'", []( auto& expect ) {
+  test( "evaluate: 'ix( 1 ) + iy( 2 )'", []( auto& expect ) {
     index_type ix;
     ix.add( 1u, 16 );
     ix.add( 2u, 16 );
