@@ -106,7 +106,7 @@ inline bool reassemble_stream(
     packet_header[3] = static_cast<unsigned>( slice.size() );
     iov[1].iov_base = const_cast<std::byte*>( slice.data() );
     iov[1].iov_len = static_cast<unsigned>( slice.size() );
-    if( auto rc = os.writev( iov, 2 ); not rc ) { return false; }
+    if( auto const rc = os.writev( iov, 2 ); not rc ) { return false; }
     begin++;
   }
   return true;
@@ -114,9 +114,8 @@ inline bool reassemble_stream(
 
 template <typename View, typename Iter, typename Stream>
 inline bool reassemble_from( View& pcap, Iter begin, Iter const end, Stream& os ) noexcept {
-  if( auto rc = reassemble_begin( pcap, os ); not rc ) { return false; }
+  if( auto const rc = reassemble_begin( pcap, os ); not rc ) { return false; }
   return reassemble_stream( pcap, 0u, begin, end, os );
-  return true;
 }
 
 } // namespace
