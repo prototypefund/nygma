@@ -8,6 +8,7 @@
 #include <nygma/ny-command-index.hxx>
 #include <nygma/ny-command-offset-by.hxx>
 #include <nygma/ny-command-slice-by.hxx>
+#include <nygma/ny-command-query.hxx>
 
 #include <algorithm>
 #include <cctype>
@@ -154,15 +155,44 @@ void ny_slice_by( argh::Subparser& argh ) {
 
   ny_show_version();
 
-  flog( lvl::i, "offsets_by_config._path = ", config._path );
-  flog( lvl::i, "offsets_by_config._root = ", config._root );
-  flog( lvl::i, "offsets_by_config._out = ", config._out );
-  flog( lvl::i, "offsets_by_config._key_i4 = ", config._key_i4 );
-  flog( lvl::i, "offsets_by_config._key_i6 = ", config._key_i6 );
-  flog( lvl::i, "offsets_by_config._key_ix = ", config._key_ix );
-  flog( lvl::i, "offsets_by_config._key_iy = ", config._key_iy );
+  flog( lvl::i, "slice_config._path = ", config._path );
+  flog( lvl::i, "slice_config._root = ", config._root );
+  flog( lvl::i, "slice_config._out = ", config._out );
+  flog( lvl::i, "slice_config._key_i4 = ", config._key_i4 );
+  flog( lvl::i, "slice_config._key_i6 = ", config._key_i6 );
+  flog( lvl::i, "slice_config._key_ix = ", config._key_ix );
+  flog( lvl::i, "slice_config._key_iy = ", config._key_iy );
 
   ny_command_slice_by( config );
+}
+
+//--query-and-restitch-pcap---------------------------------------------------
+
+void ny_query( argh::Subparser& argh) {
+  argh::HelpFlag help( argh, "help", "show this help message", { 'h', "help" } );
+  argh::Positional<std::string> path( argh, "path", "path to the indexed pcap" );
+  argh::ValueFlag<std::string> root( argh, "directory", "root path override", { "root" } );
+  argh::ValueFlag<std::string> out( argh, "output", "the restitched output", { 'o', "output" }, "-" );
+  argh::ValueFlag<std::string> query( argh, "query-expression", "the query", { 'q', "query" } );
+
+  argh.Parse();
+
+  if( not path ) { throw argh::Help( "path to pcap file missing" ); }
+
+  query_config config;
+  config._path = argh::get( path );
+  config._root = argh::get( root );
+  config._out = argh::get( out );
+  config._query = argh::get( query );
+
+  ny_show_version();
+
+  flog( lvl::i, "query_config._path = ", config._path );
+  flog( lvl::i, "query_config._root = ", config._root );
+  flog( lvl::i, "query_config._out = ", config._out );
+  flog( lvl::i, "query_config._query = ", config._query );
+
+  ny_command_query( config );
 }
 
 //--show-version---------------------------------------------------------------
@@ -182,6 +212,7 @@ int main( int argc, char* argv[] ) {
   argh::Command index( commands, "index-pcap", "index a pcap file", &ny_index_pcap );
   argh::Command offsets( commands, "offsets-by", "query offsets", &ny_offsets_by );
   argh::Command slice( commands, "slice-by", "restitch pcap from query", &ny_slice_by );
+  argh::Command query( commands, "query", "restitch pcap from query", &ny_query );
   argh::Command version( commands, "version", "show version", &ny_version );
   argh::GlobalOptions globals( argh, arguments );
 

@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <string_view>
 #include <vector>
+#include <tuple>
 
 namespace nygma {
 
@@ -14,6 +15,17 @@ struct index_file_dependencies {
   std::vector<std::filesystem::path> _iy;
 
   void gather( std::filesystem::path const& root, std::filesystem::path const& strem );
+
+  template <typename F>
+  void for_each( F const f ) {
+    auto const sz = _i4.size();
+    if( _ix.size() != sz ) {
+      throw std::runtime_error( "index_file_dependencies::for_each: number of index files differ" );
+    }
+    for( std::size_t i = 0; i < sz; i++ ) {
+      f( std::forward_as_tuple( _i4[i], _ix[i] ) );
+    }
+  }
 };
 
 }
