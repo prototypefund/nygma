@@ -31,10 +31,9 @@ void ny_command_query( query_config const& config ) {
   index_file_dependencies deps;
   deps.gather( d, expected_base );
 
-  auto data = std::make_unique<block_view_16k>( config._path, block_flags::rd );
-
   auto const query = riot::parse( config._query );
 
+  auto data = std::make_unique<block_view_16k>( config._path, block_flags::rd );
   nygma::pcap::with( std::move( data ), [&]( auto& pcap ) {
     if( not pcap.valid() ) {
       flog( lvl::e, "unable to open pcap storage path = ", config._path );
