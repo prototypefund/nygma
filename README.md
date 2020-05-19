@@ -78,7 +78,7 @@ base functionality and dealing with network packets
 
 ## libriot
 
-(r)apid (i)ndexing (o)f network (t)raffic ( or data thereof ).
+**r**apid **i**ndexing **o**f network **t**raffic ( or data thereof ).
 
 indexing, querying and index serialization using SIMD based integer compression.
 
