@@ -5,7 +5,7 @@
 project `nygma` is organized as a set of ( mostly ) header only `cxx` libraries as well as an example
 console application `ny`.
 
-instead of boring you to death the obligatory animated gif:
+instead of boring you to death the obligatory animated gif plus a little description of what to expect:
 
   - index an existing pcap ( from the [UNSW-NB15 cyber security dataset]( https://www.unsw.adfa.edu.au/unsw-canberra-cyber/cybersecurity/ADFA-NB15-Datasets/ ) )
       - the pcap was merged into one big `50gb` file from  `UNSW-NB15 - pcap files/pcaps 22-1-2015`
@@ -20,7 +20,7 @@ instead of boring you to death the obligatory animated gif:
 | `.ix`           | udp&tcp ports          |
 | `.iy`           | regexp/ioc matches (1) |
 
-(1) needs [g0tham :: t3tch]( https://github.com/stackless-goto/g0tham ) 
+(1) needs [~stackless-goto/g0tham]( https://github.com/stackless-goto/g0tham ) 
 
   - query the index for offsets into the pcap monolith
 
@@ -60,7 +60,7 @@ here `i4` represents the index for ipv4 addresses, `ix` for ports. the `&` opera
 *set-intersection* ( the operators `+`  and `-` implement  *set-union* and *set-complement/difference*
 respectively )
 
-![ny](https://64k.by/assets/nygma.svg)
+![ny]( https://64k.by/assets/nygma.svg )
 
 ## ny
 
@@ -89,10 +89,15 @@ features & current status:
       - [x] provide indexing method for ipv6 addresses
       - [x] provide indexing method for ports
       - [x] index compression using SIMD bitpacking/streamvbyte
-      - [ ] provide indexing for *IOC*s ( multi-regexp that is basically )
+      - [x] provide indexing for *IOC*s ( multi-regexp that is basically )
+          - @see [~stackless-goto/g0tham]( https://github.com/stackless-goto/g0tham )
   - [x] provide means of querying the index
   - [x] reassemble a pcap given an index query ( and the original pcap )
-  - [ ] lightweight query engine supporting SIMD accelerated union and intersection ops
+  - [x] lightweight query engine supporting the basic set operations *union*, *intersection* and
+    *complement*
+  - [ ] provide index compression using [~tlk00/BitMagic]( https://github.com/tlk00/BitMagic ) 
+      - [ ] use `BitMagic` as alternative to the fairly ad-hoc `resultset` implementation based on
+        sorted `std::vector` ( used in *index-view* and *query-evalutator* )
   - [ ] ... fun ...
 
 ## libzsasz ( TBD )
@@ -108,7 +113,7 @@ full packet capture ( or caching ) and compressed capture storage format ( `ccap
 
 ## example / code snippets
 
-@see: [ny-command-index.cxx](https://github.com/stackless-goto/nygma/blob/master/nygma/nygma/ny-command-index.cxx)
+@see: [ny-command-index.cxx] ( https://github.com/stackless-goto/nygma/blob/master/nygma/nygma/ny-command-index.cxx )
 
 ```cpp
 ...
@@ -156,9 +161,9 @@ auto const end = std::chrono::high_resolution_clock::now();
 ...
 ```
 
-a unit test for the reassembler using the [~stackless-goto/pest](https://github.com/stackless-goto/pest) helper.
+a unit test for the reassembler using the [~stackless-goto/pest]( https://github.com/stackless-goto/pest ) helper.
 
-@see: [pcap-reassembler.test.cxx](https://github.com/magenbluten/nygma-staging/blob/master/libnygma/libnygma/pcap-reassembler.test.cxx)
+@see: [pcap-reassembler.test.cxx]( https://github.com/magenbluten/nygma-staging/blob/master/libnygma/libnygma/pcap-reassembler.test.cxx )
 
 ```cpp
 #include <pest/pest.hxx>
@@ -231,19 +236,26 @@ int main() {
 
 ## dependencies
 
-`nygma` uses the [build2](https://build2.org) build system to manage all dependencies 
+`nygma` uses the [build2]( https://build2.org ) build system to manage all dependencies 
 ( actually the full project lifecycle ).
 
-  - [~stackless-goto/pest](https://github.com/stackless-goto/pest) for unit testing
-  - [~stackless-goto/argh](https://github.com/stackless-goto/argh) for argument parsing in `ny`
-  - [~stackless-goto/libforest](https://github.com/stackless-goto/libforest) for `std::map` alternatives and faster index generation
-  - [~stackless-goto/libunclassified](https://github.com/stackless-goto/libunclassified) for otherwise unrelated auxiliary functions
-  - [build2](https://build2.org) as build system ( [install-doc](https://build2.org/install.xhtml) )
+  - [~stackless-goto/pest]( https://github.com/stackless-goto/pest ) for unit testing
+  - [~stackless-goto/argh]( https://github.com/stackless-goto/argh ) for argument parsing in `ny`
+  - [~stackless-goto/libforest]( https://github.com/stackless-goto/libforest ) for `std::map`
+    alternatives and faster index generation
+  - [~stackless-goto/libunclassified]( https://github.com/stackless-goto/libunclassified ) for otherwise
+    unrelated auxiliary functions
+  - [build2]( https://build2.org ) as build system ( [install-doc]( https://build2.org/install.xhtml ) )
+
+while not beeing a dependency of `nygma` for code related to ioc hunting using the indexing have a look
+at the following repository ( containing libioc / libt3tch / t3tch ):
+
+  - [~stackless-goto/g0tham]( https://github.com/stackless-goto/g0tham ) ioc huting and passive DNS
 
 ## building & development
 
-development happens mainly on [freebsd](https://freebsd.org). theoretically linux should work
-as well. if not it's a bug. please report.
+development happens mainly on [freebsd]( https://freebsd.org ). theoretically linux should work as
+well. if not it's a bug. please report.
 
 building `ny` example using `clang10`.
 
