@@ -10,8 +10,8 @@ instead of boring you to death the obligatory animated gif plus a little descrip
   - index an existing pcap ( from the [UNSW-NB15 cyber security dataset]( https://www.unsw.adfa.edu.au/unsw-canberra-cyber/cybersecurity/ADFA-NB15-Datasets/ ) )
       - the pcap was merged into one big `50gb` file from  `UNSW-NB15 - pcap files/pcaps 22-1-2015`
         provided at the mentioned site.
-      - the indexer creates `index-files` for each ~4GB segment of the pcap. the index-file extensions
-        are used to identify the *index-kind*. 
+      - the indexer creates `index-files` for each ~4GB segment of the pcap. file extensions are used
+        to identify the *index-kind*.
 
 | index-extension |       index-kind       |
 | --------------- | ---------------------- |
