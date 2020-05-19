@@ -5,6 +5,17 @@
 project `nygma` is organized as a set of ( mostly ) header only `cxx` libraries as well as an example
 console application `ny`.
 
+- [NYGMA - network packet processing](#nygma---network-packet-processing)
+  - [cli example app: `ny`](#cli-example-app-ny)
+  - [core library `libnygma`](#core-library-libnygma)
+  - [indexing library `libriot`](#indexing-library-libriot)
+  - [capturing library `libzsasz` ( TBD )](#capturing-library-libzsasz--tbd-)
+  - [examples / code snippets](#examples--code-snippets)
+  - [dependencies](#dependencies)
+  - [building & development](#building--development)
+  - [support & blame-game](#support--blame-game)
+  - [acknowledgements](#acknowledgements)
+
 instead of boring you to death the obligatory animated gif plus a little description of what to expect:
 
   - index an existing pcap ( from the [UNSW-NB15 cyber security dataset]( https://www.unsw.adfa.edu.au/unsw-canberra-cyber/cybersecurity/ADFA-NB15-Datasets/ ) )
@@ -62,12 +73,12 @@ respectively )
 
 ![ny]( https://64k.by/assets/nygma.svg )
 
-## ny
+## cli example app: `ny`
 
 basic command line demonstration tool for indexing and reassembling pcaps ( as can be seen in the
 screencast )
 
-## libnygma
+## core library `libnygma`
 
 base functionality and dealing with network packets
 
@@ -76,7 +87,7 @@ base functionality and dealing with network packets
   - [x] lightweight packet dissector
   - [x] lightweight dns dissector
 
-## libriot
+## indexing library `libriot`
 
 **r**apid **i**ndexing **o**f network **t**raffic ( or data thereof ).
 
@@ -100,7 +111,7 @@ features & current status:
         sorted `std::vector<>` ( used in *index-view* and *query-evaluator* )
   - [ ] ... fun ...
 
-## libzsasz ( TBD )
+## capturing library `libzsasz` ( TBD )
 
 full packet capture ( or caching ) and compressed capture storage format ( `ccap` ).
 
@@ -111,7 +122,7 @@ full packet capture ( or caching ) and compressed capture storage format ( `ccap
       - [ ] integer compression for internal block offsets ...
       - [ ] stores capture port for each packet
 
-## example / code snippets
+## examples / code snippets
 
 @see: [ny-command-index.cxx] ( https://github.com/stackless-goto/nygma/blob/master/nygma/nygma/ny-command-index.cxx )
 
