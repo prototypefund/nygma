@@ -240,7 +240,7 @@ class eos final : public infix {
 
  public:
   expression accept( parser&, expression, token const ) const override {
-    throw std::runtime_error( "eos-parselet: unexpected end of input " );
+    throw std::runtime_error( "eos-parselet: unexpected end of input" );
   }
 
   precedence::type precedence() const noexcept override { return precedence::MIN; }

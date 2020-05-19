@@ -7,8 +7,8 @@
 
 #include <nygma/ny-command-index.hxx>
 #include <nygma/ny-command-offset-by.hxx>
-#include <nygma/ny-command-slice-by.hxx>
 #include <nygma/ny-command-query.hxx>
+#include <nygma/ny-command-slice-by.hxx>
 
 #include <algorithm>
 #include <cctype>
@@ -168,7 +168,7 @@ void ny_slice_by( argh::Subparser& argh ) {
 
 //--query-and-restitch-pcap---------------------------------------------------
 
-void ny_query( argh::Subparser& argh) {
+void ny_query( argh::Subparser& argh ) {
   argh::HelpFlag help( argh, "help", "show this help message", { 'h', "help" } );
   argh::Positional<std::string> path( argh, "path", "path to the indexed pcap" );
   argh::ValueFlag<std::string> root( argh, "directory", "root path override", { "root" } );

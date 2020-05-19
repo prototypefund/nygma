@@ -7,11 +7,65 @@ console application `ny`.
 
 instead of boring you to death the obligatory animated gif:
 
+  - index an existing pcap ( from the [UNSW-NB15 cyber security dataset]( https://www.unsw.adfa.edu.au/unsw-canberra-cyber/cybersecurity/ADFA-NB15-Datasets/ ) )
+      - the pcap was merged into one big `50gb` file from  `UNSW-NB15 - pcap files/pcaps 22-1-2015`
+        provided at the mentioned site.
+      - the indexer creates `index-files` for each ~4GB segment of the pcap. the index-file extensions
+        are used to identify the *index-kind*. 
+
+| index-extension |       index-kind       |
+| --------------- | ---------------------- |
+| `.i4`           | ipv4-addresses         |
+| `.i6`           | ipv6-addresses         |
+| `.ix`           | udp&tcp ports          |
+| `.iy`           | regexp/ioc matches (1) |
+
+(1) needs [g0tham :: t3tch]( https://github.com/stackless-goto/g0tham ) 
+
+  - query the index for offsets into the pcap monolith
+
+```shell
+$ ny index-pcap ~/pcap/unsw-nb15-2015-1-22.pcap.en10mb
+```
+
+  - slice packets matching an ip ( e.g. 127.0.0.1 ) address and feed the resulting pcap directly into `tcpdump`
+
+```shell
+$ ny slice-by --i4 127.0.0.1 ~/pcap/unsw-nb15-2015-1-22.pcap.en10mb \
+  | tcpdump -n -q -r -
+```
+
+  -  slice packets matching `ipv4 = 175.45.176.0` and feed into tcpdump
+
+```shell  
+$ ny slice-by --i4 175.45.176.0 ~/pcap/unsw-nb15-2015-1-22.pcap.en10mb \
+  | tcpdump -n -q -r -
+```
+
+  -  slice packets matching port `53` and stream into tcpdump
+
+```shell
+$ ny slice-by --ix 53 ~/pcap/unsw-nb15-2015-1-22.pcap.en10mb \
+  | tcpdump -n -q -r -
+```
+
+  - not shown: current `ny` has a query extension for full set based queries:
+
+```shell
+$ ny query ~/1.pcap.en10mb --verbosity 2 -q "i4( 175.45.176.3 ) & ix( 12862 )" \
+  | tcpdump -n -r -
+```
+
+here `i4` represents the index for ipv4 addresses, `ix` for ports. the `&` operator implements
+*set-intersection* ( the operators `+`  and `-` implement  *set-union* and *set-complement/difference*
+repsectively )
+
 ![ny](https://64k.by/assets/nygma.svg)
 
 ## ny
 
-basic command line demonstration tool for indexing and reassembling pcaps ( as can be seen in the screencast )
+basic command line demonstration tool for indexing and reassembling pcaps ( as can be seen in the
+screencast )
 
 ## libnygma
 
