@@ -58,7 +58,7 @@ $ ny query ~/1.pcap.en10mb --verbosity 2 -q "i4( 175.45.176.3 ) & ix( 12862 )" \
 
 here `i4` represents the index for ipv4 addresses, `ix` for ports. the `&` operator implements
 *set-intersection* ( the operators `+`  and `-` implement  *set-union* and *set-complement/difference*
-repsectively )
+respectively )
 
 ![ny](https://64k.by/assets/nygma.svg)
 
