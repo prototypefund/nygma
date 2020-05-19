@@ -97,7 +97,7 @@ features & current status:
     *complement*
   - [ ] provide index compression using [~tlk00/BitMagic]( https://github.com/tlk00/BitMagic ) 
       - [ ] use `BitMagic` as alternative to the fairly ad-hoc `resultset` implementation based on
-        sorted `std::vector` ( used in *index-view* and *query-evalutator* )
+        sorted `std::vector<>` ( used in *index-view* and *query-evaluator* )
   - [ ] ... fun ...
 
 ## libzsasz ( TBD )
@@ -295,7 +295,6 @@ needed ...
 magenbluten < mb [ at ] 64k.by > :: <https://64k.by>
 
 ## acknowledgements
-
 
  <a href="https://bmbf.de"><img src="https://64k.by/assets/bmbf-gefoerdert.jpg"></a> <a href="https://prototypefund.de"><img src="https://64k.by/assets/ptfp.png"></a>
 
