@@ -278,6 +278,7 @@ $ bdep init -C @clang10 cc \
     config.cxx.poptions="-DNDEBUG" \
     config.cxx.coptions="-flto -stdlib=libc++ -Ofast -fno-rtti -mavx2 -mlzcnt -Wall -Wextra -Wno-c99-designator"
 ...
+# the trailing slash is important
 $ b nygma/
 ...
 $ nygma/nygma/ny --help

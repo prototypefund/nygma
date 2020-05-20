@@ -5,6 +5,7 @@
 #include <libriot/version.hxx>
 #include <libunclassified/femtolog.hxx>
 
+#include <nygma/ny-command-index-info.hxx>
 #include <nygma/ny-command-index.hxx>
 #include <nygma/ny-command-offset-by.hxx>
 #include <nygma/ny-command-query.hxx>
@@ -195,6 +196,26 @@ void ny_query( argh::Subparser& argh ) {
   ny_command_query( config );
 }
 
+//--index-info----------------------------------------------------------------
+
+void ny_index_info( argh::Subparser& argh ) {
+  argh::HelpFlag help( argh, "help", "show this help message", { 'h', "help" } );
+  argh::ValueFlag<std::string> index( argh, "path", "path to the index file", { 'i', "index" } );
+
+  argh.Parse();
+
+  if( not index ) { throw argh::Help( "path to index file missing" ); }
+
+  index_info_config config;
+  config._path = argh::get( index );
+
+  ny_show_version();
+
+  flog( lvl::i, "index_info_config._path = ", config._path );
+
+  ny_command_index_info( config );
+}
+
 //--show-version---------------------------------------------------------------
 
 void ny_version( argh::Subparser& argh ) {
@@ -214,6 +235,7 @@ int main( int argc, char* argv[] ) {
   argh::Command slice( commands, "slice-by", "restitch pcap from query", &ny_slice_by );
   argh::Command query( commands, "query", "restitch pcap from query", &ny_query );
   argh::Command version( commands, "version", "show version", &ny_version );
+  argh::Command info( commands, "index-info", "show info about index file", &ny_index_info );
   argh::GlobalOptions globals( argh, arguments );
 
   try {

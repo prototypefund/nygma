@@ -12,6 +12,8 @@
 #include <libunclassified/bytestring.hxx>
 
 #include <array>
+#include <iterator>
+#include <ostream>
 #include <vector>
 
 namespace riot {
@@ -191,6 +193,11 @@ class index_view {
     return resultset_forward_type{ _segment_offset, rc, std::move( values ) };
   }
 
+  template <typename OutIt>
+  void output_keys( OutIt& out ) const {
+    std::copy( _keys.begin(), _keys.end(), out );
+  }
+
   // TODO
   //
   bool prepare_reverse_lookups() const noexcept { return true; }
@@ -229,6 +236,7 @@ class poly_index_view {
     virtual std::size_t sizeof_domain_value() const noexcept = 0;
     virtual std::size_t size() const noexcept = 0;
     virtual std::uint64_t segment_offset() const noexcept = 0;
+    virtual void output_keys( std::ostream& os ) const noexcept = 0;
   };
 
   template <typename T, typename VC>
@@ -244,6 +252,19 @@ class poly_index_view {
     }
 
     std::uint64_t segment_offset() const noexcept override { return _view.segment_offset(); }
+
+    void output_keys( std::ostream& os ) const noexcept override {
+      // TODO: we want a transformation function
+      //   - render keys as ip addresses
+      //   - render keys as signature ids
+      //   - ...
+      if constexpr( sizeof( T ) < 16 ) {
+        std::ostream_iterator<T> out{ os, ", " };
+        _view.output_keys( out );
+      } else {
+        os << "<index_view::output_keys: 128bit keys unimplemented>";
+      }
+    }
 
     //--forward-lookup-wrappers-----------------------------------------------
 
@@ -315,6 +336,7 @@ class poly_index_view {
   auto key_count() const noexcept { return _p->size(); }
   auto sizeof_domain_value() const noexcept { return _p->sizeof_domain_value(); }
   std::uint64_t segment_offset() const noexcept { return _p->segment_offset(); }
+  void output_keys( std::ostream& os ) const noexcept { return _p->output_keys( os ); }
 
   resultset_forward_type lookup_forward_32( key32_t const k ) const noexcept {
     return _p->lookup_forward_32( k );
