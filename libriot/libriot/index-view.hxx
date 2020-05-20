@@ -259,7 +259,7 @@ class poly_index_view {
       //   - render keys as signature ids
       //   - ...
       if constexpr( sizeof( T ) < 16 ) {
-        std::ostream_iterator<T> out{ os, ", " };
+        std::ostream_iterator<T> out{ os, "\n" };
         _view.output_keys( out );
       } else {
         os << "<index_view::output_keys: 128bit keys unimplemented>";

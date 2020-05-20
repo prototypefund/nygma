@@ -25,11 +25,11 @@ void ny_command_index_info( index_info_config const& config ) {
 
   auto iv = riot::make_poly_index_view( config._path );
 
-  std::cout << "index_view.path = " << config._path << std::endl
-            << "index_view.segment_offset = " << iv->segment_offset() << std::endl
-            << "index_view.keys = {";
+  flog( lvl::m, "index_view.path = ", config._path );
+  flog( lvl::m, "index_view.segment_offset = ", iv->segment_offset() );
+  flog( lvl::m, "index_view.keys = ..." );
+
   iv->output_keys( std::cout );
-  std::cout << "}" << std::endl;
 }
 
 } // namespace nygma
