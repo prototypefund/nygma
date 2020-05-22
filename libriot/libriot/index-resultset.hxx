@@ -72,7 +72,7 @@ struct resultset {
   using segment_offset_type = std::uint64_t;
   static constexpr detail::resultset_kind KIND = K;
 
-  segment_offset_type const _segment_offset;
+  segment_offset_type _segment_offset;
   bool _success;
   container_type _values;
 
@@ -87,18 +87,21 @@ struct resultset {
 
   constexpr resultset() : _segment_offset{ 0 }, _success{ false } {}
 
-  resultset( resultset& ) = delete;
-  resultset& operator=( resultset& ) = delete;
+  resultset( resultset const& ) = delete;
+  resultset& operator=( resultset const& ) = delete;
 
-  resultset( resultset const&& ) noexcept = default;
-  resultset& operator=( resultset const&& ) noexcept = default;
+  resultset( resultset&& ) noexcept = default;
+  resultset& operator=( resultset&& o ) noexcept = default;
 
   resultset_type set_union( resultset_type const& o ) const noexcept {
     return resultset_type{ _segment_offset, true, traits_type::set_union( _values, o._values ) };
   }
 
   resultset_type set_intersection( resultset_type const& o ) const noexcept {
-    return resultset_type{ _segment_offset, true, traits_type::set_intersection( _values, o._values ) };
+    return resultset_type{
+        _segment_offset,
+        true,
+        traits_type::set_intersection( _values, o._values ) };
   }
 
   resultset_type set_complement( resultset_type const& o ) const noexcept {
@@ -152,17 +155,6 @@ struct resultset {
     static const resultset_type DUMMY = resultset_type{ 0 };
     return DUMMY;
   }
-};
-
-struct poly_resultset {
-
-  struct interface {
-    virtual ~interface() = default;
-    virtual std::size_t size() const noexcept = 0;
-    //virtual
-  };
-
-  std::unique_ptr<interface> _resultset;
 };
 
 } // namespace riot

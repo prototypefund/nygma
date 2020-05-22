@@ -46,13 +46,56 @@ emptyspace::pest::suite basic( "index-view basic suite", []( auto& test ) {
 
     auto const len = static_cast<std::size_t>( os.current_position() );
 
-    auto const iv = riot::make_poly_index_view( unclassified::bytestring_view{ data, len } );
+    auto iv = riot::make_poly_index_view( unclassified::bytestring_view{ data, len } );
 
     expect( iv->size(), equal_to( 3u ) );
     expect( iv->sizeof_domain_value(), equal_to( 4u ) );
     expect( iv->lookup_forward_32( 1 ).values(), equal_to( { 300u } ) );
     expect( iv->lookup_forward_32( 13372342u ).values(), equal_to( { 24u, 3000u } ) );
     expect( iv->lookup_forward_32( 23421337u ).values(), equal_to( { 16u, 400u } ) );
+    expect( iv->lookup_reverse( 16 ).values().empty() );
+    iv->prepare_reverse_lookups();
+    expect( iv->lookup_reverse( 16 ).values(), equal_to( { 16, 400 } ) );
+    expect( not iv->lookup_forward_128( 1 ) );
+  } );
+
+  test( "index-view and reverse lookup for 32bit keys", []( auto& expect ) {
+    using index_type = riot::index_builder<std::uint32_t, map_type, 128>;
+
+    index_type idx;
+
+    idx.add( 23421337u, 16 );
+    idx.add( 13372342u, 16 );
+    idx.add( 23421337u, 400 );
+    idx.add( 1u, 300 );
+    idx.add( 13372342u, 3000 );
+
+    std::byte data[1024];
+    auto os = nygma::cfile_ostream{ data };
+    riot::uc128_serializer ser{ os };
+    idx.accept( ser, 0u );
+
+    expect( idx.key_count(), equal_to( 3u ) );
+    expect( os.ok(), equal_to( true ) );
+    expect( os.current_position(), equal_to( 91u ) );
+    expect(
+        hexify( data, static_cast<std::size_t>( os.current_position() ) ),
+        equal_to( "0401042c01000004020810000000b80b0000040208100000009001000001030c01000000b60bcc00996"
+                  "1650103030c00000000070000001200000037133713fefe23011d0000002c0000000000000000000000"
+                  "3713371341414141" ) );
+
+    auto const len = static_cast<std::size_t>( os.current_position() );
+
+    auto iv = riot::make_poly_index_view( unclassified::bytestring_view{ data, len } );
+
+    expect( iv->size(), equal_to( 3u ) );
+    expect( iv->sizeof_domain_value(), equal_to( 4u ) );
+    expect( iv->lookup_forward_32( 1 ).values(), equal_to( { 300u } ) );
+    expect( iv->lookup_forward_32( 13372342u ).values(), equal_to( { 16u, 3000u } ) );
+    expect( iv->lookup_forward_32( 23421337u ).values(), equal_to( { 16u, 400u } ) );
+    expect( iv->lookup_reverse( 16 ).values().empty() );
+    iv->prepare_reverse_lookups();
+    expect( iv->lookup_reverse( 16 ).values(), equal_to( { 16, 400, 3000 } ) );
     expect( not iv->lookup_forward_128( 1 ) );
   } );
 

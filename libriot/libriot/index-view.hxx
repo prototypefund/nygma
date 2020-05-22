@@ -14,7 +14,9 @@
 #include <array>
 #include <iterator>
 #include <ostream>
+#include <set>
 #include <sstream>
+#include <unordered_map>
 #include <vector>
 
 namespace riot {
@@ -130,12 +132,14 @@ class index_view {
   using value_type = resultset_forward_value_type;
   using resultset_reverse_traits = detail::std_vector_traits<key_type>;
   using resultset_reverse_type = resultset<resultset_reverse_traits, detail::resultset_kind::REVERSE>;
+  using inverted_index_type = std::unordered_map<value_type, std::set<key_type>>;
 
  private:
   bytestring_view const _data;
   std::uint64_t const _segment_offset;
   std::vector<key_type> _keys;
   std::vector<value_type> _offsets;
+  inverted_index_type _inverted_index;
 
  public:
   index_view(
@@ -207,17 +211,54 @@ class index_view {
     }
   }
 
-  // TODO
+  // PERF:
   //
-  bool prepare_reverse_lookups() const noexcept { return true; }
+  void prepare_reverse_lookups() noexcept {
+    if( not _inverted_index.empty() ) { return; }
+    std::vector<value_type> values;
+    for( auto const& k : _keys ) {
+      values.clear();
+      if( auto const rc = lookup_forward( k, std::back_inserter( values ) ); ! rc ) {
+        _inverted_index.clear();
+        return;
+      }
+      for( auto const& v : values ) { _inverted_index[v].insert( k ); }
+    }
+  }
 
-  // TODO: implement ( maybe lazy constructed ) reverse lookup
-  //   - for lazy construction maybe use a helper function
-  //     otherwise the lookup could not be `const`
+  template <typename OutIt>
+  bool lookup_inverse( value_type const v, OutIt out ) const noexcept {
+    auto it = _inverted_index.find( v );
+    if( it == _inverted_index.end() ) { return false; }
+    std::copy( it->second.cbegin(), it->second.cend(), out );
+    return true;
+  }
+
+  resultset_reverse_type lookup_inverse( value_type const v ) const noexcept {
+    typename resultset_reverse_type::container_type keys;
+    auto const rc = lookup_inverse( v, std::back_inserter( keys ) );
+    return resultset_reverse_type{ _segment_offset, rc, std::move( keys ) };
+  }
+
+  // PERF:
   //
-  resultset_reverse_type lookup_reverse( value_type const k ) const noexcept {
-    unused( k );
-    return resultset_reverse_type{ _segment_offset };
+  resultset_forward_type lookup_reverse( value_type const v ) const noexcept {
+    typename resultset_reverse_type::container_type keys;
+    resultset_forward_type rs{ _segment_offset, true };
+    if( auto const rc = lookup_inverse( v, std::back_inserter( keys ) ); ! rc ) {
+      return resultset_forward_type{ 0, false };
+    }
+    resultset_forward_type combined{ 0, false };
+    bool first = true;
+    for( auto const k : keys ) {
+      if( first ) {
+        first = false;
+        combined = std::move( lookup_forward( k ) );
+        continue;
+      }
+      combined = std::move( combined & lookup_forward( k ) );
+    }
+    return combined;
   }
 };
 
@@ -238,10 +279,13 @@ class poly_index_view {
     virtual resultset_forward_type lookup_forward_64( key64_t const k ) noexcept = 0;
     virtual resultset_forward_type lookup_forward_128( key128_t const k ) noexcept = 0;
 
-    virtual resultset_reverse_32 lookup_reverse_32( value_type const v ) noexcept = 0;
-    virtual resultset_reverse_64 lookup_reverse_64( value_type const v ) noexcept = 0;
-    virtual resultset_reverse_128 lookup_reverse_128( value_type const v ) noexcept = 0;
+    virtual resultset_forward_type lookup_reverse( value_type const v ) noexcept = 0;
 
+    virtual resultset_reverse_32 lookup_inverse_32( value_type const v ) noexcept = 0;
+    virtual resultset_reverse_64 lookup_inverse_64( value_type const v ) noexcept = 0;
+    virtual resultset_reverse_128 lookup_inverse_128( value_type const v ) noexcept = 0;
+
+    virtual void prepare_reverse_lookups() noexcept = 0;
     virtual std::size_t sizeof_domain_value() const noexcept = 0;
     virtual std::size_t size() const noexcept = 0;
     virtual std::uint64_t segment_offset() const noexcept = 0;
@@ -261,6 +305,8 @@ class poly_index_view {
     }
 
     std::uint64_t segment_offset() const noexcept override { return _view.segment_offset(); }
+
+    void prepare_reverse_lookups() noexcept override { return _view.prepare_reverse_lookups(); }
 
     void output_keys( std::ostream& os ) const noexcept override {
       // TODO: we want a transformation function
@@ -300,29 +346,34 @@ class poly_index_view {
 
     //--reverse-lookup-wrappers-----------------------------------------------
 
-    resultset_reverse_32 lookup_reverse_32( value_type const v ) noexcept override {
+    // make sure `prepare_reverse_lookups()` has been called before
+    resultset_forward_type lookup_reverse( value_type const v ) noexcept override {
+      return _view.lookup_reverse( v );
+    }
+
+    resultset_reverse_32 lookup_inverse_32( value_type const v ) noexcept override {
       if constexpr( std::is_same_v<
                         resultset_reverse_32,
                         typename index_view<T, VC>::resultset_reverse_type> ) {
-        return _view.lookup_reverse( v );
+        return _view.lookup_inverse( v );
       }
       return resultset_reverse_32{ 0 };
     }
 
-    resultset_reverse_64 lookup_reverse_64( value_type const v ) noexcept override {
+    resultset_reverse_64 lookup_inverse_64( value_type const v ) noexcept override {
       if constexpr( std::is_same_v<
                         resultset_reverse_64,
                         typename index_view<T, VC>::resultset_reverse_type> ) {
-        return _view.lookup_reverse( v );
+        return _view.lookup_inverse( v );
       }
       return resultset_reverse_64{ 0 };
     }
 
-    resultset_reverse_128 lookup_reverse_128( value_type const v ) noexcept override {
+    resultset_reverse_128 lookup_inverse_128( value_type const v ) noexcept override {
       if constexpr( std::is_same_v<
                         resultset_reverse_128,
                         typename index_view<T, VC>::resultset_reverse_type> ) {
-        return _view.lookup_reverse( v );
+        return _view.lookup_inverse( v );
       }
       return resultset_reverse_128{ 0 };
     }
@@ -346,6 +397,7 @@ class poly_index_view {
   auto sizeof_domain_value() const noexcept { return _p->sizeof_domain_value(); }
   std::uint64_t segment_offset() const noexcept { return _p->segment_offset(); }
   void output_keys( std::ostream& os ) const noexcept { return _p->output_keys( os ); }
+  void prepare_reverse_lookups() noexcept { return _p->prepare_reverse_lookups(); }
 
   resultset_forward_type lookup_forward_32( key32_t const k ) const noexcept {
     return _p->lookup_forward_32( k );
@@ -359,16 +411,20 @@ class poly_index_view {
     return _p->lookup_forward_128( k );
   }
 
-  resultset_reverse_32 lookup_reverse_32( value_type const v ) const noexcept {
-    return _p->lookup_reverse_32( v );
+  resultset_forward_type lookup_reverse( value_type const v ) const noexcept {
+    return _p->lookup_reverse( v );
   }
 
-  resultset_reverse_64 lookup_reverse_64( value_type const v ) const noexcept {
-    return _p->lookup_reverse_64( v );
+  resultset_reverse_32 lookup_inverse_32( value_type const v ) const noexcept {
+    return _p->lookup_inverse_32( v );
   }
 
-  resultset_reverse_128 lookup_reverse_128( value_type const v ) const noexcept {
-    return _p->lookup_reverse_128( v );
+  resultset_reverse_64 lookup_inverse_64( value_type const v ) const noexcept {
+    return _p->lookup_inverse_64( v );
+  }
+
+  resultset_reverse_128 lookup_inverse_128( value_type const v ) const noexcept {
+    return _p->lookup_inverse_128( v );
   }
 };
 
@@ -525,6 +581,8 @@ class index_view_handle {
 
   auto const& operator*() const noexcept { return _index; }
   auto const* operator->() const noexcept { return &_index; }
+  auto& operator*() noexcept { return _index; }
+  auto* operator->() noexcept { return &_index; }
 };
 
 namespace {
