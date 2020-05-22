@@ -27,7 +27,7 @@ void ny_command_index_info( index_info_config const& config ) {
 
   flog( lvl::m, "index_view.path = ", config._path );
   flog( lvl::m, "index_view.segment_offset = ", iv->segment_offset() );
-  flog( lvl::m, "index_view.keys = ..." );
+  flog( lvl::m, "index_view.keys = key : size ( in bytes compressed / on disk )" );
 
   iv->output_keys( std::cout );
 }

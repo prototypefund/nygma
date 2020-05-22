@@ -29,12 +29,9 @@ void ny_command_offset_by( offsets_by_config const& config ) {
 
   flog( lvl::i, "offset_by.root = ", d );
   flog( lvl::i, "offset_by.expected_base = ", expected_base );
-  //flog( lvl::i, "offset_by.pattern = ", "-XXXX.iY" );
 
   index_file_dependencies deps;
   deps.gather( d, expected_base );
-
-  std::size_t const per_index_limit = 42;
 
   if( not config._key_i4.empty() ) {
     auto const key = ntohl( ::inet_addr( config._key_i4.c_str() ) );
@@ -42,10 +39,11 @@ void ny_command_offset_by( offsets_by_config const& config ) {
     for( auto& p : deps._i4 ) {
       flog( lvl::i, "executing query on index file = ", p );
       auto iv = riot::make_poly_index_view( p );
-      std::cout << "@segment offset = " << iv->segment_offset() << std::endl;
+      std::cout << "@segment_offset = " << iv->segment_offset() << std::endl;
       auto const rs = iv->lookup_forward_32( key );
+      std::cout << "@resultset.size = " << rs.size() << std::endl;
       std::ostream_iterator<std::uint32_t> out{ std::cout, "\n" };
-      std::copy_n( rs.values().begin(), std::min( rs.values().size(), per_index_limit ), out );
+      std::copy_n( rs.values().begin(), rs.values().size(), out );
     }
   }
   
@@ -59,10 +57,11 @@ void ny_command_offset_by( offsets_by_config const& config ) {
     for( auto& p : deps._i6 ) {
       flog( lvl::i, "executing query on index file = ", p );
       auto iv = riot::make_poly_index_view( p );
-      std::cout << "@segment offset = " << iv->segment_offset() << std::endl;
+      std::cout << "@segment_offset = " << iv->segment_offset() << std::endl;
       auto const rs = iv->lookup_forward_128( key );
+      std::cout << "@resultset.size = " << rs.size() << std::endl;
       std::ostream_iterator<std::uint32_t> out{ std::cout, "\n" };
-      std::copy_n( rs.values().begin(), std::min( rs.values().size(), per_index_limit ), out );
+      std::copy_n( rs.values().begin(), rs.values().size(), out );
     }
   }
   
@@ -72,10 +71,11 @@ void ny_command_offset_by( offsets_by_config const& config ) {
     for( auto& p : deps._ix ) {
       flog( lvl::i, "executing query on index file = ", p );
       auto iv = riot::make_poly_index_view( p );
-      std::cout << "@segment offset = " << iv->segment_offset() << std::endl;
+      std::cout << "@segment_offset = " << iv->segment_offset() << std::endl;
       auto const rs = iv->lookup_forward_32( key );
+      std::cout << "@resultset.size = " << rs.size() << std::endl;
       std::ostream_iterator<std::uint32_t> out{ std::cout, "\n" };
-      std::copy_n( rs.values().begin(), std::min( rs.values().size(), per_index_limit ), out );
+      std::copy_n( rs.values().begin(), rs.values().size(), out );
     }
   }
 
@@ -87,8 +87,9 @@ void ny_command_offset_by( offsets_by_config const& config ) {
       auto iv = riot::make_poly_index_view( p );
       std::cout << "@segment offset = " << iv->segment_offset() << std::endl;
       auto const rs = iv->lookup_forward_32( key );
+      std::cout << "@resultset.size = " << rs.size() << std::endl;
       std::ostream_iterator<std::uint32_t> out{ std::cout, "\n" };
-      std::copy_n( rs.values().begin(), std::min( rs.values().size(), per_index_limit ), out );
+      std::copy_n( rs.values().begin(), rs.values().size(), out );
     }
   }
 }

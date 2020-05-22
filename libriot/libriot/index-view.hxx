@@ -14,6 +14,7 @@
 #include <array>
 #include <iterator>
 #include <ostream>
+#include <sstream>
 #include <vector>
 
 namespace riot {
@@ -195,7 +196,15 @@ class index_view {
 
   template <typename OutIt>
   void output_keys( OutIt& out ) const {
-    std::copy( _keys.begin(), _keys.end(), out );
+    value_type last_offset = static_cast<value_type>( _data.size() - METASZ );
+    for( std::size_t i = 0; i < _keys.size(); i++ ) {
+      std::ostringstream k_and_size;
+      auto const next_offset = i == _keys.size() - 1 ? last_offset : _offsets.at( i + 1 );
+      k_and_size << _keys[i];
+      k_and_size << " : ";
+      k_and_size << next_offset - _offsets.at( i );
+      out = k_and_size.str();
+    }
   }
 
   // TODO
@@ -259,7 +268,7 @@ class poly_index_view {
       //   - render keys as signature ids
       //   - ...
       if constexpr( sizeof( T ) < 16 ) {
-        std::ostream_iterator<T> out{ os, "\n" };
+        std::ostream_iterator<std::string> out{ os, "\n" };
         _view.output_keys( out );
       } else {
         os << "<index_view::output_keys: 128bit keys unimplemented>";
