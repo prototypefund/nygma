@@ -144,12 +144,18 @@ struct resultset {
   constexpr auto size() const noexcept { return _values.size(); }
   constexpr auto empty() const noexcept { return _values.empty(); }
   constexpr auto const& values() const noexcept { return _values; }
+  constexpr auto& values() noexcept { return _values; }
   constexpr auto segment_offset() const noexcept { return _segment_offset; }
 
   constexpr auto cbegin() const noexcept { return _values.cbegin(); }
   constexpr auto cend() const noexcept { return _values.cend(); }
 
   static constexpr resultset_type none() noexcept { return resultset{}; }
+
+  template <typename T = resultset_type>
+  static constexpr T intersection( T&& a, T&& b ) noexcept {
+    return a & b;
+  }
 
   static auto const& dummy() noexcept {
     static const resultset_type DUMMY = resultset_type{ 0 };

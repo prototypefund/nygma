@@ -14,6 +14,7 @@
 #include <array>
 #include <iterator>
 #include <ostream>
+#include <ratio>
 #include <set>
 #include <sstream>
 #include <unordered_map>
@@ -162,17 +163,10 @@ class index_view {
   index_view( index_view&& ) = default;
   index_view& operator=( index_view&& ) = default;
 
- public:
-  auto key_count() const noexcept { return _keys.size(); }
-  auto segment_offset() const noexcept { return _segment_offset; }
-
+ private:
   template <typename OutIt>
-  bool lookup_forward( key_type const k, OutIt out ) const noexcept {
-    auto it = std::lower_bound( _keys.begin(), _keys.end(), k );
-    if( it == _keys.end() || k < *it ) { return false; }
-    auto const o = static_cast<std::size_t>( it - _keys.begin() );
-    assert( o < _offsets.size() );
-    auto const* p = _data.begin() + _offsets[o];
+  bool decode( value_type const offset, OutIt out ) const noexcept {
+    auto const* p = _data.begin() + offset;
     auto const* const end = _data.end();
     if( p + METASZ >= end ) { return false; }
     encoding enc{ ._value = *p++ };
@@ -190,6 +184,19 @@ class index_view {
       enc._value = *p++;
     } while( p < end && enc._tag == tag::CBLOCK && enc._type != block_subtype::CBEGIN );
     return true;
+  }
+
+ public:
+  auto key_count() const noexcept { return _keys.size(); }
+  auto segment_offset() const noexcept { return _segment_offset; }
+
+  template <typename OutIt>
+  bool lookup_forward( key_type const k, OutIt out ) const noexcept {
+    auto it = std::lower_bound( _keys.begin(), _keys.end(), k );
+    if( it == _keys.end() || k < *it ) { return false; }
+    auto const o = static_cast<std::size_t>( it - _keys.begin() );
+    assert( o < _offsets.size() );
+    return decode( _offsets[o], out );
   }
 
   resultset_forward_type lookup_forward( key_type const k ) const noexcept {
@@ -211,7 +218,34 @@ class index_view {
     }
   }
 
-  // PERF:
+  //--reverse-lookup-using-scanning-------------------------------------------
+
+  template <auto Combine>
+  resultset_forward_type scan( resultset_forward_type const& values ) const noexcept {
+    resultset_forward_type result{ _segment_offset, false };
+    auto first = true;
+    for( auto const o : _offsets ) {
+      resultset_forward_type current;
+      if( not decode( o, std::back_inserter( current.values() ) ) ) {
+        return resultset_forward_type{ 0 };
+      }
+      // TODO: performance
+      //   - no need to compute the actual intersection, a boolean result suffices
+      if( auto const intersection = current & values; not intersection.empty() ) {
+        if( first ) {
+          first = false;
+          result = std::move( current );
+          continue;
+        }
+        result = Combine( std::move( result ), std::move( current ) );
+      }
+    }
+    return result;
+  }
+
+  //--reverse-lookup-using-an-inverse-mapping---------------------------------
+
+  // TODO: performance
   //
   void prepare_reverse_lookups() noexcept {
     if( not _inverted_index.empty() ) { return; }
@@ -240,7 +274,7 @@ class index_view {
     return resultset_reverse_type{ _segment_offset, rc, std::move( keys ) };
   }
 
-  // PERF:
+  // TODO: performance
   //
   resultset_forward_type lookup_reverse( value_type const v ) const noexcept {
     typename resultset_reverse_type::container_type keys;
@@ -274,17 +308,14 @@ class poly_index_view {
 
   struct base {
     virtual ~base() = default;
-
     virtual resultset_forward_type lookup_forward_32( key32_t const k ) noexcept = 0;
     virtual resultset_forward_type lookup_forward_64( key64_t const k ) noexcept = 0;
     virtual resultset_forward_type lookup_forward_128( key128_t const k ) noexcept = 0;
-
     virtual resultset_forward_type lookup_reverse( value_type const v ) noexcept = 0;
-
+    virtual resultset_forward_type scan( resultset_forward_type const& v ) noexcept = 0;
     virtual resultset_reverse_32 lookup_inverse_32( value_type const v ) noexcept = 0;
     virtual resultset_reverse_64 lookup_inverse_64( value_type const v ) noexcept = 0;
     virtual resultset_reverse_128 lookup_inverse_128( value_type const v ) noexcept = 0;
-
     virtual void prepare_reverse_lookups() noexcept = 0;
     virtual std::size_t sizeof_domain_value() const noexcept = 0;
     virtual std::size_t size() const noexcept = 0;
@@ -295,18 +326,13 @@ class poly_index_view {
   template <typename T, typename VC>
   struct view final : base {
     index_view<T, VC> _view;
-
     view( index_view<T, VC> iv ) noexcept : _view{ std::move( iv ) } {}
-
     std::size_t size() const noexcept override { return _view.key_count(); }
-
+    std::uint64_t segment_offset() const noexcept override { return _view.segment_offset(); }
+    void prepare_reverse_lookups() noexcept override { return _view.prepare_reverse_lookups(); }
     std::size_t sizeof_domain_value() const noexcept override {
       return sizeof( typename index_view<T, VC>::key_type );
     }
-
-    std::uint64_t segment_offset() const noexcept override { return _view.segment_offset(); }
-
-    void prepare_reverse_lookups() noexcept override { return _view.prepare_reverse_lookups(); }
 
     void output_keys( std::ostream& os ) const noexcept override {
       // TODO: we want a transformation function
@@ -345,6 +371,10 @@ class poly_index_view {
     }
 
     //--reverse-lookup-wrappers-----------------------------------------------
+
+    resultset_forward_type scan( resultset_forward_type const& v ) noexcept override {
+      return _view.template scan<&resultset_forward_type::intersection<>>( v );
+    }
 
     // make sure `prepare_reverse_lookups()` has been called before
     resultset_forward_type lookup_reverse( value_type const v ) noexcept override {
@@ -398,6 +428,10 @@ class poly_index_view {
   std::uint64_t segment_offset() const noexcept { return _p->segment_offset(); }
   void output_keys( std::ostream& os ) const noexcept { return _p->output_keys( os ); }
   void prepare_reverse_lookups() noexcept { return _p->prepare_reverse_lookups(); }
+
+  resultset_forward_type scan( resultset_forward_type const& values ) const noexcept {
+    return _p->scan( values );
+  }
 
   resultset_forward_type lookup_forward_32( key32_t const k ) const noexcept {
     return _p->lookup_forward_32( k );

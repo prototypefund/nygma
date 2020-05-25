@@ -56,6 +56,7 @@ emptyspace::pest::suite basic( "index-view basic suite", []( auto& test ) {
     expect( iv->lookup_reverse( 16 ).values().empty() );
     iv->prepare_reverse_lookups();
     expect( iv->lookup_reverse( 16 ).values(), equal_to( { 16, 400 } ) );
+    expect( iv->scan( iv->lookup_forward_32( 23421337u ) ).values(), equal_to( { 16, 400 } ) );
     expect( not iv->lookup_forward_128( 1 ) );
   } );
 
@@ -95,7 +96,8 @@ emptyspace::pest::suite basic( "index-view basic suite", []( auto& test ) {
     expect( iv->lookup_forward_32( 23421337u ).values(), equal_to( { 16u, 400u } ) );
     expect( iv->lookup_reverse( 16 ).values().empty() );
     iv->prepare_reverse_lookups();
-    expect( iv->lookup_reverse( 16 ).values(), equal_to( { 16, 400, 3000 } ) );
+    expect( iv->lookup_reverse( 16 ).values(), equal_to( { 16 } ) );
+    expect( iv->scan( iv->lookup_forward_32( 23421337u ) ).values(), equal_to( { 16 } ) );
     expect( not iv->lookup_forward_128( 1 ) );
   } );
 
