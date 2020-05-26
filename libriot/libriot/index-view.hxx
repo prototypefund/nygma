@@ -312,7 +312,9 @@ class poly_index_view {
     virtual resultset_forward_type lookup_forward_64( key64_t const k ) noexcept = 0;
     virtual resultset_forward_type lookup_forward_128( key128_t const k ) noexcept = 0;
     virtual resultset_forward_type lookup_reverse( value_type const v ) noexcept = 0;
-    virtual resultset_forward_type scan( resultset_forward_type const& v ) noexcept = 0;
+    virtual resultset_forward_type scan_and( resultset_forward_type const& v ) noexcept = 0;
+    virtual resultset_forward_type scan_or( resultset_forward_type const& v ) noexcept = 0;
+    virtual resultset_forward_type scan_complement( resultset_forward_type const& v ) noexcept = 0;
     virtual resultset_reverse_32 lookup_inverse_32( value_type const v ) noexcept = 0;
     virtual resultset_reverse_64 lookup_inverse_64( value_type const v ) noexcept = 0;
     virtual resultset_reverse_128 lookup_inverse_128( value_type const v ) noexcept = 0;
@@ -372,8 +374,16 @@ class poly_index_view {
 
     //--reverse-lookup-wrappers-----------------------------------------------
 
-    resultset_forward_type scan( resultset_forward_type const& v ) noexcept override {
-      return _view.template scan<&resultset_forward_type::intersection<>>( v );
+    resultset_forward_type scan_and( resultset_forward_type const& v ) noexcept override {
+      return _view.template scan<&resultset_forward_type::combine_and<>>( v );
+    }
+
+    resultset_forward_type scan_or( resultset_forward_type const& v ) noexcept override {
+      return _view.template scan<&resultset_forward_type::combine_or<>>( v );
+    }
+
+    resultset_forward_type scan_complement( resultset_forward_type const& v ) noexcept override {
+      return _view.template scan<&resultset_forward_type::combine_complement<>>( v );
     }
 
     // make sure `prepare_reverse_lookups()` has been called before
@@ -429,8 +439,16 @@ class poly_index_view {
   void output_keys( std::ostream& os ) const noexcept { return _p->output_keys( os ); }
   void prepare_reverse_lookups() noexcept { return _p->prepare_reverse_lookups(); }
 
-  resultset_forward_type scan( resultset_forward_type const& values ) const noexcept {
-    return _p->scan( values );
+  resultset_forward_type scan_and( resultset_forward_type const& values ) const noexcept {
+    return _p->scan_and( values );
+  }
+
+  resultset_forward_type scan_or( resultset_forward_type const& values ) const noexcept {
+    return _p->scan_or( values );
+  }
+
+  resultset_forward_type scan_complement( resultset_forward_type const& values ) const noexcept {
+    return _p->scan_complement( values );
   }
 
   resultset_forward_type lookup_forward_32( key32_t const k ) const noexcept {

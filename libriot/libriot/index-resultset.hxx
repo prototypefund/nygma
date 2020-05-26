@@ -153,8 +153,18 @@ struct resultset {
   static constexpr resultset_type none() noexcept { return resultset{}; }
 
   template <typename T = resultset_type>
-  static constexpr T intersection( T&& a, T&& b ) noexcept {
+  static constexpr T combine_and( T&& a, T&& b ) noexcept {
     return a & b;
+  }
+
+  template <typename T = resultset_type>
+  static constexpr T combine_or( T&& a, T&& b ) noexcept {
+    return a + b;
+  }
+
+  template <typename T = resultset_type>
+  static constexpr T combine_complement( T&& a, T&& b ) noexcept {
+    return a - b;
   }
 
   static auto const& dummy() noexcept {

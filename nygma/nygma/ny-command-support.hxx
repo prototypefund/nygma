@@ -2,8 +2,8 @@
 
 #include <filesystem>
 #include <string_view>
-#include <vector>
 #include <tuple>
+#include <vector>
 
 namespace nygma {
 
@@ -22,10 +22,17 @@ struct index_file_dependencies {
     if( _ix.size() != sz ) {
       throw std::runtime_error( "index_file_dependencies::for_each: number of index files differ" );
     }
-    for( std::size_t i = 0; i < sz; i++ ) {
-      f( std::forward_as_tuple( _i4[i], _ix[i] ) );
+    for( std::size_t i = 0; i < sz; i++ ) { f( std::forward_as_tuple( _i4[i], _ix[i] ) ); }
+  }
+
+  template <typename F>
+  void for_each_y( F const f ) {
+    auto const sz = _i4.size();
+    if( _ix.size() != sz or _iy.size() != sz ) {
+      throw std::runtime_error( "index_file_dependencies::for_each_y: number of index files differ" );
     }
+    for( std::size_t i = 0; i < sz; i++ ) { f( std::forward_as_tuple( _i4[i], _ix[i], _iy[i] ) ); }
   }
 };
 
-}
+} // namespace nygma

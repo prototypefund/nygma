@@ -9,6 +9,7 @@
 #include <nygma/ny-command-index.hxx>
 #include <nygma/ny-command-offset-by.hxx>
 #include <nygma/ny-command-query.hxx>
+#include <nygma/ny-command-reverse-slice-by.hxx>
 #include <nygma/ny-command-slice-by.hxx>
 
 #include <algorithm>
@@ -196,6 +197,35 @@ void ny_query( argh::Subparser& argh ) {
   ny_command_query( config );
 }
 
+//--reverse-slicing-----------------------------------------------------------
+
+void ny_reverse_slice( argh::Subparser& argh ) {
+  argh::HelpFlag help( argh, "help", "show this help message", { 'h', "help" } );
+  argh::Positional<std::string> path( argh, "path", "path to the indexed pcap" );
+  argh::ValueFlag<std::string> root( argh, "directory", "root path override", { "root" } );
+  argh::ValueFlag<std::string> out( argh, "output", "the restitched output", { 'o', "output" }, "-" );
+  argh::ValueFlag<std::string> ky( argh, "match id", "the iy key", { "iy" } );
+
+  argh.Parse();
+
+  if( not path ) { throw argh::Help( "path to pcap file missing" ); }
+
+  reverse_slice_config config;
+  config._path = argh::get( path );
+  config._root = argh::get( root );
+  config._out = argh::get( out );
+  config._key_iy = argh::get( ky );
+
+  ny_show_version();
+
+  flog( lvl::i, "reverse_slice_config._path = ", config._path );
+  flog( lvl::i, "reverse_slice_config._root = ", config._root );
+  flog( lvl::i, "reverse_slice_config._out = ", config._out );
+  flog( lvl::i, "reverse_slice_config._query = ", config._key_iy );
+
+  ny_command_reverse_slice_by( config );
+}
+
 //--index-info----------------------------------------------------------------
 
 void ny_index_info( argh::Subparser& argh ) {
@@ -236,6 +266,8 @@ int main( int argc, char* argv[] ) {
   argh::Command query( commands, "query", "restitch pcap from query", &ny_query );
   argh::Command version( commands, "version", "show version", &ny_version );
   argh::Command info( commands, "index-info", "show info about index file", &ny_index_info );
+  argh::Command
+      reverse( commands, "reverse-slice-by", "restitch pcap from reverse query", &ny_reverse_slice );
   argh::GlobalOptions globals( argh, arguments );
 
   try {
