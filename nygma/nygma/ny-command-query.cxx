@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSE
+// SPDX-License-Identifier: BlueOak-1.0.0
 
 #include <libnygma/dissect.hxx>
 #include <libnygma/pcap-reassembler.hxx>
