@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: Unlicense
+// SPDX-License-Identifier: BlueOak-1.0.0
 
 #pragma once
 
