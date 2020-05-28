@@ -133,6 +133,7 @@ class index_view {
   using value_type = resultset_forward_value_type;
   using resultset_reverse_traits = detail::std_vector_traits<key_type>;
   using resultset_reverse_type = resultset<resultset_reverse_traits, detail::resultset_kind::REVERSE>;
+  using sparse_resulstset_type = sparse_resultset<resultset_forward_type>;
   using inverted_index_type = std::unordered_map<value_type, std::set<key_type>>;
 
  private:
@@ -243,6 +244,21 @@ class index_view {
     return result;
   }
 
+  sparse_resulstset_type sparse_scan( resultset_forward_type const& values ) const noexcept {
+    sparse_resulstset_type result{ _segment_offset };
+    for( auto const offset : values.values() ) {
+      result.bind( offset, resultset_forward_type{ _segment_offset, true } );
+    }
+    resultset_forward_type current;
+    for( auto const o : _offsets ) {
+      current._values.clear();
+      if( not decode( o, std::back_inserter( current._values ) ) ) { return result; }
+      auto const intersection = current & values;
+      for( auto&& i : intersection.values() ) { result.bind( i, current & current ); }
+    }
+    return result;
+  }
+
   //--reverse-lookup-using-an-inverse-mapping---------------------------------
 
   // TODO: performance
@@ -305,6 +321,7 @@ class poly_index_view {
 
   using value_type = resultset_forward_type::value_type;
   using container_type = resultset_forward_traits::container_type;
+  using sparse_resultset_type = sparse_resultset<resultset_forward_type>;
 
   struct base {
     virtual ~base() = default;
@@ -315,6 +332,7 @@ class poly_index_view {
     virtual resultset_forward_type scan_and( resultset_forward_type const& v ) noexcept = 0;
     virtual resultset_forward_type scan_or( resultset_forward_type const& v ) noexcept = 0;
     virtual resultset_forward_type scan_complement( resultset_forward_type const& v ) noexcept = 0;
+    virtual sparse_resultset_type sparse_scan( resultset_forward_type const& v ) noexcept = 0;
     virtual resultset_reverse_32 lookup_inverse_32( value_type const v ) noexcept = 0;
     virtual resultset_reverse_64 lookup_inverse_64( value_type const v ) noexcept = 0;
     virtual resultset_reverse_128 lookup_inverse_128( value_type const v ) noexcept = 0;
@@ -386,6 +404,10 @@ class poly_index_view {
       return _view.template scan<&resultset_forward_type::combine_complement<>>( v );
     }
 
+    sparse_resultset_type sparse_scan( resultset_forward_type const& v ) noexcept override {
+      return _view.sparse_scan( v );
+    }
+
     // make sure `prepare_reverse_lookups()` has been called before
     resultset_forward_type lookup_reverse( value_type const v ) noexcept override {
       return _view.lookup_reverse( v );
@@ -449,6 +471,10 @@ class poly_index_view {
 
   resultset_forward_type scan_complement( resultset_forward_type const& values ) const noexcept {
     return _p->scan_complement( values );
+  }
+
+  sparse_resultset_type sparse_scan( resultset_forward_type const& v ) const noexcept {
+    return _p->sparse_scan( v );
   }
 
   resultset_forward_type lookup_forward_32( key32_t const k ) const noexcept {

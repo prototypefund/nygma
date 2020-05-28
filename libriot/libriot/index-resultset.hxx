@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <unordered_map>
 #include <vector>
 
 namespace riot {
@@ -153,23 +154,56 @@ struct resultset {
   static constexpr resultset_type none() noexcept { return resultset{}; }
 
   template <typename T = resultset_type>
-  static constexpr T combine_and( T&& a, T&& b ) noexcept {
+  static constexpr T combine_and( T const& a, T const& b ) noexcept {
     return a & b;
   }
 
   template <typename T = resultset_type>
-  static constexpr T combine_or( T&& a, T&& b ) noexcept {
+  static constexpr T combine_or( T const& a, T const& b ) noexcept {
     return a + b;
   }
 
   template <typename T = resultset_type>
-  static constexpr T combine_complement( T&& a, T&& b ) noexcept {
+  static constexpr T combine_complement( T const& a, T const& b ) noexcept {
     return a - b;
   }
 
   static auto const& dummy() noexcept {
     static const resultset_type DUMMY = resultset_type{ 0 };
     return DUMMY;
+  }
+};
+
+template <typename ResultSet>
+struct sparse_resultset {
+  using resultset_type = ResultSet;
+
+  using value_type = typename resultset_type::value_type;
+  using container_type = std::unordered_map<value_type, resultset_type>;
+  using segment_offset_type = typename resultset_type::segment_offset_type;
+
+  segment_offset_type _segment_offset;
+  container_type _values;
+
+  explicit sparse_resultset() : _segment_offset{ 0u } {}
+
+  explicit sparse_resultset( segment_offset_type const segment_offset )
+    : _segment_offset{ segment_offset } {}
+
+  void bind( value_type const offset, resultset_type&& values ) noexcept {
+    _values[offset] = _values[offset] + values;
+  }
+
+  template <auto CombineVertical, auto CombineHorizontal>
+  static constexpr resultset_type combine(
+      sparse_resultset<resultset_type> const& a, sparse_resultset<resultset_type> const& b ) noexcept {
+    resultset_type result{ a._segment_offset, true };
+    for( auto&& [offset, results_a] : a._values ) {
+      auto it = b._values.find( offset );
+      if( it == b._values.end() ) { continue; }
+      result = CombineVertical( result, CombineHorizontal( results_a, it->second ) );
+    }
+    return result;
   }
 };
 

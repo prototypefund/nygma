@@ -61,7 +61,7 @@ void ny_command_reverse_slice_by( reverse_slice_config const& config ) {
       flog( lvl::v, "segment offset = ", py->segment_offset() );
       auto const rs = py->lookup_forward_32( key );
       flog( lvl::v, "forward lookup hits = ", rs.size() );
-      auto const rev_rs = p4->scan_and( rs ) & px->scan_and( rs );
+      auto const rev_rs = p4->scan_or( rs ) & px->scan_or( rs );
       flog( lvl::v, "reverse lookup hits = ", rev_rs.size(), " ( @", rev_rs.segment_offset(), " )" );
       pcap::reassemble_stream( pcap, py->segment_offset(), rev_rs.cbegin(), rev_rs.cend(), os );
     } );

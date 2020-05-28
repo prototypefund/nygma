@@ -3,6 +3,7 @@
 #include <pest/pest.hxx>
 
 #include <libriot/index-builder.hxx>
+#include <libriot/index-resultset.hxx>
 #include <libriot/index-serializer.hxx>
 #include <libriot/index-view.hxx>
 
@@ -99,6 +100,32 @@ emptyspace::pest::suite basic( "index-view basic suite", []( auto& test ) {
     expect( iv->lookup_reverse( 16 ).values(), equal_to( { 16 } ) );
     expect( iv->scan_and( iv->lookup_forward_32( 23421337u ) ).values(), equal_to( { 16 } ) );
     expect( not iv->lookup_forward_128( 1 ) );
+
+    auto sr = iv->sparse_scan( iv->lookup_forward_32( 23421337u ) );
+    expect( sr._values[16]._values, equal_to( { 16u, 400u, 3000u } ) );
+  } );
+
+  test( "sparse-scan #1", []( auto& expect ) {
+    using index_type = riot::index_builder<std::uint32_t, map_type, 128>;
+
+    index_type idx;
+    idx.add( 23421337u, 16 );
+    idx.add( 13372342u, 16 );
+    idx.add( 23421337u, 400 );
+    idx.add( 1u, 400 );
+    idx.add( 1u, 500 );
+    idx.add( 13372342u, 3000 );
+
+    std::byte data[1024];
+    auto os = nygma::cfile_ostream{ data };
+    riot::uc128_serializer ser{ os };
+    idx.accept( ser, 0u );
+
+    auto const len = static_cast<std::size_t>( os.current_position() );
+    auto const iv = riot::make_poly_index_view( unclassified::bytestring_view{ data, len } );
+    auto sr = iv->sparse_scan( iv->lookup_forward_32( 23421337u ) );
+    expect( sr._values[16]._values, equal_to( { 16u, 400u, 3000u } ) );
+    expect( sr._values[400]._values, equal_to( { 16u, 400u, 500u } ) );
   } );
 
   test( "index-view for 128bit keys", []( auto& expect ) {
