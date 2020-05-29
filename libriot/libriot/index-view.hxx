@@ -246,15 +246,14 @@ class index_view {
 
   sparse_resulstset_type sparse_scan( resultset_forward_type const& values ) const noexcept {
     sparse_resulstset_type result{ _segment_offset };
-    for( auto const offset : values.values() ) {
-      result.bind( offset, resultset_forward_type{ _segment_offset, true } );
-    }
     resultset_forward_type current;
     for( auto const o : _offsets ) {
       current._values.clear();
       if( not decode( o, std::back_inserter( current._values ) ) ) { return result; }
       auto const intersection = current & values;
-      for( auto&& i : intersection.values() ) { result.bind( i, current & current ); }
+      for( auto&& i : intersection.values() ) {
+        result.bind<&resultset_forward_type::combine_or<>>( i, current.clone() );
+      }
     }
     return result;
   }

@@ -150,6 +150,9 @@ struct resultset {
 
   constexpr auto cbegin() const noexcept { return _values.cbegin(); }
   constexpr auto cend() const noexcept { return _values.cend(); }
+  constexpr auto clone() const noexcept {
+    return resultset_type{ _segment_offset, _success, _values };
+  }
 
   static constexpr resultset_type none() noexcept { return resultset{}; }
 
@@ -190,21 +193,27 @@ struct sparse_resultset {
   explicit sparse_resultset( segment_offset_type const segment_offset )
     : _segment_offset{ segment_offset } {}
 
-  void bind( value_type const offset, resultset_type&& values ) noexcept {
-    _values[offset] = _values[offset] + values;
+  template <auto Combine>
+  void bind( value_type const offset, resultset_type values ) noexcept {
+    auto [it, assigned] = _values.insert_or_assign( offset, std::move( values ) );
+    if( assigned ) { return; }
+    it->second = Combine( std::move( it->second ), std::move( values ) );
   }
 
   template <auto CombineVertical, auto CombineHorizontal>
   static constexpr resultset_type combine(
       sparse_resultset<resultset_type> const& a, sparse_resultset<resultset_type> const& b ) noexcept {
-    resultset_type result{ a._segment_offset, true };
+    sparse_resultset<resultset_type>::container_type out;
     for( auto&& [offset, results_a] : a._values ) {
       auto it = b._values.find( offset );
       if( it == b._values.end() ) { continue; }
-      result = CombineVertical( result, CombineHorizontal( results_a, it->second ) );
+      out[offset] = CombineHorizontal( results_a, it->second );
     }
+    if( out.empty() ) { return resultset_type{ a._segment_offset, false }; }
+    resultset_type result{ a._segment_offset, true, out.begin()->second.values() };
+    for( auto&& [_, set] : out ) { result = CombineVertical( result, set ); }
     return result;
   }
-};
+}; // namespace riot
 
 } // namespace riot

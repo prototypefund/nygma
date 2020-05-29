@@ -13,6 +13,7 @@
 #include <chrono>
 #include <cstdint>
 #include <map>
+#include "libriot/index-resultset.hxx"
 
 extern "C" {
 #include <arpa/inet.h>
@@ -42,6 +43,8 @@ void ny_command_reverse_slice_by( reverse_slice_config const& config ) {
   auto data = std::make_unique<block_view_16k>( config._path, block_flags::rd );
 
   nygma::pcap::with( std::move( data ), [&]( auto& pcap ) {
+    using sparse_resultset_type = riot::sparse_resultset<riot::resultset_forward_type>;
+
     if( not pcap.valid() ) {
       flog( lvl::e, "unable to open pcap storage path = ", config._path );
       return;
@@ -61,8 +64,12 @@ void ny_command_reverse_slice_by( reverse_slice_config const& config ) {
       flog( lvl::v, "segment offset = ", py->segment_offset() );
       auto const rs = py->lookup_forward_32( key );
       flog( lvl::v, "forward lookup hits = ", rs.size() );
-      auto const rev_rs = p4->scan_or( rs ) & px->scan_or( rs );
-      flog( lvl::v, "reverse lookup hits = ", rev_rs.size(), " ( @", rev_rs.segment_offset(), " )" );
+      auto const rev_rs = sparse_resultset_type::combine<
+          &riot::resultset_forward_type::combine_or<>,
+          &riot::resultset_forward_type::combine_and<>>(
+          p4->sparse_scan( rs ),
+          px->sparse_scan( rs ) );
+      flog( lvl::v, "reverse sparse-scan hits = ", rev_rs.size(), " ( @", rev_rs.segment_offset(), " )" );
       pcap::reassemble_stream( pcap, py->segment_offset(), rev_rs.cbegin(), rev_rs.cend(), os );
     } );
   } );
