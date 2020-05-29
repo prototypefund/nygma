@@ -102,7 +102,7 @@ emptyspace::pest::suite basic( "index-view basic suite", []( auto& test ) {
     expect( not iv->lookup_forward_128( 1 ) );
 
     auto sr = iv->sparse_scan( iv->lookup_forward_32( 23421337u ) );
-    expect( sr._values[16]._values, equal_to( { 16u, 400u, 3000u } ) );
+    expect( sr._values[16]._values, equal_to( { 16u, 400u } ) );
   } );
 
   test( "sparse-scan #1", []( auto& expect ) {
@@ -124,8 +124,101 @@ emptyspace::pest::suite basic( "index-view basic suite", []( auto& test ) {
     auto const len = static_cast<std::size_t>( os.current_position() );
     auto const iv = riot::make_poly_index_view( unclassified::bytestring_view{ data, len } );
     auto sr = iv->sparse_scan( iv->lookup_forward_32( 23421337u ) );
-    expect( sr._values[16]._values, equal_to( { 16u, 400u, 3000u } ) );
-    expect( sr._values[400]._values, equal_to( { 16u, 400u, 500u } ) );
+    expect( sr._values[16]._values, equal_to( { 16u, 400u } ) );
+    expect( sr._values[400]._values, equal_to( { 16u, 400u } ) );
+  } );
+
+  test( "sparse-scan #2", []( auto& expect ) {
+    using index_type = riot::index_builder<std::uint32_t, map_type, 128>;
+    using sparse_resultset_type = riot::sparse_resultset<riot::resultset_forward_type>;
+
+    auto const serialize = []( index_type& index, std::byte* data, std::size_t const n ) {
+      auto os = nygma::cfile_ostream{ data, n };
+      riot::uc128_serializer ser{ os };
+      index.accept( ser, 0u );
+      return unclassified::bytestring_view{ data, static_cast<std::size_t>( os.current_position() ) };
+    };
+
+    index_type by, b4, bx;
+    by.add( 1, 16 );
+    by.add( 1, 32 );
+    by.add( 2, 64 );
+    by.add( 2, 128 );
+
+    b4.add( 1, 16 );
+    b4.add( 2, 16 );
+    b4.add( 42, 2048 );
+
+    bx.add( 80, 16 );
+    bx.add( 23, 16 );
+    bx.add( 42, 1024 );
+
+    std::byte data_iy[1024], data_i4[1024], data_ix[1024];
+    auto const index_data_iy = serialize( by, data_iy, 1024 );
+    auto const index_data_i4 = serialize( b4, data_i4, 1024 );
+    auto const index_data_ix = serialize( bx, data_ix, 1024 );
+
+    auto const iy = riot::make_poly_index_view( index_data_iy );
+    auto const i4 = riot::make_poly_index_view( index_data_i4 );
+    auto const ix = riot::make_poly_index_view( index_data_ix );
+
+    auto const hits = iy->lookup_forward_32( 1 );
+    expect( hits.values(), equal_to( { 16u, 32u } ) );
+    auto const rs = sparse_resultset_type::combine<
+        &riot::resultset_forward_type::combine_or<>,
+        &riot::resultset_forward_type::combine_and<>>(
+        i4->sparse_scan( hits ),
+        ix->sparse_scan( hits ) );
+    expect( rs.values(), equal_to( { 16u } ) );
+  } );
+
+  test( "sparse-scan #3", []( auto& expect ) {
+    using index_type = riot::index_builder<std::uint32_t, map_type, 128>;
+    using sparse_resultset_type = riot::sparse_resultset<riot::resultset_forward_type>;
+
+    auto const serialize = []( index_type& index, std::byte* data, std::size_t const n ) {
+      auto os = nygma::cfile_ostream{ data, n };
+      riot::uc128_serializer ser{ os };
+      index.accept( ser, 0u );
+      return unclassified::bytestring_view{ data, static_cast<std::size_t>( os.current_position() ) };
+    };
+
+    index_type by, b4, bx;
+    by.add( 1, 16 );
+    by.add( 1, 32 );
+    by.add( 2, 64 );
+    by.add( 2, 128 );
+
+    b4.add( 1, 16 );
+    b4.add( 1, 2048 );
+    b4.add( 2, 16 );
+    b4.add( 3, 32 );
+    b4.add( 4, 32 );
+    b4.add( 42, 2048 );
+
+    bx.add( 80, 16 );
+    bx.add( 23, 16 );
+    bx.add( 80, 32 );
+    bx.add( 42, 32 );
+    bx.add( 42, 1024 );
+
+    std::byte data_iy[1024], data_i4[1024], data_ix[1024];
+    auto const index_data_iy = serialize( by, data_iy, 1024 );
+    auto const index_data_i4 = serialize( b4, data_i4, 1024 );
+    auto const index_data_ix = serialize( bx, data_ix, 1024 );
+
+    auto const iy = riot::make_poly_index_view( index_data_iy );
+    auto const i4 = riot::make_poly_index_view( index_data_i4 );
+    auto const ix = riot::make_poly_index_view( index_data_ix );
+
+    auto const hits = iy->lookup_forward_32( 1 );
+    expect( hits.values(), equal_to( { 16u, 32u } ) );
+    auto const rs = sparse_resultset_type::combine<
+        &riot::resultset_forward_type::combine_or<>,
+        &riot::resultset_forward_type::combine_and<>>(
+        i4->sparse_scan( hits ),
+        ix->sparse_scan( hits ) );
+    expect( rs.values(), equal_to( { 16u, 32u } ) );
   } );
 
   test( "index-view for 128bit keys", []( auto& expect ) {
