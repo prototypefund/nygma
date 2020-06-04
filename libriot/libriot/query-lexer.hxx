@@ -47,9 +47,8 @@ struct token {
   std::uint64_t const _token;
 
   constexpr token( token_type::type token, std::size_t offset, std::size_t size ) noexcept
-    : _token{
-          ( static_cast<std::uint64_t>( token & TMASK ) << TSHIFT ) | ( ( size & SMASK ) << SSHIFT ) |
-          ( ( offset & OMASK ) << OSHIFT ) } {}
+    : _token{ ( static_cast<std::uint64_t>( token & TMASK ) << TSHIFT ) |
+              ( ( size & SMASK ) << SSHIFT ) | ( ( offset & OMASK ) << OSHIFT ) } {}
 
   constexpr unsigned offset() const noexcept { return ( _token >> OSHIFT ) & OMASK; }
 

@@ -396,8 +396,8 @@ struct streamvbyte_i128 : public streamvbyte_base<BlockLen> {
   }
 
   // `n` needs to be a multiple of `STEPLEN`
-  static inline std::size_t encode(
-      integer_type const* const in, std::size_t const n, std::byte* const out ) noexcept {
+  static inline std::size_t encode( integer_type const* const in, std::size_t const n,
+                                    std::byte* const out ) noexcept {
 
     auto const blocklen = std::min( n, base_type::BLOCKLEN );
 
@@ -448,8 +448,8 @@ struct streamvbyte_i128 : public streamvbyte_base<BlockLen> {
     return static_cast<std::size_t>( out_p - out );
   }
 
-  static inline std::size_t decode(
-      std::byte const* const in, std::size_t const n, integer_type* const out ) noexcept {
+  static inline std::size_t decode( std::byte const* const in, std::size_t const n,
+                                    integer_type* const out ) noexcept {
     auto const* const out_end = reinterpret_cast<__m128i const*>( out + base_type::BLOCKLEN );
     auto* out_p = reinterpret_cast<__m128i*>( out );
     auto const* const end = in + n;

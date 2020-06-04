@@ -30,4 +30,4 @@ struct toeplitz_scalar_loop {
   }
 };
 
-} // namespace nygma::analyze::toeplitz
+} // namespace nygma::toeplitz

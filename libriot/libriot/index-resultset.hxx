@@ -99,10 +99,7 @@ struct resultset {
   }
 
   resultset_type set_intersection( resultset_type const& o ) const noexcept {
-    return resultset_type{
-        _segment_offset,
-        true,
-        traits_type::set_intersection( _values, o._values ) };
+    return resultset_type{ _segment_offset, true, traits_type::set_intersection( _values, o._values ) };
   }
 
   resultset_type set_complement( resultset_type const& o ) const noexcept {
@@ -201,8 +198,8 @@ struct sparse_resultset {
   }
 
   template <auto CombineVertical, auto CombineHorizontal>
-  static constexpr resultset_type combine(
-      sparse_resultset<resultset_type> const& a, sparse_resultset<resultset_type> const& b ) noexcept {
+  static constexpr resultset_type combine( sparse_resultset<resultset_type> const& a,
+                                           sparse_resultset<resultset_type> const& b ) noexcept {
     sparse_resultset<resultset_type>::container_type out;
     for( auto&& [offset, results_a] : a._values ) {
       auto it = b._values.find( offset );

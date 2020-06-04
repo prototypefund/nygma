@@ -106,21 +106,16 @@ class index_cycler {
   unsigned _count;
 
  public:
-  index_cycler(
-      std::filesystem::path const& directory,
-      std::filesystem::path const& prefix,
-      std::string const& suffix )
+  index_cycler( std::filesystem::path const& directory, std::filesystem::path const& prefix,
+                std::string const& suffix )
     : _w{ std::make_shared<index_writer>() },
       _directory{ directory },
       _prefix{ prefix },
       _suffix{ suffix },
       _count{ 0 } {}
 
-  index_cycler(
-      std::shared_ptr<index_writer> w,
-      std::filesystem::path const& directory,
-      std::filesystem::path const& prefix,
-      std::string const& suffix )
+  index_cycler( std::shared_ptr<index_writer> w, std::filesystem::path const& directory,
+                std::filesystem::path const& prefix, std::string const& suffix )
     : _w{ w }, _directory{ directory }, _prefix{ prefix }, _suffix{ suffix }, _count{ 0 } {}
 
   auto count() const noexcept { return _count; }
@@ -135,7 +130,7 @@ class index_cycler {
       nygma::cfile_ostream o{ p };
       S<nygma::cfile_ostream> s{ o };
       i->accept( s, segment_offset );
-      d(i);
+      d( i );
     } );
   }
 

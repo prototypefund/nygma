@@ -48,8 +48,8 @@ using bytestring_view = unclassified::bytestring_view;
 
 // unfinished: do not use!
 template <typename Trace, typename HashPolicy>
-static inline std::uint32_t dissect_en10mb_avx2(
-    HashPolicy& hash_policy, Trace& trace, bytestring_view const& view ) noexcept {
+static inline std::uint32_t dissect_en10mb_avx2( HashPolicy& hash_policy, Trace& trace,
+                                                 bytestring_view const& view ) noexcept {
   std::byte const* const begin = view.data();
   std::byte const* const end = begin + view.size();
   std::byte const* p = begin;

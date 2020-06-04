@@ -127,7 +127,7 @@ emptyspace::pest::suite basic( "dissect suite", []( auto& test ) {
     expect( trace.entries()[2]._data, equal_to( offset( 22 ) ) );
     expect( hash, equal_to( 0u ) );
   } );
-  
+
   test( "dissect fragmented upd ( from unsw nb15 )", []( auto& expect ) {
     auto trace = dissect::dissect_stack_trace{};
     auto const hash_policy = hash_type{};

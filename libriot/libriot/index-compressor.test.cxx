@@ -38,11 +38,11 @@ emptyspace::pest::suite basic( "index-compressor basic suite", []( auto& test ) 
     expect( idx.key_count(), equal_to( 3u ) );
     expect( os.ok(), equal_to( true ) );
     expect( os.current_position(), equal_to( 104u ) );
-    expect(
-        hexify( data, static_cast<std::size_t>( os.current_position() ) ),
-        equal_to( "04010b01002c010000000000000004020b040018a00b00000000000004020b040010800100000000000"
-                  "001030e280001b50bcce35599000000000003030a0000000e0e000000000037133713020223012a0000"
-                  "003b00000000000000000000003713371341414141" ) );
+    expect( hexify( data, static_cast<std::size_t>( os.current_position() ) ),
+            equal_to(
+                "04010b01002c010000000000000004020b040018a00b00000000000004020b040010800100000000000"
+                "001030e280001b50bcce35599000000000003030a0000000e0e000000000037133713020223012a0000"
+                "003b00000000000000000000003713371341414141" ) );
 
     auto const len = static_cast<std::size_t>( os.current_position() );
     auto const iv = riot::make_poly_index_view( bytestring_view{ data, len } );
@@ -73,13 +73,13 @@ emptyspace::pest::suite basic( "index-compressor basic suite", []( auto& test ) 
     expect( idx.key_count(), equal_to( 3u ) );
     expect( os.ok(), equal_to( true ) );
     expect( os.current_position(), equal_to( 186u ) );
-    expect(
-        hexify( data, static_cast<std::size_t>( os.current_position() ) ),
-        equal_to( "04010340012c0402220c1800000000a00b0000000000000000000000000000000000000000000000000"
-                  "00004022209100000000080010000000000000000000000000000000000000000000000000000010322"
-                  "180100000000b50bcc00e35599000000000000000000000000000000000000000000030322060000000"
-                  "00006000000250000000000000000000000000000000000000000000000371337130101230150000000"
-                  "7500000000000000000000003713371341414141" ) );
+    expect( hexify( data, static_cast<std::size_t>( os.current_position() ) ),
+            equal_to(
+                "04010340012c0402220c1800000000a00b0000000000000000000000000000000000000000000000000"
+                "00004022209100000000080010000000000000000000000000000000000000000000000000000010322"
+                "180100000000b50bcc00e35599000000000000000000000000000000000000000000030322060000000"
+                "00006000000250000000000000000000000000000000000000000000000371337130101230150000000"
+                "7500000000000000000000003713371341414141" ) );
 
     auto const len = static_cast<std::size_t>( os.current_position() );
     auto const iv = riot::make_poly_index_view( bytestring_view{ data, len } );
@@ -110,11 +110,11 @@ emptyspace::pest::suite basic( "index-compressor basic suite", []( auto& test ) 
     expect( idx.key_count(), equal_to( 3u ) );
     expect( os.ok(), equal_to( true ) );
     expect( os.current_position(), equal_to( 122u ) );
-    expect(
-        hexify( data, static_cast<std::size_t>( os.current_position() ) ),
-        equal_to( "04010340012c0402120c1800000000a00b0000000000000000000004021209100000000080010000000"
-                  "0000000000000010312180100000000b50bcc00e3559900000000000303120500000000000600000015"
-                  "000000000000003713371300002301300000004500000000000000000000003713371341414141" ) );
+    expect( hexify( data, static_cast<std::size_t>( os.current_position() ) ),
+            equal_to(
+                "04010340012c0402120c1800000000a00b0000000000000000000004021209100000000080010000000"
+                "0000000000000010312180100000000b50bcc00e3559900000000000303120500000000000600000015"
+                "000000000000003713371300002301300000004500000000000000000000003713371341414141" ) );
 
     auto const len = static_cast<std::size_t>( os.current_position() );
     auto const iv = riot::make_poly_index_view( bytestring_view{ data, len } );

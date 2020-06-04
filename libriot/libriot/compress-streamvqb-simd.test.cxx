@@ -22,11 +22,11 @@ emptyspace::pest::suite basic( "streamvqb compression suite", []( auto& test ) {
 
     auto n = svq128d1::encode( in.data(), svq128d1::BLOCKLEN, out.data() );
     expect( n, equal_to( 112u ) );
-    expect(
-        hexify( out, n ),
-        equal_to( "00000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-                  "00000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-                  "0000000000000000000000000000000000000000000000000000000000" ) );
+    expect( hexify( out, n ),
+            equal_to(
+                "00000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                "00000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                "0000000000000000000000000000000000000000000000000000000000" ) );
   } );
 
   test( "svq128d1: compress", []( auto& expect ) {
@@ -37,11 +37,11 @@ emptyspace::pest::suite basic( "streamvqb compression suite", []( auto& test ) {
     in[0] = 0xfe;
     auto n = svq128d1::encode( in.data(), svq128d1::BLOCKLEN, out.data() );
     expect( n, equal_to( 112u ) );
-    expect(
-        hexify( out, n ),
-        equal_to( "20000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-                  "00000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-                  "0000000000000000000000000000000000000000000000000000000000" ) );
+    expect( hexify( out, n ),
+            equal_to(
+                "20000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                "00000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                "0000000000000000000000000000000000000000000000000000000000" ) );
   } );
 
   test( "svq128d1: check packing delta range <60, 2500>", []( auto& expect ) {
@@ -52,9 +52,7 @@ emptyspace::pest::suite basic( "streamvqb compression suite", []( auto& test ) {
     std::mt19937 mt{ 0x42421337 };
     std::uniform_int_distribution<svq128d1::integer_type> random{ 60, 2500 };
     in[0] = random( mt );
-    for( std::size_t i = 1; i < svq128d1::BLOCKLEN; ++i ) {
-      in[i] = in[i - 1] + random( mt );
-    }
+    for( std::size_t i = 1; i < svq128d1::BLOCKLEN; ++i ) { in[i] = in[i - 1] + random( mt ); }
     auto n = svq128d1::encode( in.data(), svq128d1::BLOCKLEN, out.data() );
     expect( n, equal_to( 238u ) );
     expect( hexify( out, n ), equal_to( "" ) );
@@ -103,8 +101,8 @@ struct streamvqb : public streamvqb_base<BlockLen> {
   using delta = riot::delta::delta_regular;
 
   // `n` must be multiple of `STEPLEN`
-  static inline std::size_t encode(
-      integer_type const* const in, std::size_t const n, std::byte* const out ) noexcept {
+  static inline std::size_t encode( integer_type const* const in, std::size_t const n,
+                                    std::byte* const out ) noexcept {
 
     auto blocklen = std::min( n, self::BLOCKLEN );
 
@@ -153,8 +151,7 @@ struct streamvqb : public streamvqb_base<BlockLen> {
     return n_sv + static_cast<std::size_t>( p - out );
   }
 
-  static inline void decode(
-      std::byte const* const, std::size_t const, integer_type* const ) noexcept {
+  static inline void decode( std::byte const* const, std::size_t const, integer_type* const ) noexcept {
     std::abort();
   }
 };
@@ -190,9 +187,7 @@ emptyspace::pest::suite basic_ex( "streamvbyte experimental suite", []( auto& te
     std::mt19937 mt{ 0x42421337 };
     std::uniform_int_distribution<svq128d1::integer_type> random{ 60, 2500 };
     in[0] = random( mt );
-    for( std::size_t i = 1; i < svq128d1::BLOCKLEN; ++i ) {
-      in[i] = in[i - 1] + random( mt );
-    }
+    for( std::size_t i = 1; i < svq128d1::BLOCKLEN; ++i ) { in[i] = in[i - 1] + random( mt ); }
     auto n = svq128d1::encode( in.data(), svq128d1::BLOCKLEN, out.data() );
     expect( n, equal_to( 238u ) );
     expect( hexify( out, n ), equal_to( "" ) );

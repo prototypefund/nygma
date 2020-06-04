@@ -3,8 +3,8 @@
 #pragma once
 
 #include <libnygma/bytestream.hxx>
-#include <libriot/index-builder.hxx>
 #include <libriot/compress-vbyte.hxx>
+#include <libriot/index-builder.hxx>
 
 #include <array>
 #include <vector>
@@ -98,8 +98,8 @@ struct bytestream_serializer_base {
 
  protected:
   template <typename T, std::size_t BlockLen>
-  void encode_record(
-      encoding enc, T const* p, std::size_t const n, std::size_t const count ) noexcept {
+  void encode_record( encoding enc, T const* p, std::size_t const n,
+                      std::size_t const count ) noexcept {
     std::byte meta[16];
     std::byte* meta_p = meta;
     auto const encoded_size = static_cast<std::uint32_t>( n * sizeof( T ) );
@@ -125,12 +125,8 @@ struct bytestream_serializer_base {
   }
 
   template <typename KeyType>
-  void encode_meta_record(
-      std::uint32_t const kb,
-      std::uint32_t const ob,
-      std::uint64_t const sb,
-      method::type const kmethod,
-      method::type const vmethod ) noexcept {
+  void encode_meta_record( std::uint32_t const kb, std::uint32_t const ob, std::uint64_t const sb,
+                           method::type const kmethod, method::type const vmethod ) noexcept {
     // total META record size = 32bytes
     _os.write( MAGIC, 1 );
     _os.write( std::byte( kmethod ) );
@@ -197,12 +193,8 @@ struct uc256_serializer : public bytestream_serializer<256, 256, T> {};
 template <typename T>
 uc256_serializer( T ) -> uc256_serializer<T>;
 
-template <
-    typename OStream,
-    method::type KMethod,
-    typename KCompressor,
-    method::type VMethod,
-    typename VCompressor>
+template <typename OStream, method::type KMethod, typename KCompressor, method::type VMethod,
+          typename VCompressor>
 struct compressing_serializer : public bytestream_serializer_base<OStream> {
 
   using kcompressor_type = KCompressor;
@@ -261,4 +253,4 @@ struct compressing_serializer : public bytestream_serializer_base<OStream> {
   }
 };
 
-} // namespace emptyspace::index
+} // namespace riot

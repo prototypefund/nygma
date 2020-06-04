@@ -34,10 +34,10 @@ emptyspace::pest::suite basic( "index-builder basic suite", []( auto& test ) {
     expect( idx.key_count(), equal_to( 2u ) );
     expect( os.ok(), equal_to( true ) );
     expect( os.current_position(), equal_to( 68u ) );
-    expect(
-        hexify( data, static_cast<std::size_t>( os.current_position() ) ),
-        equal_to( "0401041800000004010410000000010208b60bcc0099616501030208000000000700000037133713fef"
-                  "e23010e0000001900000000000000000000003713371341414141" ) );
+    expect( hexify( data, static_cast<std::size_t>( os.current_position() ) ),
+            equal_to(
+                "0401041800000004010410000000010208b60bcc0099616501030208000000000700000037133713fef"
+                "e23010e0000001900000000000000000000003713371341414141" ) );
   } );
 
   test( "index_builder for 32bit keys", []( auto& expect ) {
@@ -59,12 +59,12 @@ emptyspace::pest::suite basic( "index-builder basic suite", []( auto& test ) {
     expect( idx.key_count(), equal_to( 3u ) );
     expect( os.ok(), equal_to( true ) );
     expect( os.current_position(), equal_to( 91u ) );
-    expect(
-        hexify( data, static_cast<std::size_t>( os.current_position() ) ),
-        equal_to(
-            "0401042c01000004020818000000b80b0000040208100000009001000001030c01000000b60bcc00996165010"
-            "3030c00000000070000001200000037133713fefe23011d0000002c0000000000000000000000371337134141"
-            "4141" ) );
+    expect( hexify( data, static_cast<std::size_t>( os.current_position() ) ),
+            equal_to( "0401042c01000004020818000000b80b0000040208100000009001000001030c01000000b60bcc0"
+                      "0996165010"
+                      "3030c00000000070000001200000037133713fefe23011d0000002c000000000000000000000037"
+                      "1337134141"
+                      "4141" ) );
 
     auto const len = static_cast<std::size_t>( os.current_position() );
 
@@ -96,11 +96,11 @@ emptyspace::pest::suite basic( "index-builder basic suite", []( auto& test ) {
     expect( idx.key_count(), equal_to( 3u ) );
     expect( os.ok(), equal_to( true ) );
     expect( os.current_position(), equal_to( 85u ) );
-    expect(
-        hexify( data, static_cast<std::size_t>( os.current_position() ) ),
-        equal_to( "04020818000000b80b00000401042c010000040208100000009001000001030650003905fbff03030c0"
-                  "00000000b0000001200000037133713fefe23001d000000260000000000000000000000371337134141"
-                  "4141" ) );
+    expect( hexify( data, static_cast<std::size_t>( os.current_position() ) ),
+            equal_to(
+                "04020818000000b80b00000401042c010000040208100000009001000001030650003905fbff03030c0"
+                "00000000b0000001200000037133713fefe23001d000000260000000000000000000000371337134141"
+                "4141" ) );
   } );
 
   test( "index_builder for 64bit keys", []( auto& expect ) {
@@ -121,11 +121,11 @@ emptyspace::pest::suite basic( "index-builder basic suite", []( auto& test ) {
     expect( idx.key_count(), equal_to( 3u ) );
     expect( os.ok(), equal_to( true ) );
     expect( os.current_position(), equal_to( 103u ) );
-    expect(
-        hexify( data, static_cast<std::size_t>( os.current_position() ) ),
-        equal_to( "0401042c01000004020818000000b80b000004020810000000900100000103180100000000000000b60"
-                  "bcc0000000000996165010000000003030c00000000070000001200000037133713fefe23021d000000"
-                  "3800000000000000000000003713371341414141" ) );
+    expect( hexify( data, static_cast<std::size_t>( os.current_position() ) ),
+            equal_to(
+                "0401042c01000004020818000000b80b000004020810000000900100000103180100000000000000b60"
+                "bcc0000000000996165010000000003030c00000000070000001200000037133713fefe23021d000000"
+                "3800000000000000000000003713371341414141" ) );
   } );
 
   test( "index_builder for 128bit keys", []( auto& expect ) {
@@ -146,12 +146,12 @@ emptyspace::pest::suite basic( "index-builder basic suite", []( auto& test ) {
     expect( idx.key_count(), equal_to( 3u ) );
     expect( os.ok(), equal_to( true ) );
     expect( os.current_position(), equal_to( 127u ) );
-    expect(
-        hexify( data, static_cast<std::size_t>( os.current_position() ) ),
-        equal_to( "0401042c01000004020818000000b80b000004020810000000900100000103300100000000000000000"
-                  "0000000000000b60bcc000000000000000000000000009961650100000000000000000000000003030c"
-                  "00000000070000001200000037133713fefe23031d00000050000000000000000000000037133713414"
-                  "14141" ) );
+    expect( hexify( data, static_cast<std::size_t>( os.current_position() ) ),
+            equal_to(
+                "0401042c01000004020818000000b80b000004020810000000900100000103300100000000000000000"
+                "0000000000000b60bcc000000000000000000000000009961650100000000000000000000000003030c"
+                "00000000070000001200000037133713fefe23031d00000050000000000000000000000037133713414"
+                "14141" ) );
 
     auto const len = static_cast<std::size_t>( os.current_position() );
 

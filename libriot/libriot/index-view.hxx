@@ -144,11 +144,8 @@ class index_view {
   inverted_index_type _inverted_index;
 
  public:
-  index_view(
-      bytestring_view const data,
-      std::uint64_t const segment_offset,
-      std::vector<key_type>&& keys,
-      std::vector<offset_type>&& offsets ) noexcept
+  index_view( bytestring_view const data, std::uint64_t const segment_offset,
+              std::vector<key_type>&& keys, std::vector<offset_type>&& offsets ) noexcept
     : _data{ data },
       _segment_offset{ segment_offset },
       _keys{ std::move( keys ) },
@@ -413,27 +410,24 @@ class poly_index_view {
     }
 
     resultset_reverse_32 lookup_inverse_32( value_type const v ) noexcept override {
-      if constexpr( std::is_same_v<
-                        resultset_reverse_32,
-                        typename index_view<T, VC>::resultset_reverse_type> ) {
+      if constexpr( std::is_same_v<resultset_reverse_32,
+                                   typename index_view<T, VC>::resultset_reverse_type> ) {
         return _view.lookup_inverse( v );
       }
       return resultset_reverse_32{ 0 };
     }
 
     resultset_reverse_64 lookup_inverse_64( value_type const v ) noexcept override {
-      if constexpr( std::is_same_v<
-                        resultset_reverse_64,
-                        typename index_view<T, VC>::resultset_reverse_type> ) {
+      if constexpr( std::is_same_v<resultset_reverse_64,
+                                   typename index_view<T, VC>::resultset_reverse_type> ) {
         return _view.lookup_inverse( v );
       }
       return resultset_reverse_64{ 0 };
     }
 
     resultset_reverse_128 lookup_inverse_128( value_type const v ) noexcept override {
-      if constexpr( std::is_same_v<
-                        resultset_reverse_128,
-                        typename index_view<T, VC>::resultset_reverse_type> ) {
+      if constexpr( std::is_same_v<resultset_reverse_128,
+                                   typename index_view<T, VC>::resultset_reverse_type> ) {
         return _view.lookup_inverse( v );
       }
       return resultset_reverse_128{ 0 };

@@ -7,6 +7,4 @@
 #include <libnygma/support.hxx>
 #include <libnygma/version.hxx>
 
-int main() {
-  return 0;
-}
+int main() { return 0; }

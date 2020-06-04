@@ -40,7 +40,7 @@ emptyspace::pest::suite basic( "query-parser basic suite", []( auto& test ) {
       expect( hexify_v6( ip._value ), equal_to( "00000000000000010002000300040005" ) );
     } );
   } );
-  
+
   test( "ipv6 literal 2606:2800:220:1:248:1893:25c8:1946", []( auto& expect ) {
     std::string_view const query{ "2606:2800:220:1:248:1893:25c8:1946" };
     auto q = riot::parse( query );
@@ -49,7 +49,7 @@ emptyspace::pest::suite basic( "query-parser basic suite", []( auto& test ) {
       expect( hexify_v6( ip._value ), equal_to( "26062800022000010248189325c81946" ) );
     } );
   } );
-  
+
   test( "ipv6 literal 2001:41c0::645:a65e:60ff:feda:589d", []( auto& expect ) {
     std::string_view const query{ "2001:41c0::645:a65e:60ff:feda:589d" };
     auto q = riot::parse( query );

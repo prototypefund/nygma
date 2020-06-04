@@ -16,27 +16,20 @@ struct packet_view {
 
   constexpr packet_view() noexcept : _slice{ nullptr, 0 } {}
 
-  constexpr packet_view(
-      std::uint32_t const tv_sec, std::uint32_t const tv_nsec, bytestring_view const& slice ) noexcept
+  constexpr packet_view( std::uint32_t const tv_sec, std::uint32_t const tv_nsec,
+                         bytestring_view const& slice ) noexcept
     : _stamp{ std::uint64_t( tv_sec ) * 1'000'000'000ull + tv_nsec }, _slice{ slice } {}
 
-  constexpr packet_view(
-      std::uint64_t const stamp, std::byte const* byte, std::size_t const size ) noexcept
+  constexpr packet_view( std::uint64_t const stamp, std::byte const* byte,
+                         std::size_t const size ) noexcept
     : _stamp{ stamp }, _slice{ byte, size } {}
 
-  constexpr packet_view(
-      std::uint64_t const stamp,
-      std::uint32_t const hash,
-      std::byte const* byte,
-      std::size_t const size ) noexcept
+  constexpr packet_view( std::uint64_t const stamp, std::uint32_t const hash, std::byte const* byte,
+                         std::size_t const size ) noexcept
     : _stamp{ stamp }, _hash{ hash }, _slice{ byte, size } {}
 
-  constexpr packet_view(
-      std::uint64_t const stamp,
-      std::uint32_t const hash,
-      std::uint32_t const port,
-      std::byte const* byte,
-      std::size_t const size ) noexcept
+  constexpr packet_view( std::uint64_t const stamp, std::uint32_t const hash, std::uint32_t const port,
+                         std::byte const* byte, std::size_t const size ) noexcept
     : _stamp{ stamp }, _hash{ hash }, _port{ port }, _slice{ byte, size } {}
 
   constexpr packet_view( std::uint64_t const stamp, bytestring_view const& slice ) noexcept

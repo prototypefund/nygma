@@ -8952,4 +8952,4 @@ inline void unpack128_32( __m128i const* in, std::uint32_t* const out_ ) noexcep
 
 } // namespace
 } // namespace detail
-} // namespace emptyspace::bitpack
+} // namespace riot::bitpack

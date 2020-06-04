@@ -258,8 +258,8 @@ struct dns {
   dns_rr_t _rr[RecordCnt];
   std::byte _timestamp[sizeof( std::uint64_t )];
 
-  inline unsigned char const* extract_name(
-      unsigned char const* const begin, unsigned char const* const end, dns_rr_t& rr ) {
+  inline unsigned char const* extract_name( unsigned char const* const begin,
+                                            unsigned char const* const end, dns_rr_t& rr ) {
     unsigned char const* p = begin;
     unsigned char* label_out = rr._label;
     unsigned char* label_end = rr._label + LabelSize;

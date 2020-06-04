@@ -2,8 +2,8 @@
 
 #include <pest/pest.hxx>
 
-#include <libnygma/dissect.hxx>
 #include <libnygma/dissect-simd.hxx>
+#include <libnygma/dissect.hxx>
 
 #include <array>
 #include <cstdint>

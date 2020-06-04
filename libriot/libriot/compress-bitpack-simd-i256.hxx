@@ -2823,11 +2823,10 @@ inline void unpack256_3( __m256i const* compressed, std::uint32_t* pout ) noexce
   _mm256_storeu_si256( out + 8, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 24 ) ) );
   _mm256_storeu_si256( out + 9, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 27 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 1 );
-  _mm256_storeu_si256(
-      out + 10,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 30 ), _mm256_slli_epi32( w1, 2 ) ) ) );
+  _mm256_storeu_si256( out + 10,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 30 ),
+                                                          _mm256_slli_epi32( w1, 2 ) ) ) );
   _mm256_storeu_si256( out + 11, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 1 ) ) );
   _mm256_storeu_si256( out + 12, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 4 ) ) );
   _mm256_storeu_si256( out + 13, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 7 ) ) );
@@ -2839,11 +2838,10 @@ inline void unpack256_3( __m256i const* compressed, std::uint32_t* pout ) noexce
   _mm256_storeu_si256( out + 19, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 25 ) ) );
   _mm256_storeu_si256( out + 20, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 28 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 2 );
-  _mm256_storeu_si256(
-      out + 21,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 31 ), _mm256_slli_epi32( w0, 1 ) ) ) );
+  _mm256_storeu_si256( out + 21,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 31 ),
+                                                          _mm256_slli_epi32( w0, 1 ) ) ) );
   _mm256_storeu_si256( out + 22, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 2 ) ) );
   _mm256_storeu_si256( out + 23, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 5 ) ) );
   _mm256_storeu_si256( out + 24, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 8 ) ) );
@@ -2914,22 +2912,20 @@ inline void unpack256_5( __m256i const* compressed, std::uint32_t* pout ) noexce
   _mm256_storeu_si256( out + 4, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 20 ) ) );
   _mm256_storeu_si256( out + 5, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 25 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 1 );
-  _mm256_storeu_si256(
-      out + 6,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 30 ), _mm256_slli_epi32( w1, 2 ) ) ) );
+  _mm256_storeu_si256( out + 6,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 30 ),
+                                                          _mm256_slli_epi32( w1, 2 ) ) ) );
   _mm256_storeu_si256( out + 7, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 3 ) ) );
   _mm256_storeu_si256( out + 8, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 8 ) ) );
   _mm256_storeu_si256( out + 9, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 13 ) ) );
   _mm256_storeu_si256( out + 10, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 18 ) ) );
   _mm256_storeu_si256( out + 11, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 23 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 2 );
-  _mm256_storeu_si256(
-      out + 12,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 28 ), _mm256_slli_epi32( w0, 4 ) ) ) );
+  _mm256_storeu_si256( out + 12,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 28 ),
+                                                          _mm256_slli_epi32( w0, 4 ) ) ) );
   _mm256_storeu_si256( out + 13, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 1 ) ) );
   _mm256_storeu_si256( out + 14, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 6 ) ) );
   _mm256_storeu_si256( out + 15, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 11 ) ) );
@@ -2937,22 +2933,20 @@ inline void unpack256_5( __m256i const* compressed, std::uint32_t* pout ) noexce
   _mm256_storeu_si256( out + 17, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 21 ) ) );
   _mm256_storeu_si256( out + 18, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 26 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 3 );
-  _mm256_storeu_si256(
-      out + 19,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 31 ), _mm256_slli_epi32( w1, 1 ) ) ) );
+  _mm256_storeu_si256( out + 19,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 31 ),
+                                                          _mm256_slli_epi32( w1, 1 ) ) ) );
   _mm256_storeu_si256( out + 20, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 4 ) ) );
   _mm256_storeu_si256( out + 21, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 9 ) ) );
   _mm256_storeu_si256( out + 22, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 14 ) ) );
   _mm256_storeu_si256( out + 23, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 19 ) ) );
   _mm256_storeu_si256( out + 24, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 24 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 4 );
-  _mm256_storeu_si256(
-      out + 25,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 29 ), _mm256_slli_epi32( w0, 3 ) ) ) );
+  _mm256_storeu_si256( out + 25,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 29 ),
+                                                          _mm256_slli_epi32( w0, 3 ) ) ) );
   _mm256_storeu_si256( out + 26, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 2 ) ) );
   _mm256_storeu_si256( out + 27, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 7 ) ) );
   _mm256_storeu_si256( out + 28, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 12 ) ) );
@@ -2974,21 +2968,19 @@ inline void unpack256_6( __m256i const* compressed, std::uint32_t* pout ) noexce
   _mm256_storeu_si256( out + 3, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 18 ) ) );
   _mm256_storeu_si256( out + 4, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 24 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 1 );
-  _mm256_storeu_si256(
-      out + 5,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 30 ), _mm256_slli_epi32( w1, 2 ) ) ) );
+  _mm256_storeu_si256( out + 5,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 30 ),
+                                                          _mm256_slli_epi32( w1, 2 ) ) ) );
   _mm256_storeu_si256( out + 6, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 4 ) ) );
   _mm256_storeu_si256( out + 7, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 10 ) ) );
   _mm256_storeu_si256( out + 8, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 16 ) ) );
   _mm256_storeu_si256( out + 9, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 22 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 2 );
-  _mm256_storeu_si256(
-      out + 10,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 28 ), _mm256_slli_epi32( w0, 4 ) ) ) );
+  _mm256_storeu_si256( out + 10,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 28 ),
+                                                          _mm256_slli_epi32( w0, 4 ) ) ) );
   _mm256_storeu_si256( out + 11, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 2 ) ) );
   _mm256_storeu_si256( out + 12, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 8 ) ) );
   _mm256_storeu_si256( out + 13, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 14 ) ) );
@@ -3001,21 +2993,19 @@ inline void unpack256_6( __m256i const* compressed, std::uint32_t* pout ) noexce
   _mm256_storeu_si256( out + 19, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 18 ) ) );
   _mm256_storeu_si256( out + 20, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 24 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 4 );
-  _mm256_storeu_si256(
-      out + 21,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 30 ), _mm256_slli_epi32( w0, 2 ) ) ) );
+  _mm256_storeu_si256( out + 21,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 30 ),
+                                                          _mm256_slli_epi32( w0, 2 ) ) ) );
   _mm256_storeu_si256( out + 22, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 4 ) ) );
   _mm256_storeu_si256( out + 23, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 10 ) ) );
   _mm256_storeu_si256( out + 24, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 16 ) ) );
   _mm256_storeu_si256( out + 25, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 22 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 5 );
-  _mm256_storeu_si256(
-      out + 26,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 28 ), _mm256_slli_epi32( w1, 4 ) ) ) );
+  _mm256_storeu_si256( out + 26,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 28 ),
+                                                          _mm256_slli_epi32( w1, 4 ) ) ) );
   _mm256_storeu_si256( out + 27, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 2 ) ) );
   _mm256_storeu_si256( out + 28, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 8 ) ) );
   _mm256_storeu_si256( out + 29, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 14 ) ) );
@@ -3035,59 +3025,53 @@ inline void unpack256_7( __m256i const* compressed, std::uint32_t* pout ) noexce
   _mm256_storeu_si256( out + 2, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 14 ) ) );
   _mm256_storeu_si256( out + 3, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 21 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 1 );
-  _mm256_storeu_si256(
-      out + 4,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 28 ), _mm256_slli_epi32( w1, 4 ) ) ) );
+  _mm256_storeu_si256( out + 4,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 28 ),
+                                                          _mm256_slli_epi32( w1, 4 ) ) ) );
   _mm256_storeu_si256( out + 5, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 3 ) ) );
   _mm256_storeu_si256( out + 6, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 10 ) ) );
   _mm256_storeu_si256( out + 7, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 17 ) ) );
   _mm256_storeu_si256( out + 8, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 24 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 2 );
-  _mm256_storeu_si256(
-      out + 9,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 31 ), _mm256_slli_epi32( w0, 1 ) ) ) );
+  _mm256_storeu_si256( out + 9,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 31 ),
+                                                          _mm256_slli_epi32( w0, 1 ) ) ) );
   _mm256_storeu_si256( out + 10, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 6 ) ) );
   _mm256_storeu_si256( out + 11, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 13 ) ) );
   _mm256_storeu_si256( out + 12, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 20 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 3 );
-  _mm256_storeu_si256(
-      out + 13,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 27 ), _mm256_slli_epi32( w1, 5 ) ) ) );
+  _mm256_storeu_si256( out + 13,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 27 ),
+                                                          _mm256_slli_epi32( w1, 5 ) ) ) );
   _mm256_storeu_si256( out + 14, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 2 ) ) );
   _mm256_storeu_si256( out + 15, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 9 ) ) );
   _mm256_storeu_si256( out + 16, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 16 ) ) );
   _mm256_storeu_si256( out + 17, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 23 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 4 );
-  _mm256_storeu_si256(
-      out + 18,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 30 ), _mm256_slli_epi32( w0, 2 ) ) ) );
+  _mm256_storeu_si256( out + 18,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 30 ),
+                                                          _mm256_slli_epi32( w0, 2 ) ) ) );
   _mm256_storeu_si256( out + 19, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 5 ) ) );
   _mm256_storeu_si256( out + 20, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 12 ) ) );
   _mm256_storeu_si256( out + 21, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 19 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 5 );
-  _mm256_storeu_si256(
-      out + 22,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 26 ), _mm256_slli_epi32( w1, 6 ) ) ) );
+  _mm256_storeu_si256( out + 22,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 26 ),
+                                                          _mm256_slli_epi32( w1, 6 ) ) ) );
   _mm256_storeu_si256( out + 23, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 1 ) ) );
   _mm256_storeu_si256( out + 24, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 8 ) ) );
   _mm256_storeu_si256( out + 25, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 15 ) ) );
   _mm256_storeu_si256( out + 26, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 22 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 6 );
-  _mm256_storeu_si256(
-      out + 27,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 29 ), _mm256_slli_epi32( w0, 3 ) ) ) );
+  _mm256_storeu_si256( out + 27,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 29 ),
+                                                          _mm256_slli_epi32( w0, 3 ) ) ) );
   _mm256_storeu_si256( out + 28, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 4 ) ) );
   _mm256_storeu_si256( out + 29, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 11 ) ) );
   _mm256_storeu_si256( out + 30, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 18 ) ) );
@@ -3153,71 +3137,63 @@ inline void unpack256_9( __m256i const* compressed, std::uint32_t* pout ) noexce
   _mm256_storeu_si256( out + 1, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 9 ) ) );
   _mm256_storeu_si256( out + 2, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 18 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 1 );
-  _mm256_storeu_si256(
-      out + 3,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 27 ), _mm256_slli_epi32( w1, 5 ) ) ) );
+  _mm256_storeu_si256( out + 3,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 27 ),
+                                                          _mm256_slli_epi32( w1, 5 ) ) ) );
   _mm256_storeu_si256( out + 4, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 4 ) ) );
   _mm256_storeu_si256( out + 5, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 13 ) ) );
   _mm256_storeu_si256( out + 6, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 22 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 2 );
-  _mm256_storeu_si256(
-      out + 7,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 31 ), _mm256_slli_epi32( w0, 1 ) ) ) );
+  _mm256_storeu_si256( out + 7,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 31 ),
+                                                          _mm256_slli_epi32( w0, 1 ) ) ) );
   _mm256_storeu_si256( out + 8, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 8 ) ) );
   _mm256_storeu_si256( out + 9, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 17 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 3 );
-  _mm256_storeu_si256(
-      out + 10,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 26 ), _mm256_slli_epi32( w1, 6 ) ) ) );
+  _mm256_storeu_si256( out + 10,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 26 ),
+                                                          _mm256_slli_epi32( w1, 6 ) ) ) );
   _mm256_storeu_si256( out + 11, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 3 ) ) );
   _mm256_storeu_si256( out + 12, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 12 ) ) );
   _mm256_storeu_si256( out + 13, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 21 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 4 );
-  _mm256_storeu_si256(
-      out + 14,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 30 ), _mm256_slli_epi32( w0, 2 ) ) ) );
+  _mm256_storeu_si256( out + 14,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 30 ),
+                                                          _mm256_slli_epi32( w0, 2 ) ) ) );
   _mm256_storeu_si256( out + 15, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 7 ) ) );
   _mm256_storeu_si256( out + 16, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 16 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 5 );
-  _mm256_storeu_si256(
-      out + 17,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 25 ), _mm256_slli_epi32( w1, 7 ) ) ) );
+  _mm256_storeu_si256( out + 17,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 25 ),
+                                                          _mm256_slli_epi32( w1, 7 ) ) ) );
   _mm256_storeu_si256( out + 18, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 2 ) ) );
   _mm256_storeu_si256( out + 19, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 11 ) ) );
   _mm256_storeu_si256( out + 20, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 20 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 6 );
-  _mm256_storeu_si256(
-      out + 21,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 29 ), _mm256_slli_epi32( w0, 3 ) ) ) );
+  _mm256_storeu_si256( out + 21,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 29 ),
+                                                          _mm256_slli_epi32( w0, 3 ) ) ) );
   _mm256_storeu_si256( out + 22, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 6 ) ) );
   _mm256_storeu_si256( out + 23, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 15 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 7 );
-  _mm256_storeu_si256(
-      out + 24,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 24 ), _mm256_slli_epi32( w1, 8 ) ) ) );
+  _mm256_storeu_si256( out + 24,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 24 ),
+                                                          _mm256_slli_epi32( w1, 8 ) ) ) );
   _mm256_storeu_si256( out + 25, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 1 ) ) );
   _mm256_storeu_si256( out + 26, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 10 ) ) );
   _mm256_storeu_si256( out + 27, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 19 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 8 );
-  _mm256_storeu_si256(
-      out + 28,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 28 ), _mm256_slli_epi32( w0, 4 ) ) ) );
+  _mm256_storeu_si256( out + 28,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 28 ),
+                                                          _mm256_slli_epi32( w0, 4 ) ) ) );
   _mm256_storeu_si256( out + 29, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 5 ) ) );
   _mm256_storeu_si256( out + 30, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 14 ) ) );
   _mm256_storeu_si256( out + 31, _mm256_srli_epi32( w0, 23 ) );
@@ -3234,35 +3210,31 @@ inline void unpack256_10( __m256i const* compressed, std::uint32_t* pout ) noexc
   _mm256_storeu_si256( out + 1, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 10 ) ) );
   _mm256_storeu_si256( out + 2, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 20 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 1 );
-  _mm256_storeu_si256(
-      out + 3,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 30 ), _mm256_slli_epi32( w1, 2 ) ) ) );
+  _mm256_storeu_si256( out + 3,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 30 ),
+                                                          _mm256_slli_epi32( w1, 2 ) ) ) );
   _mm256_storeu_si256( out + 4, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 8 ) ) );
   _mm256_storeu_si256( out + 5, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 18 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 2 );
-  _mm256_storeu_si256(
-      out + 6,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 28 ), _mm256_slli_epi32( w0, 4 ) ) ) );
+  _mm256_storeu_si256( out + 6,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 28 ),
+                                                          _mm256_slli_epi32( w0, 4 ) ) ) );
   _mm256_storeu_si256( out + 7, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 6 ) ) );
   _mm256_storeu_si256( out + 8, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 16 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 3 );
-  _mm256_storeu_si256(
-      out + 9,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 26 ), _mm256_slli_epi32( w1, 6 ) ) ) );
+  _mm256_storeu_si256( out + 9,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 26 ),
+                                                          _mm256_slli_epi32( w1, 6 ) ) ) );
   _mm256_storeu_si256( out + 10, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 4 ) ) );
   _mm256_storeu_si256( out + 11, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 14 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 4 );
-  _mm256_storeu_si256(
-      out + 12,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 24 ), _mm256_slli_epi32( w0, 8 ) ) ) );
+  _mm256_storeu_si256( out + 12,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 24 ),
+                                                          _mm256_slli_epi32( w0, 8 ) ) ) );
   _mm256_storeu_si256( out + 13, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 2 ) ) );
   _mm256_storeu_si256( out + 14, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 12 ) ) );
   _mm256_storeu_si256( out + 15, _mm256_srli_epi32( w0, 22 ) );
@@ -3271,35 +3243,31 @@ inline void unpack256_10( __m256i const* compressed, std::uint32_t* pout ) noexc
   _mm256_storeu_si256( out + 17, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 10 ) ) );
   _mm256_storeu_si256( out + 18, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 20 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 6 );
-  _mm256_storeu_si256(
-      out + 19,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 30 ), _mm256_slli_epi32( w0, 2 ) ) ) );
+  _mm256_storeu_si256( out + 19,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 30 ),
+                                                          _mm256_slli_epi32( w0, 2 ) ) ) );
   _mm256_storeu_si256( out + 20, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 8 ) ) );
   _mm256_storeu_si256( out + 21, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 18 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 7 );
-  _mm256_storeu_si256(
-      out + 22,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 28 ), _mm256_slli_epi32( w1, 4 ) ) ) );
+  _mm256_storeu_si256( out + 22,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 28 ),
+                                                          _mm256_slli_epi32( w1, 4 ) ) ) );
   _mm256_storeu_si256( out + 23, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 6 ) ) );
   _mm256_storeu_si256( out + 24, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 16 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 8 );
-  _mm256_storeu_si256(
-      out + 25,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 26 ), _mm256_slli_epi32( w0, 6 ) ) ) );
+  _mm256_storeu_si256( out + 25,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 26 ),
+                                                          _mm256_slli_epi32( w0, 6 ) ) ) );
   _mm256_storeu_si256( out + 26, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 4 ) ) );
   _mm256_storeu_si256( out + 27, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 14 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 9 );
-  _mm256_storeu_si256(
-      out + 28,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 24 ), _mm256_slli_epi32( w1, 8 ) ) ) );
+  _mm256_storeu_si256( out + 28,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 24 ),
+                                                          _mm256_slli_epi32( w1, 8 ) ) ) );
   _mm256_storeu_si256( out + 29, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 2 ) ) );
   _mm256_storeu_si256( out + 30, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 12 ) ) );
   _mm256_storeu_si256( out + 31, _mm256_srli_epi32( w1, 22 ) );
@@ -3315,83 +3283,73 @@ inline void unpack256_11( __m256i const* compressed, std::uint32_t* pout ) noexc
   _mm256_storeu_si256( out + 0, _mm256_and_si256( mask, w0 ) );
   _mm256_storeu_si256( out + 1, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 11 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 1 );
-  _mm256_storeu_si256(
-      out + 2,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 22 ), _mm256_slli_epi32( w1, 10 ) ) ) );
+  _mm256_storeu_si256( out + 2,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 22 ),
+                                                          _mm256_slli_epi32( w1, 10 ) ) ) );
   _mm256_storeu_si256( out + 3, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 1 ) ) );
   _mm256_storeu_si256( out + 4, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 12 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 2 );
-  _mm256_storeu_si256(
-      out + 5,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 23 ), _mm256_slli_epi32( w0, 9 ) ) ) );
+  _mm256_storeu_si256( out + 5,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 23 ),
+                                                          _mm256_slli_epi32( w0, 9 ) ) ) );
   _mm256_storeu_si256( out + 6, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 2 ) ) );
   _mm256_storeu_si256( out + 7, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 13 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 3 );
-  _mm256_storeu_si256(
-      out + 8,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 24 ), _mm256_slli_epi32( w1, 8 ) ) ) );
+  _mm256_storeu_si256( out + 8,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 24 ),
+                                                          _mm256_slli_epi32( w1, 8 ) ) ) );
   _mm256_storeu_si256( out + 9, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 3 ) ) );
   _mm256_storeu_si256( out + 10, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 14 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 4 );
-  _mm256_storeu_si256(
-      out + 11,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 25 ), _mm256_slli_epi32( w0, 7 ) ) ) );
+  _mm256_storeu_si256( out + 11,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 25 ),
+                                                          _mm256_slli_epi32( w0, 7 ) ) ) );
   _mm256_storeu_si256( out + 12, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 4 ) ) );
   _mm256_storeu_si256( out + 13, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 15 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 5 );
-  _mm256_storeu_si256(
-      out + 14,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 26 ), _mm256_slli_epi32( w1, 6 ) ) ) );
+  _mm256_storeu_si256( out + 14,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 26 ),
+                                                          _mm256_slli_epi32( w1, 6 ) ) ) );
   _mm256_storeu_si256( out + 15, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 5 ) ) );
   _mm256_storeu_si256( out + 16, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 16 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 6 );
-  _mm256_storeu_si256(
-      out + 17,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 27 ), _mm256_slli_epi32( w0, 5 ) ) ) );
+  _mm256_storeu_si256( out + 17,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 27 ),
+                                                          _mm256_slli_epi32( w0, 5 ) ) ) );
   _mm256_storeu_si256( out + 18, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 6 ) ) );
   _mm256_storeu_si256( out + 19, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 17 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 7 );
-  _mm256_storeu_si256(
-      out + 20,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 28 ), _mm256_slli_epi32( w1, 4 ) ) ) );
+  _mm256_storeu_si256( out + 20,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 28 ),
+                                                          _mm256_slli_epi32( w1, 4 ) ) ) );
   _mm256_storeu_si256( out + 21, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 7 ) ) );
   _mm256_storeu_si256( out + 22, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 18 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 8 );
-  _mm256_storeu_si256(
-      out + 23,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 29 ), _mm256_slli_epi32( w0, 3 ) ) ) );
+  _mm256_storeu_si256( out + 23,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 29 ),
+                                                          _mm256_slli_epi32( w0, 3 ) ) ) );
   _mm256_storeu_si256( out + 24, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 8 ) ) );
   _mm256_storeu_si256( out + 25, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 19 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 9 );
-  _mm256_storeu_si256(
-      out + 26,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 30 ), _mm256_slli_epi32( w1, 2 ) ) ) );
+  _mm256_storeu_si256( out + 26,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 30 ),
+                                                          _mm256_slli_epi32( w1, 2 ) ) ) );
   _mm256_storeu_si256( out + 27, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 9 ) ) );
   _mm256_storeu_si256( out + 28, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 20 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 10 );
-  _mm256_storeu_si256(
-      out + 29,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 31 ), _mm256_slli_epi32( w0, 1 ) ) ) );
+  _mm256_storeu_si256( out + 29,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 31 ),
+                                                          _mm256_slli_epi32( w0, 1 ) ) ) );
   _mm256_storeu_si256( out + 30, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 10 ) ) );
   _mm256_storeu_si256( out + 31, _mm256_srli_epi32( w0, 21 ) );
 }
@@ -3406,76 +3364,68 @@ inline void unpack256_12( __m256i const* compressed, std::uint32_t* pout ) noexc
   _mm256_storeu_si256( out + 0, _mm256_and_si256( mask, w0 ) );
   _mm256_storeu_si256( out + 1, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 12 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 1 );
-  _mm256_storeu_si256(
-      out + 2,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 24 ), _mm256_slli_epi32( w1, 8 ) ) ) );
+  _mm256_storeu_si256( out + 2,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 24 ),
+                                                          _mm256_slli_epi32( w1, 8 ) ) ) );
   _mm256_storeu_si256( out + 3, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 4 ) ) );
   _mm256_storeu_si256( out + 4, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 16 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 2 );
-  _mm256_storeu_si256(
-      out + 5,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 28 ), _mm256_slli_epi32( w0, 4 ) ) ) );
+  _mm256_storeu_si256( out + 5,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 28 ),
+                                                          _mm256_slli_epi32( w0, 4 ) ) ) );
   _mm256_storeu_si256( out + 6, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 8 ) ) );
   _mm256_storeu_si256( out + 7, _mm256_srli_epi32( w0, 20 ) );
   w1 = _mm256_lddqu_si256( compressed + 3 );
   _mm256_storeu_si256( out + 8, _mm256_and_si256( mask, w1 ) );
   _mm256_storeu_si256( out + 9, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 12 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 4 );
-  _mm256_storeu_si256(
-      out + 10,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 24 ), _mm256_slli_epi32( w0, 8 ) ) ) );
+  _mm256_storeu_si256( out + 10,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 24 ),
+                                                          _mm256_slli_epi32( w0, 8 ) ) ) );
   _mm256_storeu_si256( out + 11, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 4 ) ) );
   _mm256_storeu_si256( out + 12, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 16 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 5 );
-  _mm256_storeu_si256(
-      out + 13,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 28 ), _mm256_slli_epi32( w1, 4 ) ) ) );
+  _mm256_storeu_si256( out + 13,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 28 ),
+                                                          _mm256_slli_epi32( w1, 4 ) ) ) );
   _mm256_storeu_si256( out + 14, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 8 ) ) );
   _mm256_storeu_si256( out + 15, _mm256_srli_epi32( w1, 20 ) );
   w0 = _mm256_lddqu_si256( compressed + 6 );
   _mm256_storeu_si256( out + 16, _mm256_and_si256( mask, w0 ) );
   _mm256_storeu_si256( out + 17, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 12 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 7 );
-  _mm256_storeu_si256(
-      out + 18,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 24 ), _mm256_slli_epi32( w1, 8 ) ) ) );
+  _mm256_storeu_si256( out + 18,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 24 ),
+                                                          _mm256_slli_epi32( w1, 8 ) ) ) );
   _mm256_storeu_si256( out + 19, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 4 ) ) );
   _mm256_storeu_si256( out + 20, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 16 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 8 );
-  _mm256_storeu_si256(
-      out + 21,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 28 ), _mm256_slli_epi32( w0, 4 ) ) ) );
+  _mm256_storeu_si256( out + 21,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 28 ),
+                                                          _mm256_slli_epi32( w0, 4 ) ) ) );
   _mm256_storeu_si256( out + 22, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 8 ) ) );
   _mm256_storeu_si256( out + 23, _mm256_srli_epi32( w0, 20 ) );
   w1 = _mm256_lddqu_si256( compressed + 9 );
   _mm256_storeu_si256( out + 24, _mm256_and_si256( mask, w1 ) );
   _mm256_storeu_si256( out + 25, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 12 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 10 );
-  _mm256_storeu_si256(
-      out + 26,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 24 ), _mm256_slli_epi32( w0, 8 ) ) ) );
+  _mm256_storeu_si256( out + 26,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 24 ),
+                                                          _mm256_slli_epi32( w0, 8 ) ) ) );
   _mm256_storeu_si256( out + 27, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 4 ) ) );
   _mm256_storeu_si256( out + 28, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 16 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 11 );
-  _mm256_storeu_si256(
-      out + 29,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 28 ), _mm256_slli_epi32( w1, 4 ) ) ) );
+  _mm256_storeu_si256( out + 29,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 28 ),
+                                                          _mm256_slli_epi32( w1, 4 ) ) ) );
   _mm256_storeu_si256( out + 30, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 8 ) ) );
   _mm256_storeu_si256( out + 31, _mm256_srli_epi32( w1, 20 ) );
 }
@@ -3490,93 +3440,81 @@ inline void unpack256_13( __m256i const* compressed, std::uint32_t* pout ) noexc
   _mm256_storeu_si256( out + 0, _mm256_and_si256( mask, w0 ) );
   _mm256_storeu_si256( out + 1, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 13 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 1 );
-  _mm256_storeu_si256(
-      out + 2,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 26 ), _mm256_slli_epi32( w1, 6 ) ) ) );
+  _mm256_storeu_si256( out + 2,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 26 ),
+                                                          _mm256_slli_epi32( w1, 6 ) ) ) );
   _mm256_storeu_si256( out + 3, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 7 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 2 );
-  _mm256_storeu_si256(
-      out + 4,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 20 ), _mm256_slli_epi32( w0, 12 ) ) ) );
+  _mm256_storeu_si256( out + 4,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 20 ),
+                                                          _mm256_slli_epi32( w0, 12 ) ) ) );
   _mm256_storeu_si256( out + 5, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 1 ) ) );
   _mm256_storeu_si256( out + 6, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 14 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 3 );
-  _mm256_storeu_si256(
-      out + 7,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 27 ), _mm256_slli_epi32( w1, 5 ) ) ) );
+  _mm256_storeu_si256( out + 7,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 27 ),
+                                                          _mm256_slli_epi32( w1, 5 ) ) ) );
   _mm256_storeu_si256( out + 8, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 8 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 4 );
-  _mm256_storeu_si256(
-      out + 9,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 21 ), _mm256_slli_epi32( w0, 11 ) ) ) );
+  _mm256_storeu_si256( out + 9,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 21 ),
+                                                          _mm256_slli_epi32( w0, 11 ) ) ) );
   _mm256_storeu_si256( out + 10, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 2 ) ) );
   _mm256_storeu_si256( out + 11, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 15 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 5 );
-  _mm256_storeu_si256(
-      out + 12,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 28 ), _mm256_slli_epi32( w1, 4 ) ) ) );
+  _mm256_storeu_si256( out + 12,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 28 ),
+                                                          _mm256_slli_epi32( w1, 4 ) ) ) );
   _mm256_storeu_si256( out + 13, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 9 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 6 );
-  _mm256_storeu_si256(
-      out + 14,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 22 ), _mm256_slli_epi32( w0, 10 ) ) ) );
+  _mm256_storeu_si256( out + 14,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 22 ),
+                                                          _mm256_slli_epi32( w0, 10 ) ) ) );
   _mm256_storeu_si256( out + 15, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 3 ) ) );
   _mm256_storeu_si256( out + 16, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 16 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 7 );
-  _mm256_storeu_si256(
-      out + 17,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 29 ), _mm256_slli_epi32( w1, 3 ) ) ) );
+  _mm256_storeu_si256( out + 17,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 29 ),
+                                                          _mm256_slli_epi32( w1, 3 ) ) ) );
   _mm256_storeu_si256( out + 18, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 10 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 8 );
-  _mm256_storeu_si256(
-      out + 19,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 23 ), _mm256_slli_epi32( w0, 9 ) ) ) );
+  _mm256_storeu_si256( out + 19,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 23 ),
+                                                          _mm256_slli_epi32( w0, 9 ) ) ) );
   _mm256_storeu_si256( out + 20, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 4 ) ) );
   _mm256_storeu_si256( out + 21, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 17 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 9 );
-  _mm256_storeu_si256(
-      out + 22,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 30 ), _mm256_slli_epi32( w1, 2 ) ) ) );
+  _mm256_storeu_si256( out + 22,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 30 ),
+                                                          _mm256_slli_epi32( w1, 2 ) ) ) );
   _mm256_storeu_si256( out + 23, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 11 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 10 );
-  _mm256_storeu_si256(
-      out + 24,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 24 ), _mm256_slli_epi32( w0, 8 ) ) ) );
+  _mm256_storeu_si256( out + 24,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 24 ),
+                                                          _mm256_slli_epi32( w0, 8 ) ) ) );
   _mm256_storeu_si256( out + 25, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 5 ) ) );
   _mm256_storeu_si256( out + 26, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 18 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 11 );
-  _mm256_storeu_si256(
-      out + 27,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 31 ), _mm256_slli_epi32( w1, 1 ) ) ) );
+  _mm256_storeu_si256( out + 27,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 31 ),
+                                                          _mm256_slli_epi32( w1, 1 ) ) ) );
   _mm256_storeu_si256( out + 28, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 12 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 12 );
-  _mm256_storeu_si256(
-      out + 29,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 25 ), _mm256_slli_epi32( w0, 7 ) ) ) );
+  _mm256_storeu_si256( out + 29,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 25 ),
+                                                          _mm256_slli_epi32( w0, 7 ) ) ) );
   _mm256_storeu_si256( out + 30, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 6 ) ) );
   _mm256_storeu_si256( out + 31, _mm256_srli_epi32( w0, 19 ) );
 }
@@ -3591,94 +3529,82 @@ inline void unpack256_14( __m256i const* compressed, std::uint32_t* pout ) noexc
   _mm256_storeu_si256( out + 0, _mm256_and_si256( mask, w0 ) );
   _mm256_storeu_si256( out + 1, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 14 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 1 );
-  _mm256_storeu_si256(
-      out + 2,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 28 ), _mm256_slli_epi32( w1, 4 ) ) ) );
+  _mm256_storeu_si256( out + 2,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 28 ),
+                                                          _mm256_slli_epi32( w1, 4 ) ) ) );
   _mm256_storeu_si256( out + 3, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 10 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 2 );
-  _mm256_storeu_si256(
-      out + 4,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 24 ), _mm256_slli_epi32( w0, 8 ) ) ) );
+  _mm256_storeu_si256( out + 4,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 24 ),
+                                                          _mm256_slli_epi32( w0, 8 ) ) ) );
   _mm256_storeu_si256( out + 5, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 6 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 3 );
-  _mm256_storeu_si256(
-      out + 6,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 20 ), _mm256_slli_epi32( w1, 12 ) ) ) );
+  _mm256_storeu_si256( out + 6,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 20 ),
+                                                          _mm256_slli_epi32( w1, 12 ) ) ) );
   _mm256_storeu_si256( out + 7, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 2 ) ) );
   _mm256_storeu_si256( out + 8, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 16 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 4 );
-  _mm256_storeu_si256(
-      out + 9,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 30 ), _mm256_slli_epi32( w0, 2 ) ) ) );
+  _mm256_storeu_si256( out + 9,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 30 ),
+                                                          _mm256_slli_epi32( w0, 2 ) ) ) );
   _mm256_storeu_si256( out + 10, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 12 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 5 );
-  _mm256_storeu_si256(
-      out + 11,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 26 ), _mm256_slli_epi32( w1, 6 ) ) ) );
+  _mm256_storeu_si256( out + 11,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 26 ),
+                                                          _mm256_slli_epi32( w1, 6 ) ) ) );
   _mm256_storeu_si256( out + 12, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 8 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 6 );
-  _mm256_storeu_si256(
-      out + 13,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 22 ), _mm256_slli_epi32( w0, 10 ) ) ) );
+  _mm256_storeu_si256( out + 13,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 22 ),
+                                                          _mm256_slli_epi32( w0, 10 ) ) ) );
   _mm256_storeu_si256( out + 14, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 4 ) ) );
   _mm256_storeu_si256( out + 15, _mm256_srli_epi32( w0, 18 ) );
   w1 = _mm256_lddqu_si256( compressed + 7 );
   _mm256_storeu_si256( out + 16, _mm256_and_si256( mask, w1 ) );
   _mm256_storeu_si256( out + 17, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 14 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 8 );
-  _mm256_storeu_si256(
-      out + 18,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 28 ), _mm256_slli_epi32( w0, 4 ) ) ) );
+  _mm256_storeu_si256( out + 18,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 28 ),
+                                                          _mm256_slli_epi32( w0, 4 ) ) ) );
   _mm256_storeu_si256( out + 19, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 10 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 9 );
-  _mm256_storeu_si256(
-      out + 20,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 24 ), _mm256_slli_epi32( w1, 8 ) ) ) );
+  _mm256_storeu_si256( out + 20,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 24 ),
+                                                          _mm256_slli_epi32( w1, 8 ) ) ) );
   _mm256_storeu_si256( out + 21, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 6 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 10 );
-  _mm256_storeu_si256(
-      out + 22,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 20 ), _mm256_slli_epi32( w0, 12 ) ) ) );
+  _mm256_storeu_si256( out + 22,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 20 ),
+                                                          _mm256_slli_epi32( w0, 12 ) ) ) );
   _mm256_storeu_si256( out + 23, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 2 ) ) );
   _mm256_storeu_si256( out + 24, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 16 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 11 );
-  _mm256_storeu_si256(
-      out + 25,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 30 ), _mm256_slli_epi32( w1, 2 ) ) ) );
+  _mm256_storeu_si256( out + 25,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 30 ),
+                                                          _mm256_slli_epi32( w1, 2 ) ) ) );
   _mm256_storeu_si256( out + 26, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 12 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 12 );
-  _mm256_storeu_si256(
-      out + 27,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 26 ), _mm256_slli_epi32( w0, 6 ) ) ) );
+  _mm256_storeu_si256( out + 27,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 26 ),
+                                                          _mm256_slli_epi32( w0, 6 ) ) ) );
   _mm256_storeu_si256( out + 28, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 8 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 13 );
-  _mm256_storeu_si256(
-      out + 29,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 22 ), _mm256_slli_epi32( w1, 10 ) ) ) );
+  _mm256_storeu_si256( out + 29,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 22 ),
+                                                          _mm256_slli_epi32( w1, 10 ) ) ) );
   _mm256_storeu_si256( out + 30, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 4 ) ) );
   _mm256_storeu_si256( out + 31, _mm256_srli_epi32( w1, 18 ) );
 }
@@ -3693,103 +3619,89 @@ inline void unpack256_15( __m256i const* compressed, std::uint32_t* pout ) noexc
   _mm256_storeu_si256( out + 0, _mm256_and_si256( mask, w0 ) );
   _mm256_storeu_si256( out + 1, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 15 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 1 );
-  _mm256_storeu_si256(
-      out + 2,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 30 ), _mm256_slli_epi32( w1, 2 ) ) ) );
+  _mm256_storeu_si256( out + 2,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 30 ),
+                                                          _mm256_slli_epi32( w1, 2 ) ) ) );
   _mm256_storeu_si256( out + 3, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 13 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 2 );
-  _mm256_storeu_si256(
-      out + 4,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 28 ), _mm256_slli_epi32( w0, 4 ) ) ) );
+  _mm256_storeu_si256( out + 4,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 28 ),
+                                                          _mm256_slli_epi32( w0, 4 ) ) ) );
   _mm256_storeu_si256( out + 5, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 11 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 3 );
-  _mm256_storeu_si256(
-      out + 6,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 26 ), _mm256_slli_epi32( w1, 6 ) ) ) );
+  _mm256_storeu_si256( out + 6,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 26 ),
+                                                          _mm256_slli_epi32( w1, 6 ) ) ) );
   _mm256_storeu_si256( out + 7, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 9 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 4 );
-  _mm256_storeu_si256(
-      out + 8,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 24 ), _mm256_slli_epi32( w0, 8 ) ) ) );
+  _mm256_storeu_si256( out + 8,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 24 ),
+                                                          _mm256_slli_epi32( w0, 8 ) ) ) );
   _mm256_storeu_si256( out + 9, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 7 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 5 );
-  _mm256_storeu_si256(
-      out + 10,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 22 ), _mm256_slli_epi32( w1, 10 ) ) ) );
+  _mm256_storeu_si256( out + 10,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 22 ),
+                                                          _mm256_slli_epi32( w1, 10 ) ) ) );
   _mm256_storeu_si256( out + 11, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 5 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 6 );
-  _mm256_storeu_si256(
-      out + 12,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 20 ), _mm256_slli_epi32( w0, 12 ) ) ) );
+  _mm256_storeu_si256( out + 12,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 20 ),
+                                                          _mm256_slli_epi32( w0, 12 ) ) ) );
   _mm256_storeu_si256( out + 13, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 3 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 7 );
-  _mm256_storeu_si256(
-      out + 14,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 18 ), _mm256_slli_epi32( w1, 14 ) ) ) );
+  _mm256_storeu_si256( out + 14,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 18 ),
+                                                          _mm256_slli_epi32( w1, 14 ) ) ) );
   _mm256_storeu_si256( out + 15, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 1 ) ) );
   _mm256_storeu_si256( out + 16, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 16 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 8 );
-  _mm256_storeu_si256(
-      out + 17,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 31 ), _mm256_slli_epi32( w0, 1 ) ) ) );
+  _mm256_storeu_si256( out + 17,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 31 ),
+                                                          _mm256_slli_epi32( w0, 1 ) ) ) );
   _mm256_storeu_si256( out + 18, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 14 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 9 );
-  _mm256_storeu_si256(
-      out + 19,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 29 ), _mm256_slli_epi32( w1, 3 ) ) ) );
+  _mm256_storeu_si256( out + 19,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 29 ),
+                                                          _mm256_slli_epi32( w1, 3 ) ) ) );
   _mm256_storeu_si256( out + 20, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 12 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 10 );
-  _mm256_storeu_si256(
-      out + 21,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 27 ), _mm256_slli_epi32( w0, 5 ) ) ) );
+  _mm256_storeu_si256( out + 21,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 27 ),
+                                                          _mm256_slli_epi32( w0, 5 ) ) ) );
   _mm256_storeu_si256( out + 22, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 10 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 11 );
-  _mm256_storeu_si256(
-      out + 23,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 25 ), _mm256_slli_epi32( w1, 7 ) ) ) );
+  _mm256_storeu_si256( out + 23,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 25 ),
+                                                          _mm256_slli_epi32( w1, 7 ) ) ) );
   _mm256_storeu_si256( out + 24, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 8 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 12 );
-  _mm256_storeu_si256(
-      out + 25,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 23 ), _mm256_slli_epi32( w0, 9 ) ) ) );
+  _mm256_storeu_si256( out + 25,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 23 ),
+                                                          _mm256_slli_epi32( w0, 9 ) ) ) );
   _mm256_storeu_si256( out + 26, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 6 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 13 );
-  _mm256_storeu_si256(
-      out + 27,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 21 ), _mm256_slli_epi32( w1, 11 ) ) ) );
+  _mm256_storeu_si256( out + 27,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 21 ),
+                                                          _mm256_slli_epi32( w1, 11 ) ) ) );
   _mm256_storeu_si256( out + 28, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 4 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 14 );
-  _mm256_storeu_si256(
-      out + 29,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 19 ), _mm256_slli_epi32( w0, 13 ) ) ) );
+  _mm256_storeu_si256( out + 29,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 19 ),
+                                                          _mm256_slli_epi32( w0, 13 ) ) ) );
   _mm256_storeu_si256( out + 30, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 2 ) ) );
   _mm256_storeu_si256( out + 31, _mm256_srli_epi32( w0, 17 ) );
 }
@@ -3859,115 +3771,99 @@ inline void unpack256_17( __m256i const* compressed, std::uint32_t* pout ) noexc
   w0 = _mm256_lddqu_si256( compressed );
   _mm256_storeu_si256( out + 0, _mm256_and_si256( mask, w0 ) );
   w1 = _mm256_lddqu_si256( compressed + 1 );
-  _mm256_storeu_si256(
-      out + 1,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 17 ), _mm256_slli_epi32( w1, 15 ) ) ) );
+  _mm256_storeu_si256( out + 1,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 17 ),
+                                                          _mm256_slli_epi32( w1, 15 ) ) ) );
   _mm256_storeu_si256( out + 2, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 2 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 2 );
-  _mm256_storeu_si256(
-      out + 3,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 19 ), _mm256_slli_epi32( w0, 13 ) ) ) );
+  _mm256_storeu_si256( out + 3,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 19 ),
+                                                          _mm256_slli_epi32( w0, 13 ) ) ) );
   _mm256_storeu_si256( out + 4, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 4 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 3 );
-  _mm256_storeu_si256(
-      out + 5,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 21 ), _mm256_slli_epi32( w1, 11 ) ) ) );
+  _mm256_storeu_si256( out + 5,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 21 ),
+                                                          _mm256_slli_epi32( w1, 11 ) ) ) );
   _mm256_storeu_si256( out + 6, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 6 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 4 );
-  _mm256_storeu_si256(
-      out + 7,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 23 ), _mm256_slli_epi32( w0, 9 ) ) ) );
+  _mm256_storeu_si256( out + 7,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 23 ),
+                                                          _mm256_slli_epi32( w0, 9 ) ) ) );
   _mm256_storeu_si256( out + 8, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 8 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 5 );
-  _mm256_storeu_si256(
-      out + 9,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 25 ), _mm256_slli_epi32( w1, 7 ) ) ) );
+  _mm256_storeu_si256( out + 9,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 25 ),
+                                                          _mm256_slli_epi32( w1, 7 ) ) ) );
   _mm256_storeu_si256( out + 10, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 10 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 6 );
-  _mm256_storeu_si256(
-      out + 11,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 27 ), _mm256_slli_epi32( w0, 5 ) ) ) );
+  _mm256_storeu_si256( out + 11,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 27 ),
+                                                          _mm256_slli_epi32( w0, 5 ) ) ) );
   _mm256_storeu_si256( out + 12, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 12 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 7 );
-  _mm256_storeu_si256(
-      out + 13,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 29 ), _mm256_slli_epi32( w1, 3 ) ) ) );
+  _mm256_storeu_si256( out + 13,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 29 ),
+                                                          _mm256_slli_epi32( w1, 3 ) ) ) );
   _mm256_storeu_si256( out + 14, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 14 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 8 );
-  _mm256_storeu_si256(
-      out + 15,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 31 ), _mm256_slli_epi32( w0, 1 ) ) ) );
+  _mm256_storeu_si256( out + 15,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 31 ),
+                                                          _mm256_slli_epi32( w0, 1 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 9 );
-  _mm256_storeu_si256(
-      out + 16,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 16 ), _mm256_slli_epi32( w1, 16 ) ) ) );
+  _mm256_storeu_si256( out + 16,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 16 ),
+                                                          _mm256_slli_epi32( w1, 16 ) ) ) );
   _mm256_storeu_si256( out + 17, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 1 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 10 );
-  _mm256_storeu_si256(
-      out + 18,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 18 ), _mm256_slli_epi32( w0, 14 ) ) ) );
+  _mm256_storeu_si256( out + 18,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 18 ),
+                                                          _mm256_slli_epi32( w0, 14 ) ) ) );
   _mm256_storeu_si256( out + 19, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 3 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 11 );
-  _mm256_storeu_si256(
-      out + 20,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 20 ), _mm256_slli_epi32( w1, 12 ) ) ) );
+  _mm256_storeu_si256( out + 20,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 20 ),
+                                                          _mm256_slli_epi32( w1, 12 ) ) ) );
   _mm256_storeu_si256( out + 21, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 5 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 12 );
-  _mm256_storeu_si256(
-      out + 22,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 22 ), _mm256_slli_epi32( w0, 10 ) ) ) );
+  _mm256_storeu_si256( out + 22,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 22 ),
+                                                          _mm256_slli_epi32( w0, 10 ) ) ) );
   _mm256_storeu_si256( out + 23, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 7 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 13 );
-  _mm256_storeu_si256(
-      out + 24,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 24 ), _mm256_slli_epi32( w1, 8 ) ) ) );
+  _mm256_storeu_si256( out + 24,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 24 ),
+                                                          _mm256_slli_epi32( w1, 8 ) ) ) );
   _mm256_storeu_si256( out + 25, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 9 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 14 );
-  _mm256_storeu_si256(
-      out + 26,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 26 ), _mm256_slli_epi32( w0, 6 ) ) ) );
+  _mm256_storeu_si256( out + 26,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 26 ),
+                                                          _mm256_slli_epi32( w0, 6 ) ) ) );
   _mm256_storeu_si256( out + 27, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 11 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 15 );
-  _mm256_storeu_si256(
-      out + 28,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 28 ), _mm256_slli_epi32( w1, 4 ) ) ) );
+  _mm256_storeu_si256( out + 28,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 28 ),
+                                                          _mm256_slli_epi32( w1, 4 ) ) ) );
   _mm256_storeu_si256( out + 29, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 13 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 16 );
-  _mm256_storeu_si256(
-      out + 30,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 30 ), _mm256_slli_epi32( w0, 2 ) ) ) );
+  _mm256_storeu_si256( out + 30,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 30 ),
+                                                          _mm256_slli_epi32( w0, 2 ) ) ) );
   _mm256_storeu_si256( out + 31, _mm256_srli_epi32( w0, 15 ) );
 }
 
@@ -3980,116 +3876,100 @@ inline void unpack256_18( __m256i const* compressed, std::uint32_t* pout ) noexc
   w0 = _mm256_lddqu_si256( compressed );
   _mm256_storeu_si256( out + 0, _mm256_and_si256( mask, w0 ) );
   w1 = _mm256_lddqu_si256( compressed + 1 );
-  _mm256_storeu_si256(
-      out + 1,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 18 ), _mm256_slli_epi32( w1, 14 ) ) ) );
+  _mm256_storeu_si256( out + 1,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 18 ),
+                                                          _mm256_slli_epi32( w1, 14 ) ) ) );
   _mm256_storeu_si256( out + 2, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 4 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 2 );
-  _mm256_storeu_si256(
-      out + 3,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 22 ), _mm256_slli_epi32( w0, 10 ) ) ) );
+  _mm256_storeu_si256( out + 3,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 22 ),
+                                                          _mm256_slli_epi32( w0, 10 ) ) ) );
   _mm256_storeu_si256( out + 4, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 8 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 3 );
-  _mm256_storeu_si256(
-      out + 5,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 26 ), _mm256_slli_epi32( w1, 6 ) ) ) );
+  _mm256_storeu_si256( out + 5,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 26 ),
+                                                          _mm256_slli_epi32( w1, 6 ) ) ) );
   _mm256_storeu_si256( out + 6, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 12 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 4 );
-  _mm256_storeu_si256(
-      out + 7,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 30 ), _mm256_slli_epi32( w0, 2 ) ) ) );
+  _mm256_storeu_si256( out + 7,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 30 ),
+                                                          _mm256_slli_epi32( w0, 2 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 5 );
-  _mm256_storeu_si256(
-      out + 8,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 16 ), _mm256_slli_epi32( w1, 16 ) ) ) );
+  _mm256_storeu_si256( out + 8,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 16 ),
+                                                          _mm256_slli_epi32( w1, 16 ) ) ) );
   _mm256_storeu_si256( out + 9, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 2 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 6 );
-  _mm256_storeu_si256(
-      out + 10,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 20 ), _mm256_slli_epi32( w0, 12 ) ) ) );
+  _mm256_storeu_si256( out + 10,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 20 ),
+                                                          _mm256_slli_epi32( w0, 12 ) ) ) );
   _mm256_storeu_si256( out + 11, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 6 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 7 );
-  _mm256_storeu_si256(
-      out + 12,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 24 ), _mm256_slli_epi32( w1, 8 ) ) ) );
+  _mm256_storeu_si256( out + 12,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 24 ),
+                                                          _mm256_slli_epi32( w1, 8 ) ) ) );
   _mm256_storeu_si256( out + 13, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 10 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 8 );
-  _mm256_storeu_si256(
-      out + 14,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 28 ), _mm256_slli_epi32( w0, 4 ) ) ) );
+  _mm256_storeu_si256( out + 14,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 28 ),
+                                                          _mm256_slli_epi32( w0, 4 ) ) ) );
   _mm256_storeu_si256( out + 15, _mm256_srli_epi32( w0, 14 ) );
   w1 = _mm256_lddqu_si256( compressed + 9 );
   _mm256_storeu_si256( out + 16, _mm256_and_si256( mask, w1 ) );
   w0 = _mm256_lddqu_si256( compressed + 10 );
-  _mm256_storeu_si256(
-      out + 17,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 18 ), _mm256_slli_epi32( w0, 14 ) ) ) );
+  _mm256_storeu_si256( out + 17,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 18 ),
+                                                          _mm256_slli_epi32( w0, 14 ) ) ) );
   _mm256_storeu_si256( out + 18, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 4 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 11 );
-  _mm256_storeu_si256(
-      out + 19,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 22 ), _mm256_slli_epi32( w1, 10 ) ) ) );
+  _mm256_storeu_si256( out + 19,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 22 ),
+                                                          _mm256_slli_epi32( w1, 10 ) ) ) );
   _mm256_storeu_si256( out + 20, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 8 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 12 );
-  _mm256_storeu_si256(
-      out + 21,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 26 ), _mm256_slli_epi32( w0, 6 ) ) ) );
+  _mm256_storeu_si256( out + 21,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 26 ),
+                                                          _mm256_slli_epi32( w0, 6 ) ) ) );
   _mm256_storeu_si256( out + 22, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 12 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 13 );
-  _mm256_storeu_si256(
-      out + 23,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 30 ), _mm256_slli_epi32( w1, 2 ) ) ) );
+  _mm256_storeu_si256( out + 23,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 30 ),
+                                                          _mm256_slli_epi32( w1, 2 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 14 );
-  _mm256_storeu_si256(
-      out + 24,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 16 ), _mm256_slli_epi32( w0, 16 ) ) ) );
+  _mm256_storeu_si256( out + 24,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 16 ),
+                                                          _mm256_slli_epi32( w0, 16 ) ) ) );
   _mm256_storeu_si256( out + 25, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 2 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 15 );
-  _mm256_storeu_si256(
-      out + 26,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 20 ), _mm256_slli_epi32( w1, 12 ) ) ) );
+  _mm256_storeu_si256( out + 26,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 20 ),
+                                                          _mm256_slli_epi32( w1, 12 ) ) ) );
   _mm256_storeu_si256( out + 27, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 6 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 16 );
-  _mm256_storeu_si256(
-      out + 28,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 24 ), _mm256_slli_epi32( w0, 8 ) ) ) );
+  _mm256_storeu_si256( out + 28,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 24 ),
+                                                          _mm256_slli_epi32( w0, 8 ) ) ) );
   _mm256_storeu_si256( out + 29, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 10 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 17 );
-  _mm256_storeu_si256(
-      out + 30,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 28 ), _mm256_slli_epi32( w1, 4 ) ) ) );
+  _mm256_storeu_si256( out + 30,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 28 ),
+                                                          _mm256_slli_epi32( w1, 4 ) ) ) );
   _mm256_storeu_si256( out + 31, _mm256_srli_epi32( w1, 14 ) );
 }
 
@@ -4102,125 +3982,107 @@ inline void unpack256_19( __m256i const* compressed, std::uint32_t* pout ) noexc
   w0 = _mm256_lddqu_si256( compressed );
   _mm256_storeu_si256( out + 0, _mm256_and_si256( mask, w0 ) );
   w1 = _mm256_lddqu_si256( compressed + 1 );
-  _mm256_storeu_si256(
-      out + 1,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 19 ), _mm256_slli_epi32( w1, 13 ) ) ) );
+  _mm256_storeu_si256( out + 1,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 19 ),
+                                                          _mm256_slli_epi32( w1, 13 ) ) ) );
   _mm256_storeu_si256( out + 2, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 6 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 2 );
-  _mm256_storeu_si256(
-      out + 3,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 25 ), _mm256_slli_epi32( w0, 7 ) ) ) );
+  _mm256_storeu_si256( out + 3,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 25 ),
+                                                          _mm256_slli_epi32( w0, 7 ) ) ) );
   _mm256_storeu_si256( out + 4, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 12 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 3 );
-  _mm256_storeu_si256(
-      out + 5,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 31 ), _mm256_slli_epi32( w1, 1 ) ) ) );
+  _mm256_storeu_si256( out + 5,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 31 ),
+                                                          _mm256_slli_epi32( w1, 1 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 4 );
-  _mm256_storeu_si256(
-      out + 6,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 18 ), _mm256_slli_epi32( w0, 14 ) ) ) );
+  _mm256_storeu_si256( out + 6,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 18 ),
+                                                          _mm256_slli_epi32( w0, 14 ) ) ) );
   _mm256_storeu_si256( out + 7, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 5 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 5 );
-  _mm256_storeu_si256(
-      out + 8,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 24 ), _mm256_slli_epi32( w1, 8 ) ) ) );
+  _mm256_storeu_si256( out + 8,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 24 ),
+                                                          _mm256_slli_epi32( w1, 8 ) ) ) );
   _mm256_storeu_si256( out + 9, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 11 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 6 );
-  _mm256_storeu_si256(
-      out + 10,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 30 ), _mm256_slli_epi32( w0, 2 ) ) ) );
+  _mm256_storeu_si256( out + 10,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 30 ),
+                                                          _mm256_slli_epi32( w0, 2 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 7 );
-  _mm256_storeu_si256(
-      out + 11,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 17 ), _mm256_slli_epi32( w1, 15 ) ) ) );
+  _mm256_storeu_si256( out + 11,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 17 ),
+                                                          _mm256_slli_epi32( w1, 15 ) ) ) );
   _mm256_storeu_si256( out + 12, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 4 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 8 );
-  _mm256_storeu_si256(
-      out + 13,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 23 ), _mm256_slli_epi32( w0, 9 ) ) ) );
+  _mm256_storeu_si256( out + 13,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 23 ),
+                                                          _mm256_slli_epi32( w0, 9 ) ) ) );
   _mm256_storeu_si256( out + 14, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 10 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 9 );
-  _mm256_storeu_si256(
-      out + 15,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 29 ), _mm256_slli_epi32( w1, 3 ) ) ) );
+  _mm256_storeu_si256( out + 15,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 29 ),
+                                                          _mm256_slli_epi32( w1, 3 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 10 );
-  _mm256_storeu_si256(
-      out + 16,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 16 ), _mm256_slli_epi32( w0, 16 ) ) ) );
+  _mm256_storeu_si256( out + 16,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 16 ),
+                                                          _mm256_slli_epi32( w0, 16 ) ) ) );
   _mm256_storeu_si256( out + 17, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 3 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 11 );
-  _mm256_storeu_si256(
-      out + 18,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 22 ), _mm256_slli_epi32( w1, 10 ) ) ) );
+  _mm256_storeu_si256( out + 18,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 22 ),
+                                                          _mm256_slli_epi32( w1, 10 ) ) ) );
   _mm256_storeu_si256( out + 19, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 9 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 12 );
-  _mm256_storeu_si256(
-      out + 20,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 28 ), _mm256_slli_epi32( w0, 4 ) ) ) );
+  _mm256_storeu_si256( out + 20,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 28 ),
+                                                          _mm256_slli_epi32( w0, 4 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 13 );
-  _mm256_storeu_si256(
-      out + 21,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 15 ), _mm256_slli_epi32( w1, 17 ) ) ) );
+  _mm256_storeu_si256( out + 21,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 15 ),
+                                                          _mm256_slli_epi32( w1, 17 ) ) ) );
   _mm256_storeu_si256( out + 22, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 2 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 14 );
-  _mm256_storeu_si256(
-      out + 23,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 21 ), _mm256_slli_epi32( w0, 11 ) ) ) );
+  _mm256_storeu_si256( out + 23,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 21 ),
+                                                          _mm256_slli_epi32( w0, 11 ) ) ) );
   _mm256_storeu_si256( out + 24, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 8 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 15 );
-  _mm256_storeu_si256(
-      out + 25,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 27 ), _mm256_slli_epi32( w1, 5 ) ) ) );
+  _mm256_storeu_si256( out + 25,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 27 ),
+                                                          _mm256_slli_epi32( w1, 5 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 16 );
-  _mm256_storeu_si256(
-      out + 26,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 14 ), _mm256_slli_epi32( w0, 18 ) ) ) );
+  _mm256_storeu_si256( out + 26,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 14 ),
+                                                          _mm256_slli_epi32( w0, 18 ) ) ) );
   _mm256_storeu_si256( out + 27, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 1 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 17 );
-  _mm256_storeu_si256(
-      out + 28,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 20 ), _mm256_slli_epi32( w1, 12 ) ) ) );
+  _mm256_storeu_si256( out + 28,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 20 ),
+                                                          _mm256_slli_epi32( w1, 12 ) ) ) );
   _mm256_storeu_si256( out + 29, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 7 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 18 );
-  _mm256_storeu_si256(
-      out + 30,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 26 ), _mm256_slli_epi32( w0, 6 ) ) ) );
+  _mm256_storeu_si256( out + 30,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 26 ),
+                                                          _mm256_slli_epi32( w0, 6 ) ) ) );
   _mm256_storeu_si256( out + 31, _mm256_srli_epi32( w0, 13 ) );
 }
 
@@ -4233,118 +4095,102 @@ inline void unpack256_20( __m256i const* compressed, std::uint32_t* pout ) noexc
   w0 = _mm256_lddqu_si256( compressed );
   _mm256_storeu_si256( out + 0, _mm256_and_si256( mask, w0 ) );
   w1 = _mm256_lddqu_si256( compressed + 1 );
-  _mm256_storeu_si256(
-      out + 1,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 20 ), _mm256_slli_epi32( w1, 12 ) ) ) );
+  _mm256_storeu_si256( out + 1,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 20 ),
+                                                          _mm256_slli_epi32( w1, 12 ) ) ) );
   _mm256_storeu_si256( out + 2, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 8 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 2 );
-  _mm256_storeu_si256(
-      out + 3,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 28 ), _mm256_slli_epi32( w0, 4 ) ) ) );
+  _mm256_storeu_si256( out + 3,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 28 ),
+                                                          _mm256_slli_epi32( w0, 4 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 3 );
-  _mm256_storeu_si256(
-      out + 4,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 16 ), _mm256_slli_epi32( w1, 16 ) ) ) );
+  _mm256_storeu_si256( out + 4,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 16 ),
+                                                          _mm256_slli_epi32( w1, 16 ) ) ) );
   _mm256_storeu_si256( out + 5, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 4 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 4 );
-  _mm256_storeu_si256(
-      out + 6,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 24 ), _mm256_slli_epi32( w0, 8 ) ) ) );
+  _mm256_storeu_si256( out + 6,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 24 ),
+                                                          _mm256_slli_epi32( w0, 8 ) ) ) );
   _mm256_storeu_si256( out + 7, _mm256_srli_epi32( w0, 12 ) );
   w1 = _mm256_lddqu_si256( compressed + 5 );
   _mm256_storeu_si256( out + 8, _mm256_and_si256( mask, w1 ) );
   w0 = _mm256_lddqu_si256( compressed + 6 );
-  _mm256_storeu_si256(
-      out + 9,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 20 ), _mm256_slli_epi32( w0, 12 ) ) ) );
+  _mm256_storeu_si256( out + 9,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 20 ),
+                                                          _mm256_slli_epi32( w0, 12 ) ) ) );
   _mm256_storeu_si256( out + 10, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 8 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 7 );
-  _mm256_storeu_si256(
-      out + 11,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 28 ), _mm256_slli_epi32( w1, 4 ) ) ) );
+  _mm256_storeu_si256( out + 11,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 28 ),
+                                                          _mm256_slli_epi32( w1, 4 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 8 );
-  _mm256_storeu_si256(
-      out + 12,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 16 ), _mm256_slli_epi32( w0, 16 ) ) ) );
+  _mm256_storeu_si256( out + 12,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 16 ),
+                                                          _mm256_slli_epi32( w0, 16 ) ) ) );
   _mm256_storeu_si256( out + 13, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 4 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 9 );
-  _mm256_storeu_si256(
-      out + 14,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 24 ), _mm256_slli_epi32( w1, 8 ) ) ) );
+  _mm256_storeu_si256( out + 14,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 24 ),
+                                                          _mm256_slli_epi32( w1, 8 ) ) ) );
   _mm256_storeu_si256( out + 15, _mm256_srli_epi32( w1, 12 ) );
   w0 = _mm256_lddqu_si256( compressed + 10 );
   _mm256_storeu_si256( out + 16, _mm256_and_si256( mask, w0 ) );
   w1 = _mm256_lddqu_si256( compressed + 11 );
-  _mm256_storeu_si256(
-      out + 17,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 20 ), _mm256_slli_epi32( w1, 12 ) ) ) );
+  _mm256_storeu_si256( out + 17,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 20 ),
+                                                          _mm256_slli_epi32( w1, 12 ) ) ) );
   _mm256_storeu_si256( out + 18, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 8 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 12 );
-  _mm256_storeu_si256(
-      out + 19,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 28 ), _mm256_slli_epi32( w0, 4 ) ) ) );
+  _mm256_storeu_si256( out + 19,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 28 ),
+                                                          _mm256_slli_epi32( w0, 4 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 13 );
-  _mm256_storeu_si256(
-      out + 20,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 16 ), _mm256_slli_epi32( w1, 16 ) ) ) );
+  _mm256_storeu_si256( out + 20,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 16 ),
+                                                          _mm256_slli_epi32( w1, 16 ) ) ) );
   _mm256_storeu_si256( out + 21, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 4 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 14 );
-  _mm256_storeu_si256(
-      out + 22,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 24 ), _mm256_slli_epi32( w0, 8 ) ) ) );
+  _mm256_storeu_si256( out + 22,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 24 ),
+                                                          _mm256_slli_epi32( w0, 8 ) ) ) );
   _mm256_storeu_si256( out + 23, _mm256_srli_epi32( w0, 12 ) );
   w1 = _mm256_lddqu_si256( compressed + 15 );
   _mm256_storeu_si256( out + 24, _mm256_and_si256( mask, w1 ) );
   w0 = _mm256_lddqu_si256( compressed + 16 );
-  _mm256_storeu_si256(
-      out + 25,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 20 ), _mm256_slli_epi32( w0, 12 ) ) ) );
+  _mm256_storeu_si256( out + 25,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 20 ),
+                                                          _mm256_slli_epi32( w0, 12 ) ) ) );
   _mm256_storeu_si256( out + 26, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 8 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 17 );
-  _mm256_storeu_si256(
-      out + 27,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 28 ), _mm256_slli_epi32( w1, 4 ) ) ) );
+  _mm256_storeu_si256( out + 27,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 28 ),
+                                                          _mm256_slli_epi32( w1, 4 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 18 );
-  _mm256_storeu_si256(
-      out + 28,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 16 ), _mm256_slli_epi32( w0, 16 ) ) ) );
+  _mm256_storeu_si256( out + 28,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 16 ),
+                                                          _mm256_slli_epi32( w0, 16 ) ) ) );
   _mm256_storeu_si256( out + 29, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 4 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 19 );
-  _mm256_storeu_si256(
-      out + 30,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 24 ), _mm256_slli_epi32( w1, 8 ) ) ) );
+  _mm256_storeu_si256( out + 30,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 24 ),
+                                                          _mm256_slli_epi32( w1, 8 ) ) ) );
   _mm256_storeu_si256( out + 31, _mm256_srli_epi32( w1, 12 ) );
 }
 
@@ -4357,135 +4203,115 @@ inline void unpack256_21( __m256i const* compressed, std::uint32_t* pout ) noexc
   w0 = _mm256_lddqu_si256( compressed );
   _mm256_storeu_si256( out + 0, _mm256_and_si256( mask, w0 ) );
   w1 = _mm256_lddqu_si256( compressed + 1 );
-  _mm256_storeu_si256(
-      out + 1,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 21 ), _mm256_slli_epi32( w1, 11 ) ) ) );
+  _mm256_storeu_si256( out + 1,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 21 ),
+                                                          _mm256_slli_epi32( w1, 11 ) ) ) );
   _mm256_storeu_si256( out + 2, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 10 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 2 );
-  _mm256_storeu_si256(
-      out + 3,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 31 ), _mm256_slli_epi32( w0, 1 ) ) ) );
+  _mm256_storeu_si256( out + 3,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 31 ),
+                                                          _mm256_slli_epi32( w0, 1 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 3 );
-  _mm256_storeu_si256(
-      out + 4,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 20 ), _mm256_slli_epi32( w1, 12 ) ) ) );
+  _mm256_storeu_si256( out + 4,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 20 ),
+                                                          _mm256_slli_epi32( w1, 12 ) ) ) );
   _mm256_storeu_si256( out + 5, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 9 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 4 );
-  _mm256_storeu_si256(
-      out + 6,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 30 ), _mm256_slli_epi32( w0, 2 ) ) ) );
+  _mm256_storeu_si256( out + 6,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 30 ),
+                                                          _mm256_slli_epi32( w0, 2 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 5 );
-  _mm256_storeu_si256(
-      out + 7,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 19 ), _mm256_slli_epi32( w1, 13 ) ) ) );
+  _mm256_storeu_si256( out + 7,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 19 ),
+                                                          _mm256_slli_epi32( w1, 13 ) ) ) );
   _mm256_storeu_si256( out + 8, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 8 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 6 );
-  _mm256_storeu_si256(
-      out + 9,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 29 ), _mm256_slli_epi32( w0, 3 ) ) ) );
+  _mm256_storeu_si256( out + 9,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 29 ),
+                                                          _mm256_slli_epi32( w0, 3 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 7 );
-  _mm256_storeu_si256(
-      out + 10,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 18 ), _mm256_slli_epi32( w1, 14 ) ) ) );
+  _mm256_storeu_si256( out + 10,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 18 ),
+                                                          _mm256_slli_epi32( w1, 14 ) ) ) );
   _mm256_storeu_si256( out + 11, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 7 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 8 );
-  _mm256_storeu_si256(
-      out + 12,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 28 ), _mm256_slli_epi32( w0, 4 ) ) ) );
+  _mm256_storeu_si256( out + 12,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 28 ),
+                                                          _mm256_slli_epi32( w0, 4 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 9 );
-  _mm256_storeu_si256(
-      out + 13,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 17 ), _mm256_slli_epi32( w1, 15 ) ) ) );
+  _mm256_storeu_si256( out + 13,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 17 ),
+                                                          _mm256_slli_epi32( w1, 15 ) ) ) );
   _mm256_storeu_si256( out + 14, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 6 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 10 );
-  _mm256_storeu_si256(
-      out + 15,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 27 ), _mm256_slli_epi32( w0, 5 ) ) ) );
+  _mm256_storeu_si256( out + 15,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 27 ),
+                                                          _mm256_slli_epi32( w0, 5 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 11 );
-  _mm256_storeu_si256(
-      out + 16,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 16 ), _mm256_slli_epi32( w1, 16 ) ) ) );
+  _mm256_storeu_si256( out + 16,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 16 ),
+                                                          _mm256_slli_epi32( w1, 16 ) ) ) );
   _mm256_storeu_si256( out + 17, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 5 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 12 );
-  _mm256_storeu_si256(
-      out + 18,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 26 ), _mm256_slli_epi32( w0, 6 ) ) ) );
+  _mm256_storeu_si256( out + 18,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 26 ),
+                                                          _mm256_slli_epi32( w0, 6 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 13 );
-  _mm256_storeu_si256(
-      out + 19,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 15 ), _mm256_slli_epi32( w1, 17 ) ) ) );
+  _mm256_storeu_si256( out + 19,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 15 ),
+                                                          _mm256_slli_epi32( w1, 17 ) ) ) );
   _mm256_storeu_si256( out + 20, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 4 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 14 );
-  _mm256_storeu_si256(
-      out + 21,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 25 ), _mm256_slli_epi32( w0, 7 ) ) ) );
+  _mm256_storeu_si256( out + 21,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 25 ),
+                                                          _mm256_slli_epi32( w0, 7 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 15 );
-  _mm256_storeu_si256(
-      out + 22,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 14 ), _mm256_slli_epi32( w1, 18 ) ) ) );
+  _mm256_storeu_si256( out + 22,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 14 ),
+                                                          _mm256_slli_epi32( w1, 18 ) ) ) );
   _mm256_storeu_si256( out + 23, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 3 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 16 );
-  _mm256_storeu_si256(
-      out + 24,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 24 ), _mm256_slli_epi32( w0, 8 ) ) ) );
+  _mm256_storeu_si256( out + 24,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 24 ),
+                                                          _mm256_slli_epi32( w0, 8 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 17 );
-  _mm256_storeu_si256(
-      out + 25,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 13 ), _mm256_slli_epi32( w1, 19 ) ) ) );
+  _mm256_storeu_si256( out + 25,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 13 ),
+                                                          _mm256_slli_epi32( w1, 19 ) ) ) );
   _mm256_storeu_si256( out + 26, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 2 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 18 );
-  _mm256_storeu_si256(
-      out + 27,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 23 ), _mm256_slli_epi32( w0, 9 ) ) ) );
+  _mm256_storeu_si256( out + 27,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 23 ),
+                                                          _mm256_slli_epi32( w0, 9 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 19 );
-  _mm256_storeu_si256(
-      out + 28,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 12 ), _mm256_slli_epi32( w1, 20 ) ) ) );
+  _mm256_storeu_si256( out + 28,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 12 ),
+                                                          _mm256_slli_epi32( w1, 20 ) ) ) );
   _mm256_storeu_si256( out + 29, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 1 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 20 );
-  _mm256_storeu_si256(
-      out + 30,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 22 ), _mm256_slli_epi32( w0, 10 ) ) ) );
+  _mm256_storeu_si256( out + 30,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 22 ),
+                                                          _mm256_slli_epi32( w0, 10 ) ) ) );
   _mm256_storeu_si256( out + 31, _mm256_srli_epi32( w0, 11 ) );
 }
 
@@ -4498,136 +4324,116 @@ inline void unpack256_22( __m256i const* compressed, std::uint32_t* pout ) noexc
   w0 = _mm256_lddqu_si256( compressed );
   _mm256_storeu_si256( out + 0, _mm256_and_si256( mask, w0 ) );
   w1 = _mm256_lddqu_si256( compressed + 1 );
-  _mm256_storeu_si256(
-      out + 1,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 22 ), _mm256_slli_epi32( w1, 10 ) ) ) );
+  _mm256_storeu_si256( out + 1,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 22 ),
+                                                          _mm256_slli_epi32( w1, 10 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 2 );
-  _mm256_storeu_si256(
-      out + 2,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 12 ), _mm256_slli_epi32( w0, 20 ) ) ) );
+  _mm256_storeu_si256( out + 2,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 12 ),
+                                                          _mm256_slli_epi32( w0, 20 ) ) ) );
   _mm256_storeu_si256( out + 3, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 2 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 3 );
-  _mm256_storeu_si256(
-      out + 4,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 24 ), _mm256_slli_epi32( w1, 8 ) ) ) );
+  _mm256_storeu_si256( out + 4,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 24 ),
+                                                          _mm256_slli_epi32( w1, 8 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 4 );
-  _mm256_storeu_si256(
-      out + 5,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 14 ), _mm256_slli_epi32( w0, 18 ) ) ) );
+  _mm256_storeu_si256( out + 5,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 14 ),
+                                                          _mm256_slli_epi32( w0, 18 ) ) ) );
   _mm256_storeu_si256( out + 6, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 4 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 5 );
-  _mm256_storeu_si256(
-      out + 7,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 26 ), _mm256_slli_epi32( w1, 6 ) ) ) );
+  _mm256_storeu_si256( out + 7,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 26 ),
+                                                          _mm256_slli_epi32( w1, 6 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 6 );
-  _mm256_storeu_si256(
-      out + 8,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 16 ), _mm256_slli_epi32( w0, 16 ) ) ) );
+  _mm256_storeu_si256( out + 8,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 16 ),
+                                                          _mm256_slli_epi32( w0, 16 ) ) ) );
   _mm256_storeu_si256( out + 9, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 6 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 7 );
-  _mm256_storeu_si256(
-      out + 10,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 28 ), _mm256_slli_epi32( w1, 4 ) ) ) );
+  _mm256_storeu_si256( out + 10,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 28 ),
+                                                          _mm256_slli_epi32( w1, 4 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 8 );
-  _mm256_storeu_si256(
-      out + 11,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 18 ), _mm256_slli_epi32( w0, 14 ) ) ) );
+  _mm256_storeu_si256( out + 11,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 18 ),
+                                                          _mm256_slli_epi32( w0, 14 ) ) ) );
   _mm256_storeu_si256( out + 12, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 8 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 9 );
-  _mm256_storeu_si256(
-      out + 13,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 30 ), _mm256_slli_epi32( w1, 2 ) ) ) );
+  _mm256_storeu_si256( out + 13,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 30 ),
+                                                          _mm256_slli_epi32( w1, 2 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 10 );
-  _mm256_storeu_si256(
-      out + 14,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 20 ), _mm256_slli_epi32( w0, 12 ) ) ) );
+  _mm256_storeu_si256( out + 14,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 20 ),
+                                                          _mm256_slli_epi32( w0, 12 ) ) ) );
   _mm256_storeu_si256( out + 15, _mm256_srli_epi32( w0, 10 ) );
   w1 = _mm256_lddqu_si256( compressed + 11 );
   _mm256_storeu_si256( out + 16, _mm256_and_si256( mask, w1 ) );
   w0 = _mm256_lddqu_si256( compressed + 12 );
-  _mm256_storeu_si256(
-      out + 17,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 22 ), _mm256_slli_epi32( w0, 10 ) ) ) );
+  _mm256_storeu_si256( out + 17,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 22 ),
+                                                          _mm256_slli_epi32( w0, 10 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 13 );
-  _mm256_storeu_si256(
-      out + 18,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 12 ), _mm256_slli_epi32( w1, 20 ) ) ) );
+  _mm256_storeu_si256( out + 18,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 12 ),
+                                                          _mm256_slli_epi32( w1, 20 ) ) ) );
   _mm256_storeu_si256( out + 19, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 2 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 14 );
-  _mm256_storeu_si256(
-      out + 20,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 24 ), _mm256_slli_epi32( w0, 8 ) ) ) );
+  _mm256_storeu_si256( out + 20,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 24 ),
+                                                          _mm256_slli_epi32( w0, 8 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 15 );
-  _mm256_storeu_si256(
-      out + 21,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 14 ), _mm256_slli_epi32( w1, 18 ) ) ) );
+  _mm256_storeu_si256( out + 21,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 14 ),
+                                                          _mm256_slli_epi32( w1, 18 ) ) ) );
   _mm256_storeu_si256( out + 22, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 4 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 16 );
-  _mm256_storeu_si256(
-      out + 23,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 26 ), _mm256_slli_epi32( w0, 6 ) ) ) );
+  _mm256_storeu_si256( out + 23,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 26 ),
+                                                          _mm256_slli_epi32( w0, 6 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 17 );
-  _mm256_storeu_si256(
-      out + 24,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 16 ), _mm256_slli_epi32( w1, 16 ) ) ) );
+  _mm256_storeu_si256( out + 24,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 16 ),
+                                                          _mm256_slli_epi32( w1, 16 ) ) ) );
   _mm256_storeu_si256( out + 25, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 6 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 18 );
-  _mm256_storeu_si256(
-      out + 26,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 28 ), _mm256_slli_epi32( w0, 4 ) ) ) );
+  _mm256_storeu_si256( out + 26,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 28 ),
+                                                          _mm256_slli_epi32( w0, 4 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 19 );
-  _mm256_storeu_si256(
-      out + 27,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 18 ), _mm256_slli_epi32( w1, 14 ) ) ) );
+  _mm256_storeu_si256( out + 27,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 18 ),
+                                                          _mm256_slli_epi32( w1, 14 ) ) ) );
   _mm256_storeu_si256( out + 28, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 8 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 20 );
-  _mm256_storeu_si256(
-      out + 29,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 30 ), _mm256_slli_epi32( w0, 2 ) ) ) );
+  _mm256_storeu_si256( out + 29,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 30 ),
+                                                          _mm256_slli_epi32( w0, 2 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 21 );
-  _mm256_storeu_si256(
-      out + 30,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 20 ), _mm256_slli_epi32( w1, 12 ) ) ) );
+  _mm256_storeu_si256( out + 30,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 20 ),
+                                                          _mm256_slli_epi32( w1, 12 ) ) ) );
   _mm256_storeu_si256( out + 31, _mm256_srli_epi32( w1, 10 ) );
 }
 
@@ -4640,145 +4446,123 @@ inline void unpack256_23( __m256i const* compressed, std::uint32_t* pout ) noexc
   w0 = _mm256_lddqu_si256( compressed );
   _mm256_storeu_si256( out + 0, _mm256_and_si256( mask, w0 ) );
   w1 = _mm256_lddqu_si256( compressed + 1 );
-  _mm256_storeu_si256(
-      out + 1,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 23 ), _mm256_slli_epi32( w1, 9 ) ) ) );
+  _mm256_storeu_si256( out + 1,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 23 ),
+                                                          _mm256_slli_epi32( w1, 9 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 2 );
-  _mm256_storeu_si256(
-      out + 2,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 14 ), _mm256_slli_epi32( w0, 18 ) ) ) );
+  _mm256_storeu_si256( out + 2,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 14 ),
+                                                          _mm256_slli_epi32( w0, 18 ) ) ) );
   _mm256_storeu_si256( out + 3, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 5 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 3 );
-  _mm256_storeu_si256(
-      out + 4,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 28 ), _mm256_slli_epi32( w1, 4 ) ) ) );
+  _mm256_storeu_si256( out + 4,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 28 ),
+                                                          _mm256_slli_epi32( w1, 4 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 4 );
-  _mm256_storeu_si256(
-      out + 5,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 19 ), _mm256_slli_epi32( w0, 13 ) ) ) );
+  _mm256_storeu_si256( out + 5,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 19 ),
+                                                          _mm256_slli_epi32( w0, 13 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 5 );
-  _mm256_storeu_si256(
-      out + 6,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 10 ), _mm256_slli_epi32( w1, 22 ) ) ) );
+  _mm256_storeu_si256( out + 6,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 10 ),
+                                                          _mm256_slli_epi32( w1, 22 ) ) ) );
   _mm256_storeu_si256( out + 7, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 1 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 6 );
-  _mm256_storeu_si256(
-      out + 8,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 24 ), _mm256_slli_epi32( w0, 8 ) ) ) );
+  _mm256_storeu_si256( out + 8,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 24 ),
+                                                          _mm256_slli_epi32( w0, 8 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 7 );
-  _mm256_storeu_si256(
-      out + 9,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 15 ), _mm256_slli_epi32( w1, 17 ) ) ) );
+  _mm256_storeu_si256( out + 9,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 15 ),
+                                                          _mm256_slli_epi32( w1, 17 ) ) ) );
   _mm256_storeu_si256( out + 10, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 6 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 8 );
-  _mm256_storeu_si256(
-      out + 11,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 29 ), _mm256_slli_epi32( w0, 3 ) ) ) );
+  _mm256_storeu_si256( out + 11,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 29 ),
+                                                          _mm256_slli_epi32( w0, 3 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 9 );
-  _mm256_storeu_si256(
-      out + 12,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 20 ), _mm256_slli_epi32( w1, 12 ) ) ) );
+  _mm256_storeu_si256( out + 12,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 20 ),
+                                                          _mm256_slli_epi32( w1, 12 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 10 );
-  _mm256_storeu_si256(
-      out + 13,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 11 ), _mm256_slli_epi32( w0, 21 ) ) ) );
+  _mm256_storeu_si256( out + 13,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 11 ),
+                                                          _mm256_slli_epi32( w0, 21 ) ) ) );
   _mm256_storeu_si256( out + 14, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 2 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 11 );
-  _mm256_storeu_si256(
-      out + 15,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 25 ), _mm256_slli_epi32( w1, 7 ) ) ) );
+  _mm256_storeu_si256( out + 15,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 25 ),
+                                                          _mm256_slli_epi32( w1, 7 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 12 );
-  _mm256_storeu_si256(
-      out + 16,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 16 ), _mm256_slli_epi32( w0, 16 ) ) ) );
+  _mm256_storeu_si256( out + 16,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 16 ),
+                                                          _mm256_slli_epi32( w0, 16 ) ) ) );
   _mm256_storeu_si256( out + 17, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 7 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 13 );
-  _mm256_storeu_si256(
-      out + 18,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 30 ), _mm256_slli_epi32( w1, 2 ) ) ) );
+  _mm256_storeu_si256( out + 18,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 30 ),
+                                                          _mm256_slli_epi32( w1, 2 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 14 );
-  _mm256_storeu_si256(
-      out + 19,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 21 ), _mm256_slli_epi32( w0, 11 ) ) ) );
+  _mm256_storeu_si256( out + 19,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 21 ),
+                                                          _mm256_slli_epi32( w0, 11 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 15 );
-  _mm256_storeu_si256(
-      out + 20,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 12 ), _mm256_slli_epi32( w1, 20 ) ) ) );
+  _mm256_storeu_si256( out + 20,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 12 ),
+                                                          _mm256_slli_epi32( w1, 20 ) ) ) );
   _mm256_storeu_si256( out + 21, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 3 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 16 );
-  _mm256_storeu_si256(
-      out + 22,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 26 ), _mm256_slli_epi32( w0, 6 ) ) ) );
+  _mm256_storeu_si256( out + 22,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 26 ),
+                                                          _mm256_slli_epi32( w0, 6 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 17 );
-  _mm256_storeu_si256(
-      out + 23,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 17 ), _mm256_slli_epi32( w1, 15 ) ) ) );
+  _mm256_storeu_si256( out + 23,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 17 ),
+                                                          _mm256_slli_epi32( w1, 15 ) ) ) );
   _mm256_storeu_si256( out + 24, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 8 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 18 );
-  _mm256_storeu_si256(
-      out + 25,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 31 ), _mm256_slli_epi32( w0, 1 ) ) ) );
+  _mm256_storeu_si256( out + 25,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 31 ),
+                                                          _mm256_slli_epi32( w0, 1 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 19 );
-  _mm256_storeu_si256(
-      out + 26,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 22 ), _mm256_slli_epi32( w1, 10 ) ) ) );
+  _mm256_storeu_si256( out + 26,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 22 ),
+                                                          _mm256_slli_epi32( w1, 10 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 20 );
-  _mm256_storeu_si256(
-      out + 27,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 13 ), _mm256_slli_epi32( w0, 19 ) ) ) );
+  _mm256_storeu_si256( out + 27,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 13 ),
+                                                          _mm256_slli_epi32( w0, 19 ) ) ) );
   _mm256_storeu_si256( out + 28, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 4 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 21 );
-  _mm256_storeu_si256(
-      out + 29,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 27 ), _mm256_slli_epi32( w1, 5 ) ) ) );
+  _mm256_storeu_si256( out + 29,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 27 ),
+                                                          _mm256_slli_epi32( w1, 5 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 22 );
-  _mm256_storeu_si256(
-      out + 30,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 18 ), _mm256_slli_epi32( w0, 14 ) ) ) );
+  _mm256_storeu_si256( out + 30,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 18 ),
+                                                          _mm256_slli_epi32( w0, 14 ) ) ) );
   _mm256_storeu_si256( out + 31, _mm256_srli_epi32( w0, 9 ) );
 }
 
@@ -4791,122 +4575,106 @@ inline void unpack256_24( __m256i const* compressed, std::uint32_t* pout ) noexc
   w0 = _mm256_lddqu_si256( compressed );
   _mm256_storeu_si256( out + 0, _mm256_and_si256( mask, w0 ) );
   w1 = _mm256_lddqu_si256( compressed + 1 );
-  _mm256_storeu_si256(
-      out + 1,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 24 ), _mm256_slli_epi32( w1, 8 ) ) ) );
+  _mm256_storeu_si256( out + 1,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 24 ),
+                                                          _mm256_slli_epi32( w1, 8 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 2 );
-  _mm256_storeu_si256(
-      out + 2,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 16 ), _mm256_slli_epi32( w0, 16 ) ) ) );
+  _mm256_storeu_si256( out + 2,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 16 ),
+                                                          _mm256_slli_epi32( w0, 16 ) ) ) );
   _mm256_storeu_si256( out + 3, _mm256_srli_epi32( w0, 8 ) );
   w1 = _mm256_lddqu_si256( compressed + 3 );
   _mm256_storeu_si256( out + 4, _mm256_and_si256( mask, w1 ) );
   w0 = _mm256_lddqu_si256( compressed + 4 );
-  _mm256_storeu_si256(
-      out + 5,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 24 ), _mm256_slli_epi32( w0, 8 ) ) ) );
+  _mm256_storeu_si256( out + 5,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 24 ),
+                                                          _mm256_slli_epi32( w0, 8 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 5 );
-  _mm256_storeu_si256(
-      out + 6,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 16 ), _mm256_slli_epi32( w1, 16 ) ) ) );
+  _mm256_storeu_si256( out + 6,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 16 ),
+                                                          _mm256_slli_epi32( w1, 16 ) ) ) );
   _mm256_storeu_si256( out + 7, _mm256_srli_epi32( w1, 8 ) );
   w0 = _mm256_lddqu_si256( compressed + 6 );
   _mm256_storeu_si256( out + 8, _mm256_and_si256( mask, w0 ) );
   w1 = _mm256_lddqu_si256( compressed + 7 );
-  _mm256_storeu_si256(
-      out + 9,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 24 ), _mm256_slli_epi32( w1, 8 ) ) ) );
+  _mm256_storeu_si256( out + 9,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 24 ),
+                                                          _mm256_slli_epi32( w1, 8 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 8 );
-  _mm256_storeu_si256(
-      out + 10,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 16 ), _mm256_slli_epi32( w0, 16 ) ) ) );
+  _mm256_storeu_si256( out + 10,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 16 ),
+                                                          _mm256_slli_epi32( w0, 16 ) ) ) );
   _mm256_storeu_si256( out + 11, _mm256_srli_epi32( w0, 8 ) );
   w1 = _mm256_lddqu_si256( compressed + 9 );
   _mm256_storeu_si256( out + 12, _mm256_and_si256( mask, w1 ) );
   w0 = _mm256_lddqu_si256( compressed + 10 );
-  _mm256_storeu_si256(
-      out + 13,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 24 ), _mm256_slli_epi32( w0, 8 ) ) ) );
+  _mm256_storeu_si256( out + 13,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 24 ),
+                                                          _mm256_slli_epi32( w0, 8 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 11 );
-  _mm256_storeu_si256(
-      out + 14,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 16 ), _mm256_slli_epi32( w1, 16 ) ) ) );
+  _mm256_storeu_si256( out + 14,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 16 ),
+                                                          _mm256_slli_epi32( w1, 16 ) ) ) );
   _mm256_storeu_si256( out + 15, _mm256_srli_epi32( w1, 8 ) );
   w0 = _mm256_lddqu_si256( compressed + 12 );
   _mm256_storeu_si256( out + 16, _mm256_and_si256( mask, w0 ) );
   w1 = _mm256_lddqu_si256( compressed + 13 );
-  _mm256_storeu_si256(
-      out + 17,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 24 ), _mm256_slli_epi32( w1, 8 ) ) ) );
+  _mm256_storeu_si256( out + 17,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 24 ),
+                                                          _mm256_slli_epi32( w1, 8 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 14 );
-  _mm256_storeu_si256(
-      out + 18,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 16 ), _mm256_slli_epi32( w0, 16 ) ) ) );
+  _mm256_storeu_si256( out + 18,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 16 ),
+                                                          _mm256_slli_epi32( w0, 16 ) ) ) );
   _mm256_storeu_si256( out + 19, _mm256_srli_epi32( w0, 8 ) );
   w1 = _mm256_lddqu_si256( compressed + 15 );
   _mm256_storeu_si256( out + 20, _mm256_and_si256( mask, w1 ) );
   w0 = _mm256_lddqu_si256( compressed + 16 );
-  _mm256_storeu_si256(
-      out + 21,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 24 ), _mm256_slli_epi32( w0, 8 ) ) ) );
+  _mm256_storeu_si256( out + 21,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 24 ),
+                                                          _mm256_slli_epi32( w0, 8 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 17 );
-  _mm256_storeu_si256(
-      out + 22,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 16 ), _mm256_slli_epi32( w1, 16 ) ) ) );
+  _mm256_storeu_si256( out + 22,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 16 ),
+                                                          _mm256_slli_epi32( w1, 16 ) ) ) );
   _mm256_storeu_si256( out + 23, _mm256_srli_epi32( w1, 8 ) );
   w0 = _mm256_lddqu_si256( compressed + 18 );
   _mm256_storeu_si256( out + 24, _mm256_and_si256( mask, w0 ) );
   w1 = _mm256_lddqu_si256( compressed + 19 );
-  _mm256_storeu_si256(
-      out + 25,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 24 ), _mm256_slli_epi32( w1, 8 ) ) ) );
+  _mm256_storeu_si256( out + 25,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 24 ),
+                                                          _mm256_slli_epi32( w1, 8 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 20 );
-  _mm256_storeu_si256(
-      out + 26,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 16 ), _mm256_slli_epi32( w0, 16 ) ) ) );
+  _mm256_storeu_si256( out + 26,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 16 ),
+                                                          _mm256_slli_epi32( w0, 16 ) ) ) );
   _mm256_storeu_si256( out + 27, _mm256_srli_epi32( w0, 8 ) );
   w1 = _mm256_lddqu_si256( compressed + 21 );
   _mm256_storeu_si256( out + 28, _mm256_and_si256( mask, w1 ) );
   w0 = _mm256_lddqu_si256( compressed + 22 );
-  _mm256_storeu_si256(
-      out + 29,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 24 ), _mm256_slli_epi32( w0, 8 ) ) ) );
+  _mm256_storeu_si256( out + 29,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 24 ),
+                                                          _mm256_slli_epi32( w0, 8 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 23 );
-  _mm256_storeu_si256(
-      out + 30,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 16 ), _mm256_slli_epi32( w1, 16 ) ) ) );
+  _mm256_storeu_si256( out + 30,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 16 ),
+                                                          _mm256_slli_epi32( w1, 16 ) ) ) );
   _mm256_storeu_si256( out + 31, _mm256_srli_epi32( w1, 8 ) );
 }
 
@@ -4919,155 +4687,131 @@ inline void unpack256_25( __m256i const* compressed, std::uint32_t* pout ) noexc
   w0 = _mm256_lddqu_si256( compressed );
   _mm256_storeu_si256( out + 0, _mm256_and_si256( mask, w0 ) );
   w1 = _mm256_lddqu_si256( compressed + 1 );
-  _mm256_storeu_si256(
-      out + 1,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 25 ), _mm256_slli_epi32( w1, 7 ) ) ) );
+  _mm256_storeu_si256( out + 1,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 25 ),
+                                                          _mm256_slli_epi32( w1, 7 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 2 );
-  _mm256_storeu_si256(
-      out + 2,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 18 ), _mm256_slli_epi32( w0, 14 ) ) ) );
+  _mm256_storeu_si256( out + 2,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 18 ),
+                                                          _mm256_slli_epi32( w0, 14 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 3 );
-  _mm256_storeu_si256(
-      out + 3,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 11 ), _mm256_slli_epi32( w1, 21 ) ) ) );
+  _mm256_storeu_si256( out + 3,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 11 ),
+                                                          _mm256_slli_epi32( w1, 21 ) ) ) );
   _mm256_storeu_si256( out + 4, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 4 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 4 );
-  _mm256_storeu_si256(
-      out + 5,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 29 ), _mm256_slli_epi32( w0, 3 ) ) ) );
+  _mm256_storeu_si256( out + 5,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 29 ),
+                                                          _mm256_slli_epi32( w0, 3 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 5 );
-  _mm256_storeu_si256(
-      out + 6,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 22 ), _mm256_slli_epi32( w1, 10 ) ) ) );
+  _mm256_storeu_si256( out + 6,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 22 ),
+                                                          _mm256_slli_epi32( w1, 10 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 6 );
-  _mm256_storeu_si256(
-      out + 7,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 15 ), _mm256_slli_epi32( w0, 17 ) ) ) );
+  _mm256_storeu_si256( out + 7,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 15 ),
+                                                          _mm256_slli_epi32( w0, 17 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 7 );
-  _mm256_storeu_si256(
-      out + 8,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 8 ), _mm256_slli_epi32( w1, 24 ) ) ) );
+  _mm256_storeu_si256( out + 8,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 8 ),
+                                                          _mm256_slli_epi32( w1, 24 ) ) ) );
   _mm256_storeu_si256( out + 9, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 1 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 8 );
-  _mm256_storeu_si256(
-      out + 10,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 26 ), _mm256_slli_epi32( w0, 6 ) ) ) );
+  _mm256_storeu_si256( out + 10,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 26 ),
+                                                          _mm256_slli_epi32( w0, 6 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 9 );
-  _mm256_storeu_si256(
-      out + 11,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 19 ), _mm256_slli_epi32( w1, 13 ) ) ) );
+  _mm256_storeu_si256( out + 11,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 19 ),
+                                                          _mm256_slli_epi32( w1, 13 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 10 );
-  _mm256_storeu_si256(
-      out + 12,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 12 ), _mm256_slli_epi32( w0, 20 ) ) ) );
+  _mm256_storeu_si256( out + 12,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 12 ),
+                                                          _mm256_slli_epi32( w0, 20 ) ) ) );
   _mm256_storeu_si256( out + 13, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 5 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 11 );
-  _mm256_storeu_si256(
-      out + 14,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 30 ), _mm256_slli_epi32( w1, 2 ) ) ) );
+  _mm256_storeu_si256( out + 14,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 30 ),
+                                                          _mm256_slli_epi32( w1, 2 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 12 );
-  _mm256_storeu_si256(
-      out + 15,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 23 ), _mm256_slli_epi32( w0, 9 ) ) ) );
+  _mm256_storeu_si256( out + 15,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 23 ),
+                                                          _mm256_slli_epi32( w0, 9 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 13 );
-  _mm256_storeu_si256(
-      out + 16,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 16 ), _mm256_slli_epi32( w1, 16 ) ) ) );
+  _mm256_storeu_si256( out + 16,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 16 ),
+                                                          _mm256_slli_epi32( w1, 16 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 14 );
-  _mm256_storeu_si256(
-      out + 17,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 9 ), _mm256_slli_epi32( w0, 23 ) ) ) );
+  _mm256_storeu_si256( out + 17,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 9 ),
+                                                          _mm256_slli_epi32( w0, 23 ) ) ) );
   _mm256_storeu_si256( out + 18, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 2 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 15 );
-  _mm256_storeu_si256(
-      out + 19,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 27 ), _mm256_slli_epi32( w1, 5 ) ) ) );
+  _mm256_storeu_si256( out + 19,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 27 ),
+                                                          _mm256_slli_epi32( w1, 5 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 16 );
-  _mm256_storeu_si256(
-      out + 20,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 20 ), _mm256_slli_epi32( w0, 12 ) ) ) );
+  _mm256_storeu_si256( out + 20,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 20 ),
+                                                          _mm256_slli_epi32( w0, 12 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 17 );
-  _mm256_storeu_si256(
-      out + 21,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 13 ), _mm256_slli_epi32( w1, 19 ) ) ) );
+  _mm256_storeu_si256( out + 21,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 13 ),
+                                                          _mm256_slli_epi32( w1, 19 ) ) ) );
   _mm256_storeu_si256( out + 22, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 6 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 18 );
-  _mm256_storeu_si256(
-      out + 23,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 31 ), _mm256_slli_epi32( w0, 1 ) ) ) );
+  _mm256_storeu_si256( out + 23,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 31 ),
+                                                          _mm256_slli_epi32( w0, 1 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 19 );
-  _mm256_storeu_si256(
-      out + 24,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 24 ), _mm256_slli_epi32( w1, 8 ) ) ) );
+  _mm256_storeu_si256( out + 24,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 24 ),
+                                                          _mm256_slli_epi32( w1, 8 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 20 );
-  _mm256_storeu_si256(
-      out + 25,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 17 ), _mm256_slli_epi32( w0, 15 ) ) ) );
+  _mm256_storeu_si256( out + 25,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 17 ),
+                                                          _mm256_slli_epi32( w0, 15 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 21 );
-  _mm256_storeu_si256(
-      out + 26,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 10 ), _mm256_slli_epi32( w1, 22 ) ) ) );
+  _mm256_storeu_si256( out + 26,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 10 ),
+                                                          _mm256_slli_epi32( w1, 22 ) ) ) );
   _mm256_storeu_si256( out + 27, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 3 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 22 );
-  _mm256_storeu_si256(
-      out + 28,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 28 ), _mm256_slli_epi32( w0, 4 ) ) ) );
+  _mm256_storeu_si256( out + 28,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 28 ),
+                                                          _mm256_slli_epi32( w0, 4 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 23 );
-  _mm256_storeu_si256(
-      out + 29,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 21 ), _mm256_slli_epi32( w1, 11 ) ) ) );
+  _mm256_storeu_si256( out + 29,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 21 ),
+                                                          _mm256_slli_epi32( w1, 11 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 24 );
-  _mm256_storeu_si256(
-      out + 30,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 14 ), _mm256_slli_epi32( w0, 18 ) ) ) );
+  _mm256_storeu_si256( out + 30,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 14 ),
+                                                          _mm256_slli_epi32( w0, 18 ) ) ) );
   _mm256_storeu_si256( out + 31, _mm256_srli_epi32( w0, 7 ) );
 }
 
@@ -5080,156 +4824,132 @@ inline void unpack256_26( __m256i const* compressed, std::uint32_t* pout ) noexc
   w0 = _mm256_lddqu_si256( compressed );
   _mm256_storeu_si256( out + 0, _mm256_and_si256( mask, w0 ) );
   w1 = _mm256_lddqu_si256( compressed + 1 );
-  _mm256_storeu_si256(
-      out + 1,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 26 ), _mm256_slli_epi32( w1, 6 ) ) ) );
+  _mm256_storeu_si256( out + 1,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 26 ),
+                                                          _mm256_slli_epi32( w1, 6 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 2 );
-  _mm256_storeu_si256(
-      out + 2,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 20 ), _mm256_slli_epi32( w0, 12 ) ) ) );
+  _mm256_storeu_si256( out + 2,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 20 ),
+                                                          _mm256_slli_epi32( w0, 12 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 3 );
-  _mm256_storeu_si256(
-      out + 3,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 14 ), _mm256_slli_epi32( w1, 18 ) ) ) );
+  _mm256_storeu_si256( out + 3,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 14 ),
+                                                          _mm256_slli_epi32( w1, 18 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 4 );
-  _mm256_storeu_si256(
-      out + 4,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 8 ), _mm256_slli_epi32( w0, 24 ) ) ) );
+  _mm256_storeu_si256( out + 4,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 8 ),
+                                                          _mm256_slli_epi32( w0, 24 ) ) ) );
   _mm256_storeu_si256( out + 5, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 2 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 5 );
-  _mm256_storeu_si256(
-      out + 6,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 28 ), _mm256_slli_epi32( w1, 4 ) ) ) );
+  _mm256_storeu_si256( out + 6,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 28 ),
+                                                          _mm256_slli_epi32( w1, 4 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 6 );
-  _mm256_storeu_si256(
-      out + 7,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 22 ), _mm256_slli_epi32( w0, 10 ) ) ) );
+  _mm256_storeu_si256( out + 7,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 22 ),
+                                                          _mm256_slli_epi32( w0, 10 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 7 );
-  _mm256_storeu_si256(
-      out + 8,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 16 ), _mm256_slli_epi32( w1, 16 ) ) ) );
+  _mm256_storeu_si256( out + 8,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 16 ),
+                                                          _mm256_slli_epi32( w1, 16 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 8 );
-  _mm256_storeu_si256(
-      out + 9,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 10 ), _mm256_slli_epi32( w0, 22 ) ) ) );
+  _mm256_storeu_si256( out + 9,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 10 ),
+                                                          _mm256_slli_epi32( w0, 22 ) ) ) );
   _mm256_storeu_si256( out + 10, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 4 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 9 );
-  _mm256_storeu_si256(
-      out + 11,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 30 ), _mm256_slli_epi32( w1, 2 ) ) ) );
+  _mm256_storeu_si256( out + 11,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 30 ),
+                                                          _mm256_slli_epi32( w1, 2 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 10 );
-  _mm256_storeu_si256(
-      out + 12,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 24 ), _mm256_slli_epi32( w0, 8 ) ) ) );
+  _mm256_storeu_si256( out + 12,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 24 ),
+                                                          _mm256_slli_epi32( w0, 8 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 11 );
-  _mm256_storeu_si256(
-      out + 13,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 18 ), _mm256_slli_epi32( w1, 14 ) ) ) );
+  _mm256_storeu_si256( out + 13,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 18 ),
+                                                          _mm256_slli_epi32( w1, 14 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 12 );
-  _mm256_storeu_si256(
-      out + 14,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 12 ), _mm256_slli_epi32( w0, 20 ) ) ) );
+  _mm256_storeu_si256( out + 14,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 12 ),
+                                                          _mm256_slli_epi32( w0, 20 ) ) ) );
   _mm256_storeu_si256( out + 15, _mm256_srli_epi32( w0, 6 ) );
   w1 = _mm256_lddqu_si256( compressed + 13 );
   _mm256_storeu_si256( out + 16, _mm256_and_si256( mask, w1 ) );
   w0 = _mm256_lddqu_si256( compressed + 14 );
-  _mm256_storeu_si256(
-      out + 17,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 26 ), _mm256_slli_epi32( w0, 6 ) ) ) );
+  _mm256_storeu_si256( out + 17,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 26 ),
+                                                          _mm256_slli_epi32( w0, 6 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 15 );
-  _mm256_storeu_si256(
-      out + 18,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 20 ), _mm256_slli_epi32( w1, 12 ) ) ) );
+  _mm256_storeu_si256( out + 18,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 20 ),
+                                                          _mm256_slli_epi32( w1, 12 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 16 );
-  _mm256_storeu_si256(
-      out + 19,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 14 ), _mm256_slli_epi32( w0, 18 ) ) ) );
+  _mm256_storeu_si256( out + 19,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 14 ),
+                                                          _mm256_slli_epi32( w0, 18 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 17 );
-  _mm256_storeu_si256(
-      out + 20,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 8 ), _mm256_slli_epi32( w1, 24 ) ) ) );
+  _mm256_storeu_si256( out + 20,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 8 ),
+                                                          _mm256_slli_epi32( w1, 24 ) ) ) );
   _mm256_storeu_si256( out + 21, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 2 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 18 );
-  _mm256_storeu_si256(
-      out + 22,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 28 ), _mm256_slli_epi32( w0, 4 ) ) ) );
+  _mm256_storeu_si256( out + 22,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 28 ),
+                                                          _mm256_slli_epi32( w0, 4 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 19 );
-  _mm256_storeu_si256(
-      out + 23,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 22 ), _mm256_slli_epi32( w1, 10 ) ) ) );
+  _mm256_storeu_si256( out + 23,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 22 ),
+                                                          _mm256_slli_epi32( w1, 10 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 20 );
-  _mm256_storeu_si256(
-      out + 24,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 16 ), _mm256_slli_epi32( w0, 16 ) ) ) );
+  _mm256_storeu_si256( out + 24,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 16 ),
+                                                          _mm256_slli_epi32( w0, 16 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 21 );
-  _mm256_storeu_si256(
-      out + 25,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 10 ), _mm256_slli_epi32( w1, 22 ) ) ) );
+  _mm256_storeu_si256( out + 25,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 10 ),
+                                                          _mm256_slli_epi32( w1, 22 ) ) ) );
   _mm256_storeu_si256( out + 26, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 4 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 22 );
-  _mm256_storeu_si256(
-      out + 27,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 30 ), _mm256_slli_epi32( w0, 2 ) ) ) );
+  _mm256_storeu_si256( out + 27,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 30 ),
+                                                          _mm256_slli_epi32( w0, 2 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 23 );
-  _mm256_storeu_si256(
-      out + 28,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 24 ), _mm256_slli_epi32( w1, 8 ) ) ) );
+  _mm256_storeu_si256( out + 28,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 24 ),
+                                                          _mm256_slli_epi32( w1, 8 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 24 );
-  _mm256_storeu_si256(
-      out + 29,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 18 ), _mm256_slli_epi32( w0, 14 ) ) ) );
+  _mm256_storeu_si256( out + 29,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 18 ),
+                                                          _mm256_slli_epi32( w0, 14 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 25 );
-  _mm256_storeu_si256(
-      out + 30,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 12 ), _mm256_slli_epi32( w1, 20 ) ) ) );
+  _mm256_storeu_si256( out + 30,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 12 ),
+                                                          _mm256_slli_epi32( w1, 20 ) ) ) );
   _mm256_storeu_si256( out + 31, _mm256_srli_epi32( w1, 6 ) );
 }
 
@@ -5242,165 +4962,139 @@ inline void unpack256_27( __m256i const* compressed, std::uint32_t* pout ) noexc
   w0 = _mm256_lddqu_si256( compressed );
   _mm256_storeu_si256( out + 0, _mm256_and_si256( mask, w0 ) );
   w1 = _mm256_lddqu_si256( compressed + 1 );
-  _mm256_storeu_si256(
-      out + 1,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 27 ), _mm256_slli_epi32( w1, 5 ) ) ) );
+  _mm256_storeu_si256( out + 1,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 27 ),
+                                                          _mm256_slli_epi32( w1, 5 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 2 );
-  _mm256_storeu_si256(
-      out + 2,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 22 ), _mm256_slli_epi32( w0, 10 ) ) ) );
+  _mm256_storeu_si256( out + 2,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 22 ),
+                                                          _mm256_slli_epi32( w0, 10 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 3 );
-  _mm256_storeu_si256(
-      out + 3,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 17 ), _mm256_slli_epi32( w1, 15 ) ) ) );
+  _mm256_storeu_si256( out + 3,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 17 ),
+                                                          _mm256_slli_epi32( w1, 15 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 4 );
-  _mm256_storeu_si256(
-      out + 4,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 12 ), _mm256_slli_epi32( w0, 20 ) ) ) );
+  _mm256_storeu_si256( out + 4,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 12 ),
+                                                          _mm256_slli_epi32( w0, 20 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 5 );
-  _mm256_storeu_si256(
-      out + 5,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 7 ), _mm256_slli_epi32( w1, 25 ) ) ) );
+  _mm256_storeu_si256( out + 5,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 7 ),
+                                                          _mm256_slli_epi32( w1, 25 ) ) ) );
   _mm256_storeu_si256( out + 6, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 2 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 6 );
-  _mm256_storeu_si256(
-      out + 7,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 29 ), _mm256_slli_epi32( w0, 3 ) ) ) );
+  _mm256_storeu_si256( out + 7,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 29 ),
+                                                          _mm256_slli_epi32( w0, 3 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 7 );
-  _mm256_storeu_si256(
-      out + 8,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 24 ), _mm256_slli_epi32( w1, 8 ) ) ) );
+  _mm256_storeu_si256( out + 8,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 24 ),
+                                                          _mm256_slli_epi32( w1, 8 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 8 );
-  _mm256_storeu_si256(
-      out + 9,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 19 ), _mm256_slli_epi32( w0, 13 ) ) ) );
+  _mm256_storeu_si256( out + 9,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 19 ),
+                                                          _mm256_slli_epi32( w0, 13 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 9 );
-  _mm256_storeu_si256(
-      out + 10,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 14 ), _mm256_slli_epi32( w1, 18 ) ) ) );
+  _mm256_storeu_si256( out + 10,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 14 ),
+                                                          _mm256_slli_epi32( w1, 18 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 10 );
-  _mm256_storeu_si256(
-      out + 11,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 9 ), _mm256_slli_epi32( w0, 23 ) ) ) );
+  _mm256_storeu_si256( out + 11,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 9 ),
+                                                          _mm256_slli_epi32( w0, 23 ) ) ) );
   _mm256_storeu_si256( out + 12, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 4 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 11 );
-  _mm256_storeu_si256(
-      out + 13,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 31 ), _mm256_slli_epi32( w1, 1 ) ) ) );
+  _mm256_storeu_si256( out + 13,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 31 ),
+                                                          _mm256_slli_epi32( w1, 1 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 12 );
-  _mm256_storeu_si256(
-      out + 14,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 26 ), _mm256_slli_epi32( w0, 6 ) ) ) );
+  _mm256_storeu_si256( out + 14,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 26 ),
+                                                          _mm256_slli_epi32( w0, 6 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 13 );
-  _mm256_storeu_si256(
-      out + 15,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 21 ), _mm256_slli_epi32( w1, 11 ) ) ) );
+  _mm256_storeu_si256( out + 15,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 21 ),
+                                                          _mm256_slli_epi32( w1, 11 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 14 );
-  _mm256_storeu_si256(
-      out + 16,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 16 ), _mm256_slli_epi32( w0, 16 ) ) ) );
+  _mm256_storeu_si256( out + 16,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 16 ),
+                                                          _mm256_slli_epi32( w0, 16 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 15 );
-  _mm256_storeu_si256(
-      out + 17,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 11 ), _mm256_slli_epi32( w1, 21 ) ) ) );
+  _mm256_storeu_si256( out + 17,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 11 ),
+                                                          _mm256_slli_epi32( w1, 21 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 16 );
-  _mm256_storeu_si256(
-      out + 18,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 6 ), _mm256_slli_epi32( w0, 26 ) ) ) );
+  _mm256_storeu_si256( out + 18,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 6 ),
+                                                          _mm256_slli_epi32( w0, 26 ) ) ) );
   _mm256_storeu_si256( out + 19, _mm256_and_si256( mask, _mm256_srli_epi32( w0, 1 ) ) );
   w1 = _mm256_lddqu_si256( compressed + 17 );
-  _mm256_storeu_si256(
-      out + 20,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 28 ), _mm256_slli_epi32( w1, 4 ) ) ) );
+  _mm256_storeu_si256( out + 20,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 28 ),
+                                                          _mm256_slli_epi32( w1, 4 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 18 );
-  _mm256_storeu_si256(
-      out + 21,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 23 ), _mm256_slli_epi32( w0, 9 ) ) ) );
+  _mm256_storeu_si256( out + 21,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 23 ),
+                                                          _mm256_slli_epi32( w0, 9 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 19 );
-  _mm256_storeu_si256(
-      out + 22,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 18 ), _mm256_slli_epi32( w1, 14 ) ) ) );
+  _mm256_storeu_si256( out + 22,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 18 ),
+                                                          _mm256_slli_epi32( w1, 14 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 20 );
-  _mm256_storeu_si256(
-      out + 23,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 13 ), _mm256_slli_epi32( w0, 19 ) ) ) );
+  _mm256_storeu_si256( out + 23,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 13 ),
+                                                          _mm256_slli_epi32( w0, 19 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 21 );
-  _mm256_storeu_si256(
-      out + 24,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 8 ), _mm256_slli_epi32( w1, 24 ) ) ) );
+  _mm256_storeu_si256( out + 24,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 8 ),
+                                                          _mm256_slli_epi32( w1, 24 ) ) ) );
   _mm256_storeu_si256( out + 25, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 3 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 22 );
-  _mm256_storeu_si256(
-      out + 26,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 30 ), _mm256_slli_epi32( w0, 2 ) ) ) );
+  _mm256_storeu_si256( out + 26,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 30 ),
+                                                          _mm256_slli_epi32( w0, 2 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 23 );
-  _mm256_storeu_si256(
-      out + 27,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 25 ), _mm256_slli_epi32( w1, 7 ) ) ) );
+  _mm256_storeu_si256( out + 27,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 25 ),
+                                                          _mm256_slli_epi32( w1, 7 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 24 );
-  _mm256_storeu_si256(
-      out + 28,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 20 ), _mm256_slli_epi32( w0, 12 ) ) ) );
+  _mm256_storeu_si256( out + 28,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 20 ),
+                                                          _mm256_slli_epi32( w0, 12 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 25 );
-  _mm256_storeu_si256(
-      out + 29,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 15 ), _mm256_slli_epi32( w1, 17 ) ) ) );
+  _mm256_storeu_si256( out + 29,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 15 ),
+                                                          _mm256_slli_epi32( w1, 17 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 26 );
-  _mm256_storeu_si256(
-      out + 30,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 10 ), _mm256_slli_epi32( w0, 22 ) ) ) );
+  _mm256_storeu_si256( out + 30,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 10 ),
+                                                          _mm256_slli_epi32( w0, 22 ) ) ) );
   _mm256_storeu_si256( out + 31, _mm256_srli_epi32( w0, 5 ) );
 }
 
@@ -5413,158 +5107,134 @@ inline void unpack256_28( __m256i const* compressed, std::uint32_t* pout ) noexc
   w0 = _mm256_lddqu_si256( compressed );
   _mm256_storeu_si256( out + 0, _mm256_and_si256( mask, w0 ) );
   w1 = _mm256_lddqu_si256( compressed + 1 );
-  _mm256_storeu_si256(
-      out + 1,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 28 ), _mm256_slli_epi32( w1, 4 ) ) ) );
+  _mm256_storeu_si256( out + 1,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 28 ),
+                                                          _mm256_slli_epi32( w1, 4 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 2 );
-  _mm256_storeu_si256(
-      out + 2,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 24 ), _mm256_slli_epi32( w0, 8 ) ) ) );
+  _mm256_storeu_si256( out + 2,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 24 ),
+                                                          _mm256_slli_epi32( w0, 8 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 3 );
-  _mm256_storeu_si256(
-      out + 3,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 20 ), _mm256_slli_epi32( w1, 12 ) ) ) );
+  _mm256_storeu_si256( out + 3,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 20 ),
+                                                          _mm256_slli_epi32( w1, 12 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 4 );
-  _mm256_storeu_si256(
-      out + 4,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 16 ), _mm256_slli_epi32( w0, 16 ) ) ) );
+  _mm256_storeu_si256( out + 4,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 16 ),
+                                                          _mm256_slli_epi32( w0, 16 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 5 );
-  _mm256_storeu_si256(
-      out + 5,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 12 ), _mm256_slli_epi32( w1, 20 ) ) ) );
+  _mm256_storeu_si256( out + 5,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 12 ),
+                                                          _mm256_slli_epi32( w1, 20 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 6 );
-  _mm256_storeu_si256(
-      out + 6,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 8 ), _mm256_slli_epi32( w0, 24 ) ) ) );
+  _mm256_storeu_si256( out + 6,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 8 ),
+                                                          _mm256_slli_epi32( w0, 24 ) ) ) );
   _mm256_storeu_si256( out + 7, _mm256_srli_epi32( w0, 4 ) );
   w1 = _mm256_lddqu_si256( compressed + 7 );
   _mm256_storeu_si256( out + 8, _mm256_and_si256( mask, w1 ) );
   w0 = _mm256_lddqu_si256( compressed + 8 );
-  _mm256_storeu_si256(
-      out + 9,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 28 ), _mm256_slli_epi32( w0, 4 ) ) ) );
+  _mm256_storeu_si256( out + 9,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 28 ),
+                                                          _mm256_slli_epi32( w0, 4 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 9 );
-  _mm256_storeu_si256(
-      out + 10,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 24 ), _mm256_slli_epi32( w1, 8 ) ) ) );
+  _mm256_storeu_si256( out + 10,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 24 ),
+                                                          _mm256_slli_epi32( w1, 8 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 10 );
-  _mm256_storeu_si256(
-      out + 11,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 20 ), _mm256_slli_epi32( w0, 12 ) ) ) );
+  _mm256_storeu_si256( out + 11,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 20 ),
+                                                          _mm256_slli_epi32( w0, 12 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 11 );
-  _mm256_storeu_si256(
-      out + 12,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 16 ), _mm256_slli_epi32( w1, 16 ) ) ) );
+  _mm256_storeu_si256( out + 12,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 16 ),
+                                                          _mm256_slli_epi32( w1, 16 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 12 );
-  _mm256_storeu_si256(
-      out + 13,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 12 ), _mm256_slli_epi32( w0, 20 ) ) ) );
+  _mm256_storeu_si256( out + 13,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 12 ),
+                                                          _mm256_slli_epi32( w0, 20 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 13 );
-  _mm256_storeu_si256(
-      out + 14,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 8 ), _mm256_slli_epi32( w1, 24 ) ) ) );
+  _mm256_storeu_si256( out + 14,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 8 ),
+                                                          _mm256_slli_epi32( w1, 24 ) ) ) );
   _mm256_storeu_si256( out + 15, _mm256_srli_epi32( w1, 4 ) );
   w0 = _mm256_lddqu_si256( compressed + 14 );
   _mm256_storeu_si256( out + 16, _mm256_and_si256( mask, w0 ) );
   w1 = _mm256_lddqu_si256( compressed + 15 );
-  _mm256_storeu_si256(
-      out + 17,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 28 ), _mm256_slli_epi32( w1, 4 ) ) ) );
+  _mm256_storeu_si256( out + 17,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 28 ),
+                                                          _mm256_slli_epi32( w1, 4 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 16 );
-  _mm256_storeu_si256(
-      out + 18,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 24 ), _mm256_slli_epi32( w0, 8 ) ) ) );
+  _mm256_storeu_si256( out + 18,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 24 ),
+                                                          _mm256_slli_epi32( w0, 8 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 17 );
-  _mm256_storeu_si256(
-      out + 19,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 20 ), _mm256_slli_epi32( w1, 12 ) ) ) );
+  _mm256_storeu_si256( out + 19,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 20 ),
+                                                          _mm256_slli_epi32( w1, 12 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 18 );
-  _mm256_storeu_si256(
-      out + 20,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 16 ), _mm256_slli_epi32( w0, 16 ) ) ) );
+  _mm256_storeu_si256( out + 20,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 16 ),
+                                                          _mm256_slli_epi32( w0, 16 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 19 );
-  _mm256_storeu_si256(
-      out + 21,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 12 ), _mm256_slli_epi32( w1, 20 ) ) ) );
+  _mm256_storeu_si256( out + 21,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 12 ),
+                                                          _mm256_slli_epi32( w1, 20 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 20 );
-  _mm256_storeu_si256(
-      out + 22,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 8 ), _mm256_slli_epi32( w0, 24 ) ) ) );
+  _mm256_storeu_si256( out + 22,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 8 ),
+                                                          _mm256_slli_epi32( w0, 24 ) ) ) );
   _mm256_storeu_si256( out + 23, _mm256_srli_epi32( w0, 4 ) );
   w1 = _mm256_lddqu_si256( compressed + 21 );
   _mm256_storeu_si256( out + 24, _mm256_and_si256( mask, w1 ) );
   w0 = _mm256_lddqu_si256( compressed + 22 );
-  _mm256_storeu_si256(
-      out + 25,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 28 ), _mm256_slli_epi32( w0, 4 ) ) ) );
+  _mm256_storeu_si256( out + 25,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 28 ),
+                                                          _mm256_slli_epi32( w0, 4 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 23 );
-  _mm256_storeu_si256(
-      out + 26,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 24 ), _mm256_slli_epi32( w1, 8 ) ) ) );
+  _mm256_storeu_si256( out + 26,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 24 ),
+                                                          _mm256_slli_epi32( w1, 8 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 24 );
-  _mm256_storeu_si256(
-      out + 27,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 20 ), _mm256_slli_epi32( w0, 12 ) ) ) );
+  _mm256_storeu_si256( out + 27,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 20 ),
+                                                          _mm256_slli_epi32( w0, 12 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 25 );
-  _mm256_storeu_si256(
-      out + 28,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 16 ), _mm256_slli_epi32( w1, 16 ) ) ) );
+  _mm256_storeu_si256( out + 28,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 16 ),
+                                                          _mm256_slli_epi32( w1, 16 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 26 );
-  _mm256_storeu_si256(
-      out + 29,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 12 ), _mm256_slli_epi32( w0, 20 ) ) ) );
+  _mm256_storeu_si256( out + 29,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 12 ),
+                                                          _mm256_slli_epi32( w0, 20 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 27 );
-  _mm256_storeu_si256(
-      out + 30,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 8 ), _mm256_slli_epi32( w1, 24 ) ) ) );
+  _mm256_storeu_si256( out + 30,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 8 ),
+                                                          _mm256_slli_epi32( w1, 24 ) ) ) );
   _mm256_storeu_si256( out + 31, _mm256_srli_epi32( w1, 4 ) );
 }
 
@@ -5577,175 +5247,147 @@ inline void unpack256_29( __m256i const* compressed, std::uint32_t* pout ) noexc
   w0 = _mm256_lddqu_si256( compressed );
   _mm256_storeu_si256( out + 0, _mm256_and_si256( mask, w0 ) );
   w1 = _mm256_lddqu_si256( compressed + 1 );
-  _mm256_storeu_si256(
-      out + 1,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 29 ), _mm256_slli_epi32( w1, 3 ) ) ) );
+  _mm256_storeu_si256( out + 1,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 29 ),
+                                                          _mm256_slli_epi32( w1, 3 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 2 );
-  _mm256_storeu_si256(
-      out + 2,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 26 ), _mm256_slli_epi32( w0, 6 ) ) ) );
+  _mm256_storeu_si256( out + 2,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 26 ),
+                                                          _mm256_slli_epi32( w0, 6 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 3 );
-  _mm256_storeu_si256(
-      out + 3,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 23 ), _mm256_slli_epi32( w1, 9 ) ) ) );
+  _mm256_storeu_si256( out + 3,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 23 ),
+                                                          _mm256_slli_epi32( w1, 9 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 4 );
-  _mm256_storeu_si256(
-      out + 4,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 20 ), _mm256_slli_epi32( w0, 12 ) ) ) );
+  _mm256_storeu_si256( out + 4,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 20 ),
+                                                          _mm256_slli_epi32( w0, 12 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 5 );
-  _mm256_storeu_si256(
-      out + 5,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 17 ), _mm256_slli_epi32( w1, 15 ) ) ) );
+  _mm256_storeu_si256( out + 5,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 17 ),
+                                                          _mm256_slli_epi32( w1, 15 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 6 );
-  _mm256_storeu_si256(
-      out + 6,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 14 ), _mm256_slli_epi32( w0, 18 ) ) ) );
+  _mm256_storeu_si256( out + 6,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 14 ),
+                                                          _mm256_slli_epi32( w0, 18 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 7 );
-  _mm256_storeu_si256(
-      out + 7,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 11 ), _mm256_slli_epi32( w1, 21 ) ) ) );
+  _mm256_storeu_si256( out + 7,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 11 ),
+                                                          _mm256_slli_epi32( w1, 21 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 8 );
-  _mm256_storeu_si256(
-      out + 8,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 8 ), _mm256_slli_epi32( w0, 24 ) ) ) );
+  _mm256_storeu_si256( out + 8,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 8 ),
+                                                          _mm256_slli_epi32( w0, 24 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 9 );
-  _mm256_storeu_si256(
-      out + 9,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 5 ), _mm256_slli_epi32( w1, 27 ) ) ) );
+  _mm256_storeu_si256( out + 9,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 5 ),
+                                                          _mm256_slli_epi32( w1, 27 ) ) ) );
   _mm256_storeu_si256( out + 10, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 2 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 10 );
-  _mm256_storeu_si256(
-      out + 11,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 31 ), _mm256_slli_epi32( w0, 1 ) ) ) );
+  _mm256_storeu_si256( out + 11,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 31 ),
+                                                          _mm256_slli_epi32( w0, 1 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 11 );
-  _mm256_storeu_si256(
-      out + 12,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 28 ), _mm256_slli_epi32( w1, 4 ) ) ) );
+  _mm256_storeu_si256( out + 12,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 28 ),
+                                                          _mm256_slli_epi32( w1, 4 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 12 );
-  _mm256_storeu_si256(
-      out + 13,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 25 ), _mm256_slli_epi32( w0, 7 ) ) ) );
+  _mm256_storeu_si256( out + 13,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 25 ),
+                                                          _mm256_slli_epi32( w0, 7 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 13 );
-  _mm256_storeu_si256(
-      out + 14,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 22 ), _mm256_slli_epi32( w1, 10 ) ) ) );
+  _mm256_storeu_si256( out + 14,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 22 ),
+                                                          _mm256_slli_epi32( w1, 10 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 14 );
-  _mm256_storeu_si256(
-      out + 15,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 19 ), _mm256_slli_epi32( w0, 13 ) ) ) );
+  _mm256_storeu_si256( out + 15,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 19 ),
+                                                          _mm256_slli_epi32( w0, 13 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 15 );
-  _mm256_storeu_si256(
-      out + 16,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 16 ), _mm256_slli_epi32( w1, 16 ) ) ) );
+  _mm256_storeu_si256( out + 16,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 16 ),
+                                                          _mm256_slli_epi32( w1, 16 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 16 );
-  _mm256_storeu_si256(
-      out + 17,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 13 ), _mm256_slli_epi32( w0, 19 ) ) ) );
+  _mm256_storeu_si256( out + 17,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 13 ),
+                                                          _mm256_slli_epi32( w0, 19 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 17 );
-  _mm256_storeu_si256(
-      out + 18,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 10 ), _mm256_slli_epi32( w1, 22 ) ) ) );
+  _mm256_storeu_si256( out + 18,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 10 ),
+                                                          _mm256_slli_epi32( w1, 22 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 18 );
-  _mm256_storeu_si256(
-      out + 19,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 7 ), _mm256_slli_epi32( w0, 25 ) ) ) );
+  _mm256_storeu_si256( out + 19,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 7 ),
+                                                          _mm256_slli_epi32( w0, 25 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 19 );
-  _mm256_storeu_si256(
-      out + 20,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 4 ), _mm256_slli_epi32( w1, 28 ) ) ) );
+  _mm256_storeu_si256( out + 20,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 4 ),
+                                                          _mm256_slli_epi32( w1, 28 ) ) ) );
   _mm256_storeu_si256( out + 21, _mm256_and_si256( mask, _mm256_srli_epi32( w1, 1 ) ) );
   w0 = _mm256_lddqu_si256( compressed + 20 );
-  _mm256_storeu_si256(
-      out + 22,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 30 ), _mm256_slli_epi32( w0, 2 ) ) ) );
+  _mm256_storeu_si256( out + 22,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 30 ),
+                                                          _mm256_slli_epi32( w0, 2 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 21 );
-  _mm256_storeu_si256(
-      out + 23,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 27 ), _mm256_slli_epi32( w1, 5 ) ) ) );
+  _mm256_storeu_si256( out + 23,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 27 ),
+                                                          _mm256_slli_epi32( w1, 5 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 22 );
-  _mm256_storeu_si256(
-      out + 24,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 24 ), _mm256_slli_epi32( w0, 8 ) ) ) );
+  _mm256_storeu_si256( out + 24,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 24 ),
+                                                          _mm256_slli_epi32( w0, 8 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 23 );
-  _mm256_storeu_si256(
-      out + 25,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 21 ), _mm256_slli_epi32( w1, 11 ) ) ) );
+  _mm256_storeu_si256( out + 25,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 21 ),
+                                                          _mm256_slli_epi32( w1, 11 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 24 );
-  _mm256_storeu_si256(
-      out + 26,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 18 ), _mm256_slli_epi32( w0, 14 ) ) ) );
+  _mm256_storeu_si256( out + 26,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 18 ),
+                                                          _mm256_slli_epi32( w0, 14 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 25 );
-  _mm256_storeu_si256(
-      out + 27,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 15 ), _mm256_slli_epi32( w1, 17 ) ) ) );
+  _mm256_storeu_si256( out + 27,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 15 ),
+                                                          _mm256_slli_epi32( w1, 17 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 26 );
-  _mm256_storeu_si256(
-      out + 28,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 12 ), _mm256_slli_epi32( w0, 20 ) ) ) );
+  _mm256_storeu_si256( out + 28,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 12 ),
+                                                          _mm256_slli_epi32( w0, 20 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 27 );
-  _mm256_storeu_si256(
-      out + 29,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 9 ), _mm256_slli_epi32( w1, 23 ) ) ) );
+  _mm256_storeu_si256( out + 29,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 9 ),
+                                                          _mm256_slli_epi32( w1, 23 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 28 );
-  _mm256_storeu_si256(
-      out + 30,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 6 ), _mm256_slli_epi32( w0, 26 ) ) ) );
+  _mm256_storeu_si256( out + 30,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 6 ),
+                                                          _mm256_slli_epi32( w0, 26 ) ) ) );
   _mm256_storeu_si256( out + 31, _mm256_srli_epi32( w0, 3 ) );
 }
 
@@ -5758,176 +5400,148 @@ inline void unpack256_30( __m256i const* compressed, std::uint32_t* pout ) noexc
   w0 = _mm256_lddqu_si256( compressed );
   _mm256_storeu_si256( out + 0, _mm256_and_si256( mask, w0 ) );
   w1 = _mm256_lddqu_si256( compressed + 1 );
-  _mm256_storeu_si256(
-      out + 1,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 30 ), _mm256_slli_epi32( w1, 2 ) ) ) );
+  _mm256_storeu_si256( out + 1,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 30 ),
+                                                          _mm256_slli_epi32( w1, 2 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 2 );
-  _mm256_storeu_si256(
-      out + 2,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 28 ), _mm256_slli_epi32( w0, 4 ) ) ) );
+  _mm256_storeu_si256( out + 2,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 28 ),
+                                                          _mm256_slli_epi32( w0, 4 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 3 );
-  _mm256_storeu_si256(
-      out + 3,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 26 ), _mm256_slli_epi32( w1, 6 ) ) ) );
+  _mm256_storeu_si256( out + 3,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 26 ),
+                                                          _mm256_slli_epi32( w1, 6 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 4 );
-  _mm256_storeu_si256(
-      out + 4,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 24 ), _mm256_slli_epi32( w0, 8 ) ) ) );
+  _mm256_storeu_si256( out + 4,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 24 ),
+                                                          _mm256_slli_epi32( w0, 8 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 5 );
-  _mm256_storeu_si256(
-      out + 5,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 22 ), _mm256_slli_epi32( w1, 10 ) ) ) );
+  _mm256_storeu_si256( out + 5,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 22 ),
+                                                          _mm256_slli_epi32( w1, 10 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 6 );
-  _mm256_storeu_si256(
-      out + 6,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 20 ), _mm256_slli_epi32( w0, 12 ) ) ) );
+  _mm256_storeu_si256( out + 6,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 20 ),
+                                                          _mm256_slli_epi32( w0, 12 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 7 );
-  _mm256_storeu_si256(
-      out + 7,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 18 ), _mm256_slli_epi32( w1, 14 ) ) ) );
+  _mm256_storeu_si256( out + 7,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 18 ),
+                                                          _mm256_slli_epi32( w1, 14 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 8 );
-  _mm256_storeu_si256(
-      out + 8,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 16 ), _mm256_slli_epi32( w0, 16 ) ) ) );
+  _mm256_storeu_si256( out + 8,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 16 ),
+                                                          _mm256_slli_epi32( w0, 16 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 9 );
-  _mm256_storeu_si256(
-      out + 9,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 14 ), _mm256_slli_epi32( w1, 18 ) ) ) );
+  _mm256_storeu_si256( out + 9,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 14 ),
+                                                          _mm256_slli_epi32( w1, 18 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 10 );
-  _mm256_storeu_si256(
-      out + 10,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 12 ), _mm256_slli_epi32( w0, 20 ) ) ) );
+  _mm256_storeu_si256( out + 10,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 12 ),
+                                                          _mm256_slli_epi32( w0, 20 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 11 );
-  _mm256_storeu_si256(
-      out + 11,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 10 ), _mm256_slli_epi32( w1, 22 ) ) ) );
+  _mm256_storeu_si256( out + 11,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 10 ),
+                                                          _mm256_slli_epi32( w1, 22 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 12 );
-  _mm256_storeu_si256(
-      out + 12,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 8 ), _mm256_slli_epi32( w0, 24 ) ) ) );
+  _mm256_storeu_si256( out + 12,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 8 ),
+                                                          _mm256_slli_epi32( w0, 24 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 13 );
-  _mm256_storeu_si256(
-      out + 13,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 6 ), _mm256_slli_epi32( w1, 26 ) ) ) );
+  _mm256_storeu_si256( out + 13,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 6 ),
+                                                          _mm256_slli_epi32( w1, 26 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 14 );
-  _mm256_storeu_si256(
-      out + 14,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 4 ), _mm256_slli_epi32( w0, 28 ) ) ) );
+  _mm256_storeu_si256( out + 14,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 4 ),
+                                                          _mm256_slli_epi32( w0, 28 ) ) ) );
   _mm256_storeu_si256( out + 15, _mm256_srli_epi32( w0, 2 ) );
   w1 = _mm256_lddqu_si256( compressed + 15 );
   _mm256_storeu_si256( out + 16, _mm256_and_si256( mask, w1 ) );
   w0 = _mm256_lddqu_si256( compressed + 16 );
-  _mm256_storeu_si256(
-      out + 17,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 30 ), _mm256_slli_epi32( w0, 2 ) ) ) );
+  _mm256_storeu_si256( out + 17,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 30 ),
+                                                          _mm256_slli_epi32( w0, 2 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 17 );
-  _mm256_storeu_si256(
-      out + 18,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 28 ), _mm256_slli_epi32( w1, 4 ) ) ) );
+  _mm256_storeu_si256( out + 18,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 28 ),
+                                                          _mm256_slli_epi32( w1, 4 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 18 );
-  _mm256_storeu_si256(
-      out + 19,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 26 ), _mm256_slli_epi32( w0, 6 ) ) ) );
+  _mm256_storeu_si256( out + 19,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 26 ),
+                                                          _mm256_slli_epi32( w0, 6 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 19 );
-  _mm256_storeu_si256(
-      out + 20,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 24 ), _mm256_slli_epi32( w1, 8 ) ) ) );
+  _mm256_storeu_si256( out + 20,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 24 ),
+                                                          _mm256_slli_epi32( w1, 8 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 20 );
-  _mm256_storeu_si256(
-      out + 21,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 22 ), _mm256_slli_epi32( w0, 10 ) ) ) );
+  _mm256_storeu_si256( out + 21,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 22 ),
+                                                          _mm256_slli_epi32( w0, 10 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 21 );
-  _mm256_storeu_si256(
-      out + 22,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 20 ), _mm256_slli_epi32( w1, 12 ) ) ) );
+  _mm256_storeu_si256( out + 22,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 20 ),
+                                                          _mm256_slli_epi32( w1, 12 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 22 );
-  _mm256_storeu_si256(
-      out + 23,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 18 ), _mm256_slli_epi32( w0, 14 ) ) ) );
+  _mm256_storeu_si256( out + 23,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 18 ),
+                                                          _mm256_slli_epi32( w0, 14 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 23 );
-  _mm256_storeu_si256(
-      out + 24,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 16 ), _mm256_slli_epi32( w1, 16 ) ) ) );
+  _mm256_storeu_si256( out + 24,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 16 ),
+                                                          _mm256_slli_epi32( w1, 16 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 24 );
-  _mm256_storeu_si256(
-      out + 25,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 14 ), _mm256_slli_epi32( w0, 18 ) ) ) );
+  _mm256_storeu_si256( out + 25,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 14 ),
+                                                          _mm256_slli_epi32( w0, 18 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 25 );
-  _mm256_storeu_si256(
-      out + 26,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 12 ), _mm256_slli_epi32( w1, 20 ) ) ) );
+  _mm256_storeu_si256( out + 26,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 12 ),
+                                                          _mm256_slli_epi32( w1, 20 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 26 );
-  _mm256_storeu_si256(
-      out + 27,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 10 ), _mm256_slli_epi32( w0, 22 ) ) ) );
+  _mm256_storeu_si256( out + 27,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 10 ),
+                                                          _mm256_slli_epi32( w0, 22 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 27 );
-  _mm256_storeu_si256(
-      out + 28,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 8 ), _mm256_slli_epi32( w1, 24 ) ) ) );
+  _mm256_storeu_si256( out + 28,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 8 ),
+                                                          _mm256_slli_epi32( w1, 24 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 28 );
-  _mm256_storeu_si256(
-      out + 29,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 6 ), _mm256_slli_epi32( w0, 26 ) ) ) );
+  _mm256_storeu_si256( out + 29,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 6 ),
+                                                          _mm256_slli_epi32( w0, 26 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 29 );
-  _mm256_storeu_si256(
-      out + 30,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 4 ), _mm256_slli_epi32( w1, 28 ) ) ) );
+  _mm256_storeu_si256( out + 30,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 4 ),
+                                                          _mm256_slli_epi32( w1, 28 ) ) ) );
   _mm256_storeu_si256( out + 31, _mm256_srli_epi32( w1, 2 ) );
 }
 
@@ -5940,185 +5554,155 @@ inline void unpack256_31( __m256i const* compressed, std::uint32_t* pout ) noexc
   w0 = _mm256_lddqu_si256( compressed );
   _mm256_storeu_si256( out + 0, _mm256_and_si256( mask, w0 ) );
   w1 = _mm256_lddqu_si256( compressed + 1 );
-  _mm256_storeu_si256(
-      out + 1,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 31 ), _mm256_slli_epi32( w1, 1 ) ) ) );
+  _mm256_storeu_si256( out + 1,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 31 ),
+                                                          _mm256_slli_epi32( w1, 1 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 2 );
-  _mm256_storeu_si256(
-      out + 2,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 30 ), _mm256_slli_epi32( w0, 2 ) ) ) );
+  _mm256_storeu_si256( out + 2,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 30 ),
+                                                          _mm256_slli_epi32( w0, 2 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 3 );
-  _mm256_storeu_si256(
-      out + 3,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 29 ), _mm256_slli_epi32( w1, 3 ) ) ) );
+  _mm256_storeu_si256( out + 3,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 29 ),
+                                                          _mm256_slli_epi32( w1, 3 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 4 );
-  _mm256_storeu_si256(
-      out + 4,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 28 ), _mm256_slli_epi32( w0, 4 ) ) ) );
+  _mm256_storeu_si256( out + 4,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 28 ),
+                                                          _mm256_slli_epi32( w0, 4 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 5 );
-  _mm256_storeu_si256(
-      out + 5,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 27 ), _mm256_slli_epi32( w1, 5 ) ) ) );
+  _mm256_storeu_si256( out + 5,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 27 ),
+                                                          _mm256_slli_epi32( w1, 5 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 6 );
-  _mm256_storeu_si256(
-      out + 6,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 26 ), _mm256_slli_epi32( w0, 6 ) ) ) );
+  _mm256_storeu_si256( out + 6,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 26 ),
+                                                          _mm256_slli_epi32( w0, 6 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 7 );
-  _mm256_storeu_si256(
-      out + 7,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 25 ), _mm256_slli_epi32( w1, 7 ) ) ) );
+  _mm256_storeu_si256( out + 7,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 25 ),
+                                                          _mm256_slli_epi32( w1, 7 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 8 );
-  _mm256_storeu_si256(
-      out + 8,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 24 ), _mm256_slli_epi32( w0, 8 ) ) ) );
+  _mm256_storeu_si256( out + 8,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 24 ),
+                                                          _mm256_slli_epi32( w0, 8 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 9 );
-  _mm256_storeu_si256(
-      out + 9,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 23 ), _mm256_slli_epi32( w1, 9 ) ) ) );
+  _mm256_storeu_si256( out + 9,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 23 ),
+                                                          _mm256_slli_epi32( w1, 9 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 10 );
-  _mm256_storeu_si256(
-      out + 10,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 22 ), _mm256_slli_epi32( w0, 10 ) ) ) );
+  _mm256_storeu_si256( out + 10,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 22 ),
+                                                          _mm256_slli_epi32( w0, 10 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 11 );
-  _mm256_storeu_si256(
-      out + 11,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 21 ), _mm256_slli_epi32( w1, 11 ) ) ) );
+  _mm256_storeu_si256( out + 11,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 21 ),
+                                                          _mm256_slli_epi32( w1, 11 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 12 );
-  _mm256_storeu_si256(
-      out + 12,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 20 ), _mm256_slli_epi32( w0, 12 ) ) ) );
+  _mm256_storeu_si256( out + 12,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 20 ),
+                                                          _mm256_slli_epi32( w0, 12 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 13 );
-  _mm256_storeu_si256(
-      out + 13,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 19 ), _mm256_slli_epi32( w1, 13 ) ) ) );
+  _mm256_storeu_si256( out + 13,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 19 ),
+                                                          _mm256_slli_epi32( w1, 13 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 14 );
-  _mm256_storeu_si256(
-      out + 14,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 18 ), _mm256_slli_epi32( w0, 14 ) ) ) );
+  _mm256_storeu_si256( out + 14,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 18 ),
+                                                          _mm256_slli_epi32( w0, 14 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 15 );
-  _mm256_storeu_si256(
-      out + 15,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 17 ), _mm256_slli_epi32( w1, 15 ) ) ) );
+  _mm256_storeu_si256( out + 15,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 17 ),
+                                                          _mm256_slli_epi32( w1, 15 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 16 );
-  _mm256_storeu_si256(
-      out + 16,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 16 ), _mm256_slli_epi32( w0, 16 ) ) ) );
+  _mm256_storeu_si256( out + 16,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 16 ),
+                                                          _mm256_slli_epi32( w0, 16 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 17 );
-  _mm256_storeu_si256(
-      out + 17,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 15 ), _mm256_slli_epi32( w1, 17 ) ) ) );
+  _mm256_storeu_si256( out + 17,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 15 ),
+                                                          _mm256_slli_epi32( w1, 17 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 18 );
-  _mm256_storeu_si256(
-      out + 18,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 14 ), _mm256_slli_epi32( w0, 18 ) ) ) );
+  _mm256_storeu_si256( out + 18,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 14 ),
+                                                          _mm256_slli_epi32( w0, 18 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 19 );
-  _mm256_storeu_si256(
-      out + 19,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 13 ), _mm256_slli_epi32( w1, 19 ) ) ) );
+  _mm256_storeu_si256( out + 19,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 13 ),
+                                                          _mm256_slli_epi32( w1, 19 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 20 );
-  _mm256_storeu_si256(
-      out + 20,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 12 ), _mm256_slli_epi32( w0, 20 ) ) ) );
+  _mm256_storeu_si256( out + 20,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 12 ),
+                                                          _mm256_slli_epi32( w0, 20 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 21 );
-  _mm256_storeu_si256(
-      out + 21,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 11 ), _mm256_slli_epi32( w1, 21 ) ) ) );
+  _mm256_storeu_si256( out + 21,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 11 ),
+                                                          _mm256_slli_epi32( w1, 21 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 22 );
-  _mm256_storeu_si256(
-      out + 22,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 10 ), _mm256_slli_epi32( w0, 22 ) ) ) );
+  _mm256_storeu_si256( out + 22,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 10 ),
+                                                          _mm256_slli_epi32( w0, 22 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 23 );
-  _mm256_storeu_si256(
-      out + 23,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 9 ), _mm256_slli_epi32( w1, 23 ) ) ) );
+  _mm256_storeu_si256( out + 23,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 9 ),
+                                                          _mm256_slli_epi32( w1, 23 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 24 );
-  _mm256_storeu_si256(
-      out + 24,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 8 ), _mm256_slli_epi32( w0, 24 ) ) ) );
+  _mm256_storeu_si256( out + 24,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 8 ),
+                                                          _mm256_slli_epi32( w0, 24 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 25 );
-  _mm256_storeu_si256(
-      out + 25,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 7 ), _mm256_slli_epi32( w1, 25 ) ) ) );
+  _mm256_storeu_si256( out + 25,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 7 ),
+                                                          _mm256_slli_epi32( w1, 25 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 26 );
-  _mm256_storeu_si256(
-      out + 26,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 6 ), _mm256_slli_epi32( w0, 26 ) ) ) );
+  _mm256_storeu_si256( out + 26,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 6 ),
+                                                          _mm256_slli_epi32( w0, 26 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 27 );
-  _mm256_storeu_si256(
-      out + 27,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 5 ), _mm256_slli_epi32( w1, 27 ) ) ) );
+  _mm256_storeu_si256( out + 27,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 5 ),
+                                                          _mm256_slli_epi32( w1, 27 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 28 );
-  _mm256_storeu_si256(
-      out + 28,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 4 ), _mm256_slli_epi32( w0, 28 ) ) ) );
+  _mm256_storeu_si256( out + 28,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 4 ),
+                                                          _mm256_slli_epi32( w0, 28 ) ) ) );
   w1 = _mm256_lddqu_si256( compressed + 29 );
-  _mm256_storeu_si256(
-      out + 29,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w0, 3 ), _mm256_slli_epi32( w1, 29 ) ) ) );
+  _mm256_storeu_si256( out + 29,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w0, 3 ),
+                                                          _mm256_slli_epi32( w1, 29 ) ) ) );
   w0 = _mm256_lddqu_si256( compressed + 30 );
-  _mm256_storeu_si256(
-      out + 30,
-      _mm256_and_si256(
-          mask,
-          _mm256_or_si256( _mm256_srli_epi32( w1, 2 ), _mm256_slli_epi32( w0, 30 ) ) ) );
+  _mm256_storeu_si256( out + 30,
+                       _mm256_and_si256( mask,
+                                         _mm256_or_si256( _mm256_srli_epi32( w1, 2 ),
+                                                          _mm256_slli_epi32( w0, 30 ) ) ) );
   _mm256_storeu_si256( out + 31, _mm256_srli_epi32( w0, 1 ) );
 }
 

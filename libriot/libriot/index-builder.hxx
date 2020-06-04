@@ -17,14 +17,9 @@ concept convertible_to =
 };
 
 template <typename T, typename KeyType, std::size_t KBlockLen, std::size_t VBlockLen>
-concept Serializer = requires(
-    T s,
-    bool begin,
-    offset_type const* p,
-    std::size_t const n,
-    offset_type const key_begin,
-    offset_type const offset_begin,
-    std::uint64_t const segment_begin ) {
+concept Serializer = requires( T s, bool begin, offset_type const* p, std::size_t const n,
+                               offset_type const key_begin, offset_type const offset_begin,
+                               std::uint64_t const segment_begin ) {
   // clang-format off
   { s.template encode_cblock<offset_type, VBlockLen>( p, n, begin ) } noexcept;
   { s.template encode_kblock<offset_type, KBlockLen>( p, n ) } noexcept;
@@ -107,13 +102,9 @@ class chunked_vector {
   }
 };
 
-template <
-    typename Key,
-    template <typename K = Key, typename V>
-    typename Map,
-    std::size_t BlockLen,
-    std::size_t VBlockLen = BlockLen,
-    typename Alloc = std::allocator<chunk<offset_type, BlockLen>>>
+template <typename Key, template <typename K = Key, typename V> typename Map, std::size_t BlockLen,
+          std::size_t VBlockLen = BlockLen,
+          typename Alloc = std::allocator<chunk<offset_type, BlockLen>>>
 class index_builder {
   static constexpr std::size_t KBLOCKLEN = BlockLen;
   static constexpr std::size_t VBLOCKLEN = VBlockLen;
@@ -148,17 +139,15 @@ class index_builder {
 
   std::pair<std::size_t, std::size_t> minmax_offset_count() const noexcept {
     if( _index.size() == 0 ) { return { 0, 0 }; }
-    auto const [min, max] =
-        std::minmax_element( _index.begin(), _index.end(), [&]( auto& a, auto& b ) {
-          return _chunks[a.second].size() < _chunks[b.second].size();
-        } );
+    auto const [min, max] = std::minmax_element( _index.begin(), _index.end(), [&]( auto& a, auto& b ) {
+      return _chunks[a.second].size() < _chunks[b.second].size();
+    } );
     return { _chunks[min->second].size(), _chunks[max->second].size() };
   }
 
   // this invalidates the index builder
-  void accept(
-      Serializer<key_type, KBLOCKLEN, VBLOCKLEN> auto& serializer,
-      std::uint64_t const segment_begin ) noexcept {
+  void accept( Serializer<key_type, KBLOCKLEN, VBLOCKLEN> auto& serializer,
+               std::uint64_t const segment_begin ) noexcept {
 
     // - serialize all chunked vectors ( and patch index to external offsets )
     for( auto it = _index.begin(); it != _index.end(); ++it ) {

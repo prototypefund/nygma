@@ -87,31 +87,28 @@ int main() {
   static_assert( is_power_of_two_v<N> );
   std::array<bytestring_view const, N> mix{ bs1, bs2, bs3, bs3 };
 
-  cfg.run(
-         "dissect pkt1 (scalar)",
-         [&]() {
-           trace.rewind();
-           h ^= dissect::dissect_en10mb( hash_policy, trace, bs1 );
-         } )
+  cfg.run( "dissect pkt1 (scalar)",
+           [&]() {
+             trace.rewind();
+             h ^= dissect::dissect_en10mb( hash_policy, trace, bs1 );
+           } )
       .touch( h )
       .report_to( std::cerr );
 
-  cfg.run(
-         "dissect pkt2 (scalar)",
-         [&]() {
-           trace.rewind();
-           h ^= dissect::dissect_en10mb( hash_policy, trace, bs2 );
-         } )
+  cfg.run( "dissect pkt2 (scalar)",
+           [&]() {
+             trace.rewind();
+             h ^= dissect::dissect_en10mb( hash_policy, trace, bs2 );
+           } )
       .touch( h )
       .report_to( std::cerr );
 
-  cfg.run(
-         "dissect mix (scalar)",
-         [&]() {
-           trace.rewind();
-           auto const& bs = mix[xo1() & ( N - 1 )];
-           h ^= dissect::dissect_en10mb( hash_policy, trace, bs );
-         } )
+  cfg.run( "dissect mix (scalar)",
+           [&]() {
+             trace.rewind();
+             auto const& bs = mix[xo1() & ( N - 1 )];
+             h ^= dissect::dissect_en10mb( hash_policy, trace, bs );
+           } )
       .touch( h )
       .report_to( std::cerr )
       .offset( offset )

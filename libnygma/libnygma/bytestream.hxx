@@ -58,8 +58,9 @@ class bytestream_ostream {
   }
 
   template <typename T>
-  auto write( T const* const p, std::size_t const n ) noexcept -> std::
-      enable_if_t<std::is_trivial_v<T> && not std::is_same_v<T, std::byte>, bytestream_status::type> {
+  auto write( T const* const p, std::size_t const n ) noexcept
+      -> std::enable_if_t<std::is_trivial_v<T> && not std::is_same_v<T, std::byte>,
+                          bytestream_status::type> {
     auto& self = downcast();
     auto const rc = self._write_trivial_( p, n );
     _status |= rc;

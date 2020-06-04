@@ -64,12 +64,11 @@ void ny_command_reverse_slice_by( reverse_slice_config const& config ) {
       flog( lvl::v, "segment offset = ", py->segment_offset() );
       auto const rs = py->lookup_forward_32( key );
       flog( lvl::v, "forward lookup hits = ", rs.size() );
-      auto const rev_rs = sparse_resultset_type::combine<
-          &riot::resultset_forward_type::combine_or<>,
-          &riot::resultset_forward_type::combine_and<>>(
-          p4->sparse_scan( rs ),
-          px->sparse_scan( rs ) );
-      flog( lvl::v, "reverse sparse-scan hits = ", rev_rs.size(), " ( @", rev_rs.segment_offset(), " )" );
+      auto const rev_rs = sparse_resultset_type::combine<&riot::resultset_forward_type::combine_or<>,
+                                                         &riot::resultset_forward_type::combine_and<>>(
+          p4->sparse_scan( rs ), px->sparse_scan( rs ) );
+      flog( lvl::v, "reverse sparse-scan hits = ", rev_rs.size(), " ( @", rev_rs.segment_offset(),
+            " )" );
       pcap::reassemble_stream( pcap, py->segment_offset(), rev_rs.cbegin(), rev_rs.cend(), os );
     } );
   } );

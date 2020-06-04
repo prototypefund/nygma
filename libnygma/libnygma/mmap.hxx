@@ -41,10 +41,8 @@ class mmap_view {
     if( p == MAP_FAILED ) {
       auto const err = errno;
       close( fd );
-      throw std::system_error(
-          err,
-          std::system_category(),
-          "mmap_view: unable to `mmap` file contents" );
+      throw std::system_error( err, std::system_category(),
+                               "mmap_view: unable to `mmap` file contents" );
     }
     close( fd );
     _map = reinterpret_cast<value_type const*>( p );
@@ -84,8 +82,8 @@ class mmap_block {
 
   static constexpr std::size_t SIZE = Size;
 
-  static inline void* try_mmap(
-      mmap_block_hint::type const wanted, mmap_block_hint::type const fallback ) {
+  static inline void* try_mmap( mmap_block_hint::type const wanted,
+                                mmap_block_hint::type const fallback ) {
     void* const p = mmap( NULL, SIZE, PROT_READ | PROT_WRITE, wanted, -1, 0 );
     if( p == MAP_FAILED ) { return mmap( NULL, SIZE, PROT_READ | PROT_WRITE, fallback, -1, 0 ); }
     return p;
@@ -221,8 +219,8 @@ class block_view {
     return offset >= _cached_offset && ( offset + size ) < _cached_offset + _cached_size;
   }
 
-  inline bytestring_view const slice(
-      std::uint64_t const offset, std::size_t const size ) const noexcept {
+  inline bytestring_view const slice( std::uint64_t const offset,
+                                      std::size_t const size ) const noexcept {
     if( in_cached_range( offset, size ) ) {
       auto const* p = _block.data();
       return bytestring_view{ p + offset - _cached_offset, size };

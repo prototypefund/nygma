@@ -67,9 +67,7 @@ void ny_command_slice_by( slice_config const& config ) {
     if( not config._key_i4.empty() ) {
       auto const key = ntohl( ::inet_addr( config._key_i4.c_str() ) );
       flog( lvl::i, "executing query = i4( ", config._key_i4, " ) ( ", key, " )" );
-      for( auto& p : deps._i4 ) {
-        stream( p, key );
-      }
+      for( auto& p : deps._i4 ) { stream( p, key ); }
     }
 
     if( not config._key_i6.empty() ) {
@@ -79,25 +77,19 @@ void ny_command_slice_by( slice_config const& config ) {
         throw std::runtime_error( "invalid i6 key" );
       }
       flog( lvl::i, "executing query = i6( ", config._key_i6, " )" );
-      for( auto& p : deps._i6 ) {
-        stream_ex( p, key );
-      }
+      for( auto& p : deps._i6 ) { stream_ex( p, key ); }
     }
 
     if( not config._key_ix.empty() ) {
       auto const key = static_cast<std::uint32_t>( std::stoul( config._key_ix ) );
       flog( lvl::i, "executing query = ix( ", config._key_ix, " ) ( ", key, " )" );
-      for( auto& p : deps._ix ) {
-        stream( p, key );
-      }
+      for( auto& p : deps._ix ) { stream( p, key ); }
     }
 
     if( not config._key_iy.empty() ) {
       auto const key = static_cast<std::uint32_t>( std::stoul( config._key_iy ) );
       flog( lvl::i, "executing query = iy( ", config._key_iy, " ) ( ", key, " )" );
-      for( auto& p : deps._iy ) {
-        stream( p, key );
-      }
+      for( auto& p : deps._iy ) { stream( p, key ); }
     }
   } );
 }

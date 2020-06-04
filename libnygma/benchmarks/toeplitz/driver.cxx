@@ -40,23 +40,21 @@ int main() {
   ipv4 v4;
   v4._64 = 0;
 
-  cfg.run(
-         "v4: toeplitz_scalar_loop",
-         [&]() {
-           v4._64 = xo0();
-           h ^= rss_loop.hash<8>( v4._array.data() );
-         } )
+  cfg.run( "v4: toeplitz_scalar_loop",
+           [&]() {
+             v4._64 = xo0();
+             h ^= rss_loop.hash<8>( v4._array.data() );
+           } )
       .touch( h )
       .report_to( std::cerr )
       .offset( offset )
       .report_to( std::cerr, "normalized" );
 
-  cfg.run(
-         "v4: toeplitz_scalar_lut",
-         [&]() {
-           v4._64 = xo1();
-           h ^= rss_lut.hash<8>( v4._array.data() );
-         } )
+  cfg.run( "v4: toeplitz_scalar_lut",
+           [&]() {
+             v4._64 = xo1();
+             h ^= rss_lut.hash<8>( v4._array.data() );
+           } )
       .touch( h )
       .report_to( std::cerr )
       .offset( offset )
@@ -71,29 +69,27 @@ int main() {
   xoshiro::xoshiro256starstar64 xo6_0{ 0x2342 };
   xoshiro::xoshiro256starstar64 xo6_1{ 0x2342 };
 
-  cfg.run(
-         "v6: toeplitz_scalar_loop",
-         [&]() {
-           v6._256[0] = xo6_0();
-           v6._256[1] = xo6_0();
-           v6._256[2] = xo6_0();
-           v6._256[3] = xo6_0();
-           h ^= rss_loop.hash<32>( v6._array.data() );
-         } )
+  cfg.run( "v6: toeplitz_scalar_loop",
+           [&]() {
+             v6._256[0] = xo6_0();
+             v6._256[1] = xo6_0();
+             v6._256[2] = xo6_0();
+             v6._256[3] = xo6_0();
+             h ^= rss_loop.hash<32>( v6._array.data() );
+           } )
       .touch( h )
       .report_to( std::cerr )
       .offset( offset )
       .report_to( std::cerr, "normalized" );
 
-  cfg.run(
-         "v6: toeplitz_scalar_lut",
-         [&]() {
-           v6._256[0] = xo6_1();
-           v6._256[1] = xo6_1();
-           v6._256[2] = xo6_1();
-           v6._256[3] = xo6_1();
-           h ^= rss_lut.hash<32>( v6._array.data() );
-         } )
+  cfg.run( "v6: toeplitz_scalar_lut",
+           [&]() {
+             v6._256[0] = xo6_1();
+             v6._256[1] = xo6_1();
+             v6._256[2] = xo6_1();
+             v6._256[3] = xo6_1();
+             h ^= rss_lut.hash<32>( v6._array.data() );
+           } )
       .touch( h )
       .report_to( std::cerr )
       .offset( offset )

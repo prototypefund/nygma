@@ -11,7 +11,7 @@ namespace riot {
 namespace unsafe = unclassified::unsafe;
 namespace dissect = nygma::dissect;
 using endianess = unclassified::endianess;
-  
+
 template <typename V4IndexType, typename PortIndexType>
 struct index_trace : public nygma::dissect::dissect_trace {
   using v4_index_type = V4IndexType;
@@ -92,4 +92,4 @@ struct index_trace : public nygma::dissect::dissect_trace {
   }
 };
 
-} // namespace emptyspace::index
+} // namespace riot

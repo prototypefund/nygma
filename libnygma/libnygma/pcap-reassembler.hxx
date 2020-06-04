@@ -71,8 +71,8 @@ struct pcap_ostream {
 namespace detail {
 namespace {
 
-constexpr std::uint32_t pcap_header[6]{
-    pcap::format::PCAP_NSEC, 0x00040002, 0, 0, 0xffff, pcap::linktype::en10mb };
+constexpr std::uint32_t pcap_header[6]{ pcap::format::PCAP_NSEC, 0x00040002, 0, 0, 0xffff,
+                                        pcap::linktype::en10mb };
 
 }
 } // namespace detail
@@ -82,14 +82,13 @@ namespace {
 
 template <typename View, typename Stream>
 inline bool reassemble_begin( [[maybe_unused]] View const& pcap, Stream& os ) noexcept {
-  return os.write(
-      reinterpret_cast<std::byte const*>( detail::pcap_header ),
-      sizeof( detail::pcap_header ) );
+  return os.write( reinterpret_cast<std::byte const*>( detail::pcap_header ),
+                   sizeof( detail::pcap_header ) );
 }
 
 template <typename View, typename Iter, typename Stream>
-inline bool reassemble_stream(
-    View& pcap, std::uint64_t const segment_offset, Iter begin, Iter const end, Stream& os ) noexcept {
+inline bool reassemble_stream( View& pcap, std::uint64_t const segment_offset, Iter begin,
+                               Iter const end, Stream& os ) noexcept {
   using iovec_type = typename Stream::iovec_type;
   std::uint32_t packet_header[4];
   iovec_type iov[2];

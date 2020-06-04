@@ -24,13 +24,8 @@ using index_i4_type = typename riot::index_builder<std::uint32_t, map_type, 256>
 using index_ix_type = typename riot::index_builder<std::uint32_t, map_type, 128>;
 using index_trace_type = typename riot::index_trace<index_i4_type, index_ix_type>;
 
-template <
-    template <typename>
-    typename S1,
-    template <typename>
-    typename S2,
-    template <typename>
-    typename S3>
+template <template <typename> typename S1, template <typename> typename S2,
+          template <typename> typename S3>
 struct poly_cycler {
   std::string _name;
   riot::index_cycler _cyc;
@@ -66,8 +61,7 @@ void ny_command_index_pcap( index_pcap_config const& config ) {
   c256 cyc4{ "i4", config._method_i4, w, d, f, ".i4" };
   c128 cycx{ "ix", config._method_ix, w, d, f, ".ix" };
 
-  auto const cycler = [&]( std::unique_ptr<index_i4_type> i4,
-                           std::unique_ptr<index_ix_type> ix,
+  auto const cycler = [&]( std::unique_ptr<index_i4_type> i4, std::unique_ptr<index_ix_type> ix,
                            std::uint64_t const segment_offset ) noexcept {
     flog( lvl::i, "cycler callback for segment offset = ", segment_offset );
     cyc4( std::move( i4 ), segment_offset );

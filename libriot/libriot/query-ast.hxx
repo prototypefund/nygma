@@ -150,10 +150,7 @@ struct binary : public typed_node<kind::BINARY> {
   expression _b;
   template <typename A, typename B>
   binary( source_span const span, A&& a, binop const op, B&& b )
-    : typed_node<kind::BINARY>{ span },
-      _op{ op },
-      _a{ std::forward<A>( a ) },
-      _b{ std::forward<B>( b ) } {}
+    : typed_node<kind::BINARY>{ span }, _op{ op }, _a{ std::forward<A>( a ) }, _b{ std::forward<B>( b ) } {}
 };
 
 template <kind T, typename Visitor>

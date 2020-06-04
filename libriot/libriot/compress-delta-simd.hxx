@@ -128,8 +128,8 @@ struct delta_i128 {
   static_assert( sizeof( I ) == 4 );
   static_assert( BlockLen % STEPLEN == 0 );
 
-  static inline void delta(
-      integer_type* const inout, std::size_t const n, integer_type const start = 0 ) noexcept {
+  static inline void delta( integer_type* const inout, std::size_t const n,
+                            integer_type const start = 0 ) noexcept {
     auto const aligned = integer::align_up<STEPLEN>( n );
     auto const blocklen = std::min( aligned, BLOCKLEN );
     __m128i* p = reinterpret_cast<__m128i*>( inout );
@@ -144,11 +144,8 @@ struct delta_i128 {
     }
   }
 
-  static inline void delta(
-      integer_type const* const in,
-      std::size_t const n,
-      integer_type* const out,
-      integer_type const start = 0 ) noexcept {
+  static inline void delta( integer_type const* const in, std::size_t const n, integer_type* const out,
+                            integer_type const start = 0 ) noexcept {
     auto const aligned = integer::align_up<STEPLEN>( n );
     auto const blocklen = std::min( aligned, BLOCKLEN );
     __m128i* out_p = reinterpret_cast<__m128i*>( out );
@@ -165,8 +162,8 @@ struct delta_i128 {
     }
   }
 
-  static inline void undelta(
-      integer_type* const inout, std::size_t const n, integer_type const start = 0 ) noexcept {
+  static inline void undelta( integer_type* const inout, std::size_t const n,
+                              integer_type const start = 0 ) noexcept {
     auto const aligned = integer::align_up<STEPLEN>( n );
     auto const blocklen = std::min( aligned, BLOCKLEN );
     __m128i* p = reinterpret_cast<__m128i*>( inout );
@@ -193,8 +190,8 @@ struct delta_i256 {
   static_assert( sizeof( I ) == 4 );
   static_assert( BlockLen % STEPLEN == 0 );
 
-  static inline void delta(
-      integer_type* const inout, std::size_t const n, integer_type const start = 0 ) noexcept {
+  static inline void delta( integer_type* const inout, std::size_t const n,
+                            integer_type const start = 0 ) noexcept {
     auto const aligned = integer::align_up<STEPLEN>( n );
     auto const blocklen = std::min( aligned, BLOCKLEN );
     __m256i* p = reinterpret_cast<__m256i*>( inout );
@@ -211,11 +208,8 @@ struct delta_i256 {
     }
   }
 
-  static inline void delta(
-      integer_type const* const in,
-      std::size_t const n,
-      integer_type* const out,
-      integer_type const start = 0 ) noexcept {
+  static inline void delta( integer_type const* const in, std::size_t const n, integer_type* const out,
+                            integer_type const start = 0 ) noexcept {
     auto const aligned = integer::align_up<STEPLEN>( n );
     auto const blocklen = std::min( aligned, BLOCKLEN );
     __m256i* out_p = reinterpret_cast<__m256i*>( out );
@@ -234,11 +228,8 @@ struct delta_i256 {
     }
   }
 
-  static inline auto delta_maxbits(
-      integer_type const* const in,
-      std::size_t const n,
-      integer_type* const out,
-      integer_type const start = 0 ) noexcept {
+  static inline auto delta_maxbits( integer_type const* const in, std::size_t const n,
+                                    integer_type* const out, integer_type const start = 0 ) noexcept {
     auto const aligned = integer::align_up<STEPLEN>( n );
     auto const blocklen = std::min( aligned, BLOCKLEN );
     __m256i* out_p = reinterpret_cast<__m256i*>( out );
@@ -260,8 +251,8 @@ struct delta_i256 {
     return maxbits256_epi32( max );
   }
 
-  static inline void undelta(
-      integer_type* const inout, std::size_t const n, integer_type const start = 0 ) noexcept {
+  static inline void undelta( integer_type* const inout, std::size_t const n,
+                              integer_type const start = 0 ) noexcept {
     auto const aligned = integer::align_up<STEPLEN>( n );
     auto const blocklen = std::min( aligned, BLOCKLEN );
     __m128i* p = reinterpret_cast<__m128i*>( inout );

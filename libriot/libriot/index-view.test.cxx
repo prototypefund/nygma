@@ -38,12 +38,12 @@ emptyspace::pest::suite basic( "index-view basic suite", []( auto& test ) {
     expect( idx.key_count(), equal_to( 3u ) );
     expect( os.ok(), equal_to( true ) );
     expect( os.current_position(), equal_to( 91u ) );
-    expect(
-        hexify( data, static_cast<std::size_t>( os.current_position() ) ),
-        equal_to(
-            "0401042c01000004020818000000b80b0000040208100000009001000001030c01000000b60bcc00996165010"
-            "3030c00000000070000001200000037133713fefe23011d0000002c0000000000000000000000371337134141"
-            "4141" ) );
+    expect( hexify( data, static_cast<std::size_t>( os.current_position() ) ),
+            equal_to( "0401042c01000004020818000000b80b0000040208100000009001000001030c01000000b60bcc0"
+                      "0996165010"
+                      "3030c00000000070000001200000037133713fefe23011d0000002c000000000000000000000037"
+                      "1337134141"
+                      "4141" ) );
 
     auto const len = static_cast<std::size_t>( os.current_position() );
 
@@ -80,11 +80,11 @@ emptyspace::pest::suite basic( "index-view basic suite", []( auto& test ) {
     expect( idx.key_count(), equal_to( 3u ) );
     expect( os.ok(), equal_to( true ) );
     expect( os.current_position(), equal_to( 91u ) );
-    expect(
-        hexify( data, static_cast<std::size_t>( os.current_position() ) ),
-        equal_to( "0401042c01000004020810000000b80b0000040208100000009001000001030c01000000b60bcc00996"
-                  "1650103030c00000000070000001200000037133713fefe23011d0000002c0000000000000000000000"
-                  "3713371341414141" ) );
+    expect( hexify( data, static_cast<std::size_t>( os.current_position() ) ),
+            equal_to(
+                "0401042c01000004020810000000b80b0000040208100000009001000001030c01000000b60bcc00996"
+                "1650103030c00000000070000001200000037133713fefe23011d0000002c0000000000000000000000"
+                "3713371341414141" ) );
 
     auto const len = static_cast<std::size_t>( os.current_position() );
 
@@ -164,11 +164,9 @@ emptyspace::pest::suite basic( "index-view basic suite", []( auto& test ) {
 
     auto const hits = iy->lookup_forward_32( 1 );
     expect( hits.values(), equal_to( { 16u, 32u } ) );
-    auto const rs = sparse_resultset_type::combine<
-        &riot::resultset_forward_type::combine_or<>,
-        &riot::resultset_forward_type::combine_and<>>(
-        i4->sparse_scan( hits ),
-        ix->sparse_scan( hits ) );
+    auto const rs = sparse_resultset_type::combine<&riot::resultset_forward_type::combine_or<>,
+                                                   &riot::resultset_forward_type::combine_and<>>(
+        i4->sparse_scan( hits ), ix->sparse_scan( hits ) );
     expect( rs.values(), equal_to( { 16u } ) );
   } );
 
@@ -213,11 +211,9 @@ emptyspace::pest::suite basic( "index-view basic suite", []( auto& test ) {
 
     auto const hits = iy->lookup_forward_32( 1 );
     expect( hits.values(), equal_to( { 16u, 32u } ) );
-    auto const rs = sparse_resultset_type::combine<
-        &riot::resultset_forward_type::combine_or<>,
-        &riot::resultset_forward_type::combine_and<>>(
-        i4->sparse_scan( hits ),
-        ix->sparse_scan( hits ) );
+    auto const rs = sparse_resultset_type::combine<&riot::resultset_forward_type::combine_or<>,
+                                                   &riot::resultset_forward_type::combine_and<>>(
+        i4->sparse_scan( hits ), ix->sparse_scan( hits ) );
     expect( rs.values(), equal_to( { 16u, 32u } ) );
   } );
 

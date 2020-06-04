@@ -181,4 +181,4 @@ inline std::pair<std::uint8_t, unsigned> encode( byte_t ( &p )[N], std::uint32_t
   return { tag, n };
 }
 
-} // namespace emptyspace::vbyte
+} // namespace riot::vbyte

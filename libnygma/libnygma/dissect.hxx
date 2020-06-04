@@ -178,8 +178,8 @@ struct void_hash_policy {
 };
 
 template <typename HashPolicy, typename Trace, bool Cont = true>
-static inline std::uint32_t dissect_en10mb(
-    HashPolicy& hash_policy, Trace&& trace, bytestring_view const& view ) noexcept {
+static inline std::uint32_t dissect_en10mb( HashPolicy& hash_policy, Trace&& trace,
+                                            bytestring_view const& view ) noexcept {
   constexpr endianess BE = endianess::BE;
 
   std::byte const* const begin = view.data();

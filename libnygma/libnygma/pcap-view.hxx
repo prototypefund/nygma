@@ -223,8 +223,8 @@ class pcap_block_view {
     }
   }
 
-  static constexpr std::uint64_t to_timestamp_ns(
-      std::uint32_t const raw_tv_sec, std::uint32_t const raw_tv_nsec ) noexcept {
+  static constexpr std::uint64_t to_timestamp_ns( std::uint32_t const raw_tv_sec,
+                                                  std::uint32_t const raw_tv_nsec ) noexcept {
     auto const tv_sec = static_cast<std::uint64_t>( raw_tv_sec );
     auto const tv_nsec = to_ns( raw_tv_nsec );
     return tv_sec * 1'000'000'000ull + tv_nsec;
@@ -257,8 +257,8 @@ class pcap_block_view {
     }
   }
 
-  packet_view const slice(
-      std::uint64_t const offset, std::size_t const size_estimate = 8196u ) const noexcept {
+  packet_view const slice( std::uint64_t const offset,
+                           std::size_t const size_estimate = 8196u ) const noexcept {
     if( offset < pcap::PCAP_HEADERSZ + pcap::PACKET_HEADERSZ ) { return {}; }
     auto const packet_offset = offset - pcap::PACKET_HEADERSZ;
     if( not _data->in_cached_range( packet_offset, size_estimate ) ) {
@@ -362,14 +362,10 @@ enum class error_code {
   INVALID_VIEW,
 };
 
-template <
-    typename T,
-    typename DataView,
-    template <endianess E, format::type F, typename V>
-    typename PcapView,
-    endianess E>
-static inline error_code specialize0(
-    std::unique_ptr<DataView>&& view, std::uint32_t magic, T&& t ) noexcept {
+template <typename T, typename DataView,
+          template <endianess E, format::type F, typename V> typename PcapView, endianess E>
+static inline error_code specialize0( std::unique_ptr<DataView>&& view, std::uint32_t magic,
+                                      T&& t ) noexcept {
   switch( magic ) {
     case format::PCAP_NSEC: {
       using pcap_view_type = PcapView<E, format::PCAP_NSEC, DataView>;
@@ -396,17 +392,13 @@ static inline error_code with( bytestring_view const bs, T&& t ) noexcept {
   if( bs.rd8() == std::byte( 0xa1 ) ) {
     constexpr endianess BE{ endianess::BE };
     auto const magic = bs.rd32<BE>();
-    return specialize0<T, bytestring_view, pcap_view, BE>(
-        std::make_unique<bytestring_view>( bs ),
-        magic,
-        std::forward<T>( t ) );
+    return specialize0<T, bytestring_view, pcap_view, BE>( std::make_unique<bytestring_view>( bs ),
+                                                           magic, std::forward<T>( t ) );
   } else {
     constexpr endianess LE{ endianess::LE };
     auto const magic = bs.rd32<LE>();
-    return specialize0<T, bytestring_view, pcap_view, LE>(
-        std::make_unique<bytestring_view>( bs ),
-        magic,
-        std::forward<T>( t ) );
+    return specialize0<T, bytestring_view, pcap_view, LE>( std::make_unique<bytestring_view>( bs ),
+                                                           magic, std::forward<T>( t ) );
   }
 }
 
@@ -418,17 +410,11 @@ static inline error_code with( std::unique_ptr<V> view, T&& t ) noexcept {
   if( bs.rd8() == std::byte( 0xa1 ) ) {
     constexpr endianess BE{ endianess::BE };
     auto const magic = bs.template rd32<BE>();
-    return specialize0<T, V, pcap_block_view, BE>(
-        std::move( view ),
-        magic,
-        std::forward<T>( t ) );
+    return specialize0<T, V, pcap_block_view, BE>( std::move( view ), magic, std::forward<T>( t ) );
   } else {
     constexpr endianess LE{ endianess::LE };
     auto const magic = bs.template rd32<LE>();
-    return specialize0<T, V, pcap_block_view, LE>(
-        std::move( view ),
-        magic,
-        std::forward<T>( t ) );
+    return specialize0<T, V, pcap_block_view, LE>( std::move( view ), magic, std::forward<T>( t ) );
   }
 }
 

@@ -165,12 +165,12 @@ class ipv6 final : public prefix {
     // the {string_view} of `p.slice_of(...)` is not zero terminated
     std::string lit{ p.slice_of( t ) };
     in6_addr addr_in;
-    if( auto const rc = inet_pton(AF_INET6, lit.c_str(), &addr_in); rc != 1 ) {
+    if( auto const rc = inet_pton( AF_INET6, lit.c_str(), &addr_in ); rc != 1 ) {
       throw std::runtime_error( "invalid ipv6 address literal" );
     }
     // TODO: verify endianess conversions ( needs to be in sync with the indexer )
     __uint128_t addr;
-    std::memcpy(&addr, &addr_in, sizeof( __uint128_t) );
+    std::memcpy( &addr, &addr_in, sizeof( __uint128_t ) );
     return ast::ipv6( source_span::from( t ), addr );
   }
 

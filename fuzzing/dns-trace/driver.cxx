@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: BlueOak-1.0.0
 
-#include <libnygma/dns.hxx>
 #include <libnygma/dns-trace.hxx>
-#include <libnygma/toeplitz.hxx>
+#include <libnygma/dns.hxx>
 #include <libnygma/pcap-view.hxx>
+#include <libnygma/toeplitz.hxx>
 #include <libunclassified/bytestring.hxx>
 
 #include <algorithm>

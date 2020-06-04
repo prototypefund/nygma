@@ -46,7 +46,7 @@ void ny_command_offset_by( offsets_by_config const& config ) {
       std::copy_n( rs.values().begin(), rs.values().size(), out );
     }
   }
-  
+
   if( not config._key_i6.empty() ) {
     __uint128_t key;
     if( auto const rc = ::inet_pton( AF_INET6, config._key_i6.c_str(), &key ); rc <= 0 ) {
@@ -64,7 +64,7 @@ void ny_command_offset_by( offsets_by_config const& config ) {
       std::copy_n( rs.values().begin(), rs.values().size(), out );
     }
   }
-  
+
   if( not config._key_ix.empty() ) {
     auto const key = static_cast<std::uint32_t>( std::stoul( config._key_ix ) );
     flog( lvl::i, "executing query = ix( ", config._key_ix, " ) ( ", key, " )" );

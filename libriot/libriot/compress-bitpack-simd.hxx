@@ -17,8 +17,8 @@ namespace riot::bitpack {
 
 namespace detail {
 
-inline std::size_t encode_ctrl(
-    std::uint32_t const bits, std::uint32_t const sv, std::byte* const out ) noexcept {
+inline std::size_t encode_ctrl( std::uint32_t const bits, std::uint32_t const sv,
+                                std::byte* const out ) noexcept {
   using b = std::byte;
   auto const sv_len = std::max( 1u, ( ( 32 - _lzcnt_u32( sv ) ) + 7 ) >> 3 );
   out[0] = b( ( ( sv_len - 1 ) << 6 ) | bits );
@@ -43,8 +43,9 @@ inline std::size_t encode_ctrl(
   }
 }
 
-inline std::pair<std::uint_fast8_t, std::uint_fast8_t> decode_ctrl(
-    std::byte const* const p, std::size_t const n, std::uint32_t& sv ) noexcept {
+inline std::pair<std::uint_fast8_t, std::uint_fast8_t> decode_ctrl( std::byte const* const p,
+                                                                    std::size_t const n,
+                                                                    std::uint32_t& sv ) noexcept {
   using u = std::uint32_t;
   auto const tag = static_cast<std::uint_fast8_t>( p[0] );
   auto const bits = tag & ( ( 1 << 6 ) - 1 );
@@ -82,8 +83,8 @@ struct bitpack_delta_i256 : public bitpack_base<8, 256> {
   using delta = delta::delta_i256<integer_type, BLOCKLEN>;
   static_assert( delta::STEPLEN == STEPLEN );
 
-  static inline std::size_t encode(
-      integer_type const* const in, std::size_t const n, std::byte* const out ) noexcept {
+  static inline std::size_t encode( integer_type const* const in, std::size_t const n,
+                                    std::byte* const out ) noexcept {
 
     integer_type tmp[BLOCKLEN] = { 0 };
     auto const blocklen = std::min( n, BLOCKLEN );
@@ -132,8 +133,8 @@ struct bitpack_delta_i256 : public bitpack_base<8, 256> {
     return ctrl_len + ( ( ( ( bits * blocklen ) + 255 ) >> 8 ) << 5 );
   }
 
-  static inline void decode_block(
-      std::byte const* const in, integer_type* const out, unsigned const bits ) noexcept {
+  static inline void decode_block( std::byte const* const in, integer_type* const out,
+                                   unsigned const bits ) noexcept {
 
     __m256i const* in_v = reinterpret_cast<__m256i const*>( in );
     switch( bits ) {
@@ -174,18 +175,15 @@ struct bitpack_delta_i256 : public bitpack_base<8, 256> {
     }
   }
 
-  static inline void decode_short(
-      std::byte const* const in,
-      std::size_t const n,
-      integer_type* const out,
-      unsigned const bits ) noexcept {
+  static inline void decode_short( std::byte const* const in, std::size_t const n,
+                                   integer_type* const out, unsigned const bits ) noexcept {
     std::byte tmp[estimate_compressed_size()] = { std::byte( 0 ) };
     std::memcpy( tmp, in, n );
     decode_block( tmp, out, bits );
   }
 
-  static inline std::size_t decode(
-      std::byte const* const in, std::size_t const n, integer_type* const out ) noexcept {
+  static inline std::size_t decode( std::byte const* const in, std::size_t const n,
+                                    integer_type* const out ) noexcept {
     integer_type x;
     auto [bits, ctrl_len] = detail::decode_ctrl( in, n, x );
     auto const n_in = ctrl_len + ( ( ( ( bits * BLOCKLEN ) + 255 ) >> 8 ) << 5 );
@@ -204,8 +202,8 @@ struct bitpack_delta_i128 : bitpack_base<4, 128> {
   using delta = delta::delta_i256<integer_type, BLOCKLEN>;
   static_assert( BLOCKLEN % delta::STEPLEN == 0 );
 
-  static inline std::size_t encode(
-      integer_type const* const in, std::size_t n, std::byte* const out ) noexcept {
+  static inline std::size_t encode( integer_type const* const in, std::size_t n,
+                                    std::byte* const out ) noexcept {
 
     integer_type tmp[BLOCKLEN] = { 0 };
     auto const blocklen = std::min( n, BLOCKLEN );
@@ -254,8 +252,8 @@ struct bitpack_delta_i128 : bitpack_base<4, 128> {
     return ctrl_len + ( ( ( ( bits * blocklen ) + 127 ) >> 7 ) << 4 );
   }
 
-  static inline void decode_block(
-      std::byte const* const in, integer_type* const out, unsigned const bits ) noexcept {
+  static inline void decode_block( std::byte const* const in, integer_type* const out,
+                                   unsigned const bits ) noexcept {
 
     __m128i const* in_v = reinterpret_cast<__m128i const*>( in );
     switch( bits ) {
@@ -296,18 +294,15 @@ struct bitpack_delta_i128 : bitpack_base<4, 128> {
     }
   }
 
-  static inline void decode_short(
-      std::byte const* const in,
-      std::size_t const n,
-      integer_type* const out,
-      unsigned const bits ) noexcept {
+  static inline void decode_short( std::byte const* const in, std::size_t const n,
+                                   integer_type* const out, unsigned const bits ) noexcept {
     std::byte tmp[estimate_compressed_size()] = { std::byte( 0 ) };
     std::memcpy( tmp, in, n );
     decode_block( tmp, out, bits );
   }
 
-  static inline std::size_t decode(
-      std::byte const* const in, std::size_t const n, integer_type* const out ) noexcept {
+  static inline std::size_t decode( std::byte const* const in, std::size_t const n,
+                                    integer_type* const out ) noexcept {
     integer_type x;
     auto [bits, ctrl_len] = detail::decode_ctrl( in, n, x );
     auto const n_in = ctrl_len + ( ( ( ( bits * BLOCKLEN ) + 127 ) >> 7 ) << 4 );

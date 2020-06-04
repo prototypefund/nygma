@@ -34,9 +34,9 @@ emptyspace::pest::suite basic( "query-ast basic suite", []( auto& test ) {
 
   test( "ast-builder: eval number literal using {overloaded}", []( auto& expect ) {
     auto const node = ast::number( source_span::null(), 0x2343u );
-    auto const n = node->eval( riot::overloaded{
-        [&]( riot::number const& number_node ) { return number_node._value; },
-        []( auto const& ) { return 0ul; } } );
+    auto const n = node->eval(
+        riot::overloaded{ [&]( riot::number const& number_node ) { return number_node._value; },
+                          []( auto const& ) { return 0ul; } } );
     expect( node->type() == kind::NUM );
     expect( n, equal_to( 0x2343u ) );
     expect( throws<riot::expression_coercion_error>(

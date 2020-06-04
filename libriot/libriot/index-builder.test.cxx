@@ -23,9 +23,7 @@ struct text_serialzer {
   template <typename T, std::size_t BlockLen>
   void encode( T const* p, std::size_t const n ) noexcept {
     _os << '[' << n << "] ";
-    for( unsigned i = 0; i < n; i++ ) {
-      _os << p[i] << ( i == ( n - 1 ) ? "" : " " );
-    }
+    for( unsigned i = 0; i < n; i++ ) { _os << p[i] << ( i == ( n - 1 ) ? "" : " " ); }
   }
 
   template <typename T, std::size_t BlockLen>
@@ -81,9 +79,7 @@ emptyspace::pest::suite basic( "index-builder basic suite", []( auto& test ) {
       cs.push( x );
     }
 
-    for( unsigned i = 0; i < 128; i++ ) {
-      expect( cs.at( i ), equal_to( xs.at( i ) ) );
-    }
+    for( unsigned i = 0; i < 128; i++ ) { expect( cs.at( i ), equal_to( xs.at( i ) ) ); }
 
     expect( cs.size(), equal_to( 128u ) );
     expect( cs.chunk_count(), equal_to( 1u ) );
@@ -108,9 +104,7 @@ emptyspace::pest::suite basic( "index-builder basic suite", []( auto& test ) {
       cs.push( x );
     }
 
-    for( unsigned i = 0; i < 512; i++ ) {
-      expect( cs.at( i ), equal_to( xs.at( i ) ) );
-    }
+    for( unsigned i = 0; i < 512; i++ ) { expect( cs.at( i ), equal_to( xs.at( i ) ) ); }
 
     expect( cs.size(), equal_to( 512u ) );
     expect( cs.chunk_count(), equal_to( 4u ) );

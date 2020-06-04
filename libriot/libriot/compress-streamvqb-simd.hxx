@@ -27,8 +27,8 @@ struct streamvqb : public streamvqb_base<BlockLen> {
   using delta = delta::delta_regular;
 
   // `n` must be multiple of `STEPLEN`
-  static inline std::size_t encode(
-      integer_type const* const in, std::size_t const n, std::byte* const out ) noexcept {
+  static inline std::size_t encode( integer_type const* const in, std::size_t const n,
+                                    std::byte* const out ) noexcept {
     auto const blocklen = std::min( n, self::BLOCKLEN );
     std::byte buf[16];
     auto n_sv = riot::vbkey::encode( buf, in[0] );
@@ -61,8 +61,7 @@ struct streamvqb : public streamvqb_base<BlockLen> {
     return n_sv + static_cast<std::size_t>( p - out );
   }
 
-  static inline void decode(
-      std::byte const* const, std::size_t const, integer_type* const ) noexcept {
+  static inline void decode( std::byte const* const, std::size_t const, integer_type* const ) noexcept {
     std::abort();
   }
 };

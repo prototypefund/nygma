@@ -43,8 +43,8 @@ struct verbosity_reader {
 };
 
 argh::Group arguments( "arguments" );
-argh::ValueFlag<lvl::type, verbosity_reader> verbosity(
-    arguments, "integer", "verbosity level", { 'v', "verbosity" } );
+argh::ValueFlag<lvl::type, verbosity_reader> verbosity( arguments, "integer", "verbosity level",
+                                                        { 'v', "verbosity" } );
 
 void ny_show_version() {
   flog( lvl::i, "ny libriot.version = ", LIBRIOT_VERSION_STR );
@@ -266,8 +266,8 @@ int main( int argc, char* argv[] ) {
   argh::Command query( commands, "query", "restitch pcap from query", &ny_query );
   argh::Command version( commands, "version", "show version", &ny_version );
   argh::Command info( commands, "index-info", "show info about index file", &ny_index_info );
-  argh::Command
-      reverse( commands, "reverse-slice-by", "restitch pcap from reverse query", &ny_reverse_slice );
+  argh::Command reverse( commands, "reverse-slice-by", "restitch pcap from reverse query",
+                         &ny_reverse_slice );
   argh::GlobalOptions globals( argh, arguments );
 
   try {

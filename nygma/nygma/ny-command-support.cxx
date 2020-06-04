@@ -9,8 +9,8 @@
 
 namespace nygma {
 
-void index_file_dependencies::gather(
-    std::filesystem::path const& root, std::filesystem::path const& stem ) {
+void index_file_dependencies::gather( std::filesystem::path const& root,
+                                      std::filesystem::path const& stem ) {
   auto const prefix = stem.string();
   for( auto& f : std::filesystem::directory_iterator( root ) ) {
     std::error_code ec;

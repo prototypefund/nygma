@@ -14,8 +14,7 @@ static constexpr std::size_t RSSHASHSZ = 32;
 
 template <typename Key>
 struct toeplitz_scalar_lut {
-  static_assert(
-      Key::key.size() >= RSSKEYSZ, "Key must be at least toeplitz::RSSKEYSZ long" );
+  static_assert( Key::key.size() >= RSSKEYSZ, "Key must be at least toeplitz::RSSKEYSZ long" );
   std::uint32_t _hash[RSSHASHSZ][256];
 
  public:
@@ -104,4 +103,4 @@ struct toeplitz_scalar_lut {
   }
 };
 
-} // namespace nygma::analyze::toeplitz
+} // namespace nygma::toeplitz

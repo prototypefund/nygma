@@ -54,9 +54,8 @@ emptyspace::pest::suite basic( "pcap reassembler suite", []( auto& test ) {
     std::filesystem::path p{ "./pcap-reassembler.test.pcap" };
     auto const size = std::filesystem::file_size( p, ec );
     expect( not ec, equal_to( true ) );
-    expect(
-        size,
-        equal_to( pcap::PCAP_HEADERSZ + 4u * pcap::PACKET_HEADERSZ + 75u + 95u + 62u + 82u ) );
+    expect( size,
+            equal_to( pcap::PCAP_HEADERSZ + 4u * pcap::PACKET_HEADERSZ + 75u + 95u + 62u + 82u ) );
   } );
 } );
 

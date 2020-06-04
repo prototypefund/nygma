@@ -11,9 +11,7 @@ namespace {
 
 std::uint32_t maxbits( std::uint32_t* p, std::size_t const n ) noexcept {
   std::uint32_t x = 0;
-  for( unsigned i = 0; i < n; ++i ) {
-    x = std::max( x, 32 - _lzcnt_u32( p[i] ) );
-  }
+  for( unsigned i = 0; i < n; ++i ) { x = std::max( x, 32 - _lzcnt_u32( p[i] ) ); }
   return x;
 }
 
@@ -27,9 +25,7 @@ emptyspace::pest::suite basic( "delta compression basic suite", []( auto& test )
     std::mt19937 mt{ 0x42421337 };
     std::uniform_int_distribution<delta::integer_type> random{ 60, 2500 };
     in[0] = tmp[0] = random( mt );
-    for( std::size_t i = 1; i < delta::BLOCKLEN; ++i ) {
-      in[i] = tmp[i] = in[i - 1] + random( mt );
-    }
+    for( std::size_t i = 1; i < delta::BLOCKLEN; ++i ) { in[i] = tmp[i] = in[i - 1] + random( mt ); }
     expect( tmp == in, equal_to( true ) );
     delta::delta( tmp.data(), delta::BLOCKLEN );
     delta::undelta( tmp.data(), delta::BLOCKLEN );
@@ -51,13 +47,9 @@ emptyspace::pest::suite basic( "delta compression basic suite", []( auto& test )
     std::array<delta::integer_type, delta::BLOCKLEN> in;
     std::array<delta::integer_type, delta::BLOCKLEN> tmp;
     in.fill( 0x10 );
-    for( unsigned i = 1; i < in.size(); ++i ) {
-      in[i] = in[i - 1] + 1;
-    }
+    for( unsigned i = 1; i < in.size(); ++i ) { in[i] = in[i - 1] + 1; }
     delta::delta( in.data(), delta::BLOCKLEN, tmp.data() );
-    for( unsigned i = 1; i < in.size(); ++i ) {
-      expect( tmp[i], equal_to( 1u ) );
-    }
+    for( unsigned i = 1; i < in.size(); ++i ) { expect( tmp[i], equal_to( 1u ) ); }
     expect( tmp[0], equal_to( 0x10u ) );
   } );
 
@@ -70,9 +62,7 @@ emptyspace::pest::suite basic( "delta compression basic suite", []( auto& test )
     std::mt19937 mt{ 0x42421337 };
     std::uniform_int_distribution<delta::integer_type> random{ 60, 2500 };
     in[0] = tmp[0] = random( mt );
-    for( std::size_t i = 1; i < delta::BLOCKLEN; ++i ) {
-      in[i] = tmp[i] = in[i - 1] + random( mt );
-    }
+    for( std::size_t i = 1; i < delta::BLOCKLEN; ++i ) { in[i] = tmp[i] = in[i - 1] + random( mt ); }
     expect( tmp == in, equal_to( true ) );
     delta::delta( tmp.data(), delta::BLOCKLEN );
     delta::undelta( tmp.data(), delta::BLOCKLEN );
@@ -94,13 +84,9 @@ emptyspace::pest::suite basic( "delta compression basic suite", []( auto& test )
     std::array<delta::integer_type, delta::BLOCKLEN> in;
     std::array<delta::integer_type, delta::BLOCKLEN> tmp;
     in.fill( 0x10 );
-    for( unsigned i = 1; i < in.size(); ++i ) {
-      in[i] = in[i - 1] + 1;
-    }
+    for( unsigned i = 1; i < in.size(); ++i ) { in[i] = in[i - 1] + 1; }
     delta::delta( in.data(), delta::BLOCKLEN, tmp.data() );
-    for( unsigned i = 1; i < in.size(); ++i ) {
-      expect( tmp[i], equal_to( 1u ) );
-    }
+    for( unsigned i = 1; i < in.size(); ++i ) { expect( tmp[i], equal_to( 1u ) ); }
     expect( tmp[0], equal_to( 0x10u ) );
   } );
 
@@ -112,9 +98,7 @@ emptyspace::pest::suite basic( "delta compression basic suite", []( auto& test )
     std::mt19937 mt{ 0x42421337 };
     std::uniform_int_distribution<std::uint32_t> random{ 60, 2500 };
     in[0] = 0;
-    for( std::size_t i = 1; i < in.size(); ++i ) {
-      in[i] = in[i - 1] + random( mt );
-    }
+    for( std::size_t i = 1; i < in.size(); ++i ) { in[i] = in[i - 1] + random( mt ); }
 
     // compute maxbits of input data
     auto const max_scalar = maxbits( in.data(), BLOCKLEN );
@@ -145,9 +129,7 @@ emptyspace::pest::suite basic( "delta compression basic suite", []( auto& test )
     std::mt19937 mt{ 0x42421337 };
     std::uniform_int_distribution<std::uint32_t> random{ 60, 2500 };
     in[0] = 0xffffffffu;
-    for( std::size_t i = 1; i < in.size(); ++i ) {
-      in[i] = in[i - 1] + random( mt );
-    }
+    for( std::size_t i = 1; i < in.size(); ++i ) { in[i] = in[i - 1] + random( mt ); }
 
     // w/o start value
     delta::delta_maxbits( in.data(), BLOCKLEN, tmp.data() );

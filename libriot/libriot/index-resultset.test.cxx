@@ -131,8 +131,8 @@ emptyspace::pest::suite basic( "index-resultset basic suite", []( auto& test ) {
     resultset32 b{ 0, 2u, 5u, 8u, 10u };
     A.bind<&resultset32::combine_and<>>( 16, std::move( a ) );
     B.bind<&resultset32::combine_and<>>( 16, std::move( b ) );
-    auto const rs = sparse_resultset<
-        resultset32>::combine<&resultset32::combine_or<>, &resultset32::combine_and<>>( A, B );
+    auto const rs = sparse_resultset<resultset32>::combine<&resultset32::combine_or<>,
+                                                           &resultset32::combine_and<>>( A, B );
 
     expect( A._values[16].values(), equal_to( { 3u, 5u, 9u, 10u } ) );
     expect( B._values[16].values(), equal_to( { 2u, 5u, 8u, 10u } ) );

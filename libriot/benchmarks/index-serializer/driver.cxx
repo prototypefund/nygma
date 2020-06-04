@@ -42,8 +42,8 @@ int main( int argc, const char** argv ) {
   argh::ValueFlag<unsigned> unique( argh, "integer", "index entries", { "unique" }, 123 );
   argh::ValueFlag<double> skew( argh, "double", "skew for the index entry prng", { "skew" }, 0.7 );
   argh::ValueFlag<std::string> path( argh, "path", "output path", { "path" }, "/tmp/index.iv4" );
-  argh::ValueFlag<std::string>
-      compressor( argh, "uc256|svb256d1|bp128d1|bp256d1", "the compressor", { 'c' }, "uc256" );
+  argh::ValueFlag<std::string> compressor( argh, "uc256|svb256d1|bp128d1|bp256d1", "the compressor",
+                                           { 'c' }, "uc256" );
 
   try {
     argh.ParseCLI( argc, argv );
@@ -82,8 +82,9 @@ int main( int argc, const char** argv ) {
     unsigned ips_upper_bound = static_cast<unsigned>( ips.size() - 1 );
 
     std::mt19937 mt_index{ 0x1337 };
-    emptyspace::zipfian_int_distribution<std::uint32_t>
-        gen_index_entry{ ips_lower_bound, ips_upper_bound, argh::get( skew ) };
+    emptyspace::zipfian_int_distribution<std::uint32_t> gen_index_entry{ ips_lower_bound,
+                                                                         ips_upper_bound,
+                                                                         argh::get( skew ) };
 
     std::clog << "limit = " << argh::get( limit ) << std::endl
               << "ips_lower_bound = " << ips_lower_bound << std::endl
