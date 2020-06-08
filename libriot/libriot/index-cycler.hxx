@@ -5,8 +5,10 @@
 #include <libnygma/bytestream.hxx>
 #include <libriot/index-builder.hxx>
 
+#include <condition_variable>
 #include <deque>
 #include <filesystem>
+#include <mutex>
 #include <sstream>
 #include <thread>
 
