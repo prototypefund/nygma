@@ -22,7 +22,7 @@ emptyspace::pest::suite basic( "bytestream suite", []( auto& test ) {
   } );
 
   test( "construct cfile_ostream in-memory", []( auto& expect ) {
-    std::byte bytes[2];
+    std::byte bytes[2+1/*thx glibc*/];
     {
       auto os = cfile_ostream{ bytes };
       expect( os.valid(), equal_to( true ) );
@@ -34,7 +34,7 @@ emptyspace::pest::suite basic( "bytestream suite", []( auto& test ) {
     expect( bytes[1], equal_to( 0x37_b ) );
   } );
 
-  test( "in-memory cfile_ostream is overflow safe", []( auto& expect ) {
+  test( "in-memory cfile_ostream is overflow safe ( glibc fails ) ", []( auto& expect ) {
     std::byte bytes[2];
     {
       auto os = cfile_ostream{ bytes };
@@ -44,6 +44,7 @@ emptyspace::pest::suite basic( "bytestream suite", []( auto& test ) {
       os.write( 0x37_b );
       expect( os.ok(), equal_to( true ) );
       os.write( 0x23_b );
+      os.sync();
       expect( os.ok(), equal_to( false ) );
     }
     expect( bytes[0], equal_to( 0x13_b ) );

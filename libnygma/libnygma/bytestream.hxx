@@ -79,11 +79,19 @@ class cfile_ostream : public bytestream_ostream<cfile_ostream> {
  public:
   cfile_ostream( std::filesystem::path const& p ) noexcept { _handle = std::fopen( p.c_str(), "wb" ); }
 
-  cfile_ostream( std::byte* const p, std::size_t n ) noexcept { _handle = ::fmemopen( p, n, "wb" ); }
+  // this is for testing only. for e.g. `glibc` appends `\0`
+  //
+  cfile_ostream( std::byte* const p, std::size_t n ) noexcept {
+    _handle = ::fmemopen( p, n, "wb" );
+    if( _handle ) { setbuf( _handle, nullptr ); }
+  }
 
+  // this is for testing only. for e.g. `glibc` appends `\0`
+  //
   template <std::size_t N>
   cfile_ostream( std::byte ( &bytes )[N] ) noexcept {
     _handle = ::fmemopen( bytes, N, "wb" );
+    if( _handle ) { setbuf( _handle, nullptr ); }
   }
 
   ~cfile_ostream() noexcept {
