@@ -12,6 +12,7 @@
 #include <libriot/compress-delta-simd.hxx>
 #include <libriot/compress-integer.hxx>
 
+#include <cstring>
 #include <cstddef>
 #include <cstdint>
 
