@@ -243,6 +243,7 @@ class block_view {
         _end = true;
         _cached_size = 0;
         _cached_offset = INVALID;
+        break;
       } else if( rc == 0 ) {
         break;
       }
