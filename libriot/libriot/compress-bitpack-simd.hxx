@@ -50,7 +50,7 @@ inline std::pair<std::uint_fast8_t, std::uint_fast8_t> decode_ctrl( std::byte co
   auto const tag = static_cast<std::uint_fast8_t>( p[0] );
   auto const bits = tag & ( ( 1 << 6 ) - 1 );
   auto const len = ( tag >> 6 ) & 3;
-  if( len + 2 > n ) { return { 0, 0 }; }
+  if( static_cast<std::size_t>( len + 2 ) > n ) { return { 0, 0 }; }
   // clang-format off
   switch( len ) {
     case 0b00: sv = u( p[1] ); break;
