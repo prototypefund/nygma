@@ -9,6 +9,7 @@
 #include <libnygma/dissect.hxx>
 #include <libunclassified/bytestring.hxx>
 
+#include <cstring>
 #include <string_view>
 
 namespace nygma::dns {
