@@ -5,6 +5,7 @@
 #include <libriot/query-ast.hxx>
 #include <libriot/query-lexer.hxx>
 
+#include <cstring>
 #include <deque>
 #include <stdexcept>
 #include <string_view>
