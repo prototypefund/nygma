@@ -184,7 +184,7 @@ struct bitpack_delta_i256 : public bitpack_base<8, 256> {
 
   static inline std::size_t decode( std::byte const* const in, std::size_t const n,
                                     integer_type* const out ) noexcept {
-    integer_type x;
+    integer_type x{ 0 };
     auto [bits, ctrl_len] = detail::decode_ctrl( in, n, x );
     auto const n_in = ctrl_len + ( ( ( ( bits * BLOCKLEN ) + 255 ) >> 8 ) << 5 );
     if( n < n_in ) {
@@ -303,7 +303,7 @@ struct bitpack_delta_i128 : bitpack_base<4, 128> {
 
   static inline std::size_t decode( std::byte const* const in, std::size_t const n,
                                     integer_type* const out ) noexcept {
-    integer_type x;
+    integer_type x{ 0 };
     auto [bits, ctrl_len] = detail::decode_ctrl( in, n, x );
     auto const n_in = ctrl_len + ( ( ( ( bits * BLOCKLEN ) + 127 ) >> 7 ) << 4 );
     if( n < n_in ) {

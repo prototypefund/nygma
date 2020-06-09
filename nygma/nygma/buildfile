@@ -6,7 +6,7 @@ import libs += libunclassified%lib{unclassified}
 
 exe{ny}: {hxx ixx txx cxx}{**} $libs testscript
 
-if! ( $c.target.class == 'windows' )
-  cxx.loptions += -lpthread
+if ( $c.target.class != 'windows' )
+  cxx.libs += -lpthread
 
 cxx.poptions =+ "-I$out_root" "-I$src_root"

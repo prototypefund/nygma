@@ -83,6 +83,7 @@ struct environment {
         } );
       }
     }
+    return resultset_type::none();
   }
 };
 

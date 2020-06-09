@@ -208,6 +208,7 @@ auto node::eval( Visitor&& v ) const {
     case kind::IPV6: return v( static_cast<ipv6 const&>( *this ) );
     case kind::BINARY: return v( static_cast<binary const&>( *this ) );
     case kind::QUERY: return v( static_cast<query const&>( *this ) );
+    default: __builtin_unreachable();
   }
 }
 
