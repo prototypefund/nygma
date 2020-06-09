@@ -11,7 +11,8 @@
 
 namespace riot {
 
-// at most 4 values ( 4bits )
+// at most 4 values ( 2bits )
+// @see `block_subtype`
 struct tag {
   using type = std::uint8_t;
   enum : type {
@@ -68,20 +69,22 @@ union encoding {
     std::uint8_t _ulen : 2;
   };
   std::byte _value;
+
+  constexpr encoding( std::uint8_t const tag, std::uint8_t const type ) noexcept
+    : _tag{ tag }, _type{ type }, _clen{ 0 }, _ulen{ 0 } {}
+
+  constexpr encoding( std::byte const value ) noexcept : _value{ value } {}
+
   void tag( tag::type const t ) noexcept { _tag = t; }
   void ulen( std::uint8_t const ulen ) noexcept { _ulen = ulen; }
   void clen( std::uint8_t const clen ) noexcept { _clen = clen; }
 
-  static constexpr encoding kblock() noexcept {
-    return { ._tag = tag::KBLOCK, block_subtype::NONE, 0, 0 };
-  }
+  static constexpr encoding kblock() noexcept { return { tag::KBLOCK, block_subtype::NONE }; }
 
-  static constexpr encoding oblock() noexcept {
-    return { ._tag = tag::OBLOCK, block_subtype::NONE, 0, 0 };
-  }
+  static constexpr encoding oblock() noexcept { return { tag::OBLOCK, block_subtype::NONE }; }
 
   static constexpr encoding cblock( block_subtype::type const subty ) noexcept {
-    return { ._tag = tag::CBLOCK, subty, 0, 0 };
+    return { tag::CBLOCK, subty };
   }
 };
 

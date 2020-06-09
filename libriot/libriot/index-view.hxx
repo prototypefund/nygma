@@ -167,7 +167,7 @@ class index_view {
     auto const* p = _data.begin() + offset;
     auto const* const end = _data.end();
     if( p + METASZ >= end ) { return false; }
-    encoding enc{ ._value = *p++ };
+    encoding enc{ *p++ };
     if( not ( enc._tag == tag::CBLOCK && enc._type == block_subtype::CBEGIN ) ) { return false; }
     std::size_t total = 0;
     do {
@@ -512,7 +512,7 @@ void build_oblock( bytestring_view const data, OutIt out ) {
   if( offset_block + METASZ > sz ) { throw std::runtime_error( "INVALID_OFFSETBLOCK" ); }
   p += offset_block;
   while( p < end ) {
-    encoding const enc{ ._value = p[0] };
+    encoding const enc{ p[0] };
     if( enc._tag != tag::OBLOCK ) { break; }
     p++;
     auto const uncompressed_size = enc._ulen == 0b11 ? Compressor::BLOCKLEN
@@ -535,7 +535,7 @@ void build_kblock( bytestring_view const data, OutIt out ) {
   if( key_block + METASZ > sz ) { throw std::runtime_error( "INVALID_KEYBLOCK" ); }
   p += key_block;
   while( p < end ) {
-    encoding const enc{ ._value = p[0] };
+    encoding const enc{ p[0] };
     if( enc._tag != tag::KBLOCK ) { break; }
     p++;
     auto const uncompressed_size = enc._ulen == 0b11 ? KeyCompressor::BLOCKLEN
