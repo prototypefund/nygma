@@ -102,7 +102,7 @@ class chunked_vector {
   }
 };
 
-template <typename Key, template <typename K = Key, typename V> typename Map, std::size_t BlockLen,
+template <typename Key, template <typename K, typename V> typename Map, std::size_t BlockLen,
           std::size_t VBlockLen = BlockLen,
           typename Alloc = std::allocator<chunk<offset_type, BlockLen>>>
 class index_builder {

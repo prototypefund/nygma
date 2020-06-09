@@ -71,7 +71,7 @@ struct scanner {
   constexpr int peek() noexcept {
     if( _offset >= _data.size() ) { return -1; }
     return static_cast<int>(
-        static_cast<std::make_unsigned_t<std::string_view::value_type const>>( _data[_offset] ) );
+        static_cast<std::make_unsigned_t<std::string_view::value_type>>( _data[_offset] ) );
   }
 
   constexpr void pop() noexcept { _offset++; }
