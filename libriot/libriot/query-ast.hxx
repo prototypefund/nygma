@@ -51,6 +51,7 @@ inline std::string_view const to_string( kind const t ) noexcept {
     case kind::IPV6: return "IPV6";
     case kind::IPV4: return "IPV4";
     case kind::NUM: return "NUM";
+    default: __builtin_unreachable();
   }
 }
 

@@ -48,15 +48,12 @@ inline void fill_block( I* p, std::size_t const n ) noexcept {
   std::fill_n( p + n, N - n, p[n - 1] );
 }
 
-template <typename T, std::size_t BlockLen>
-using chunk = std::array<T, BlockLen>;
-
-template <typename T, std::size_t BlockLen, typename Alloc = std::allocator<chunk<T, BlockLen>>>
+template <typename T, std::size_t BlockLen, typename Alloc = std::allocator<std::array<T, BlockLen>>>
 class chunked_vector {
   static_assert( is_power_of_two_v<BlockLen> );
 
  public:
-  using chunk_type = chunk<T, BlockLen>;
+  using chunk_type = std::array<T, BlockLen>;
   using vector_type = std::vector<chunk_type, Alloc>;
   using iterator = typename vector_type::iterator;
   using const_iterator = typename vector_type::const_iterator;
@@ -104,7 +101,7 @@ class chunked_vector {
 
 template <typename Key, template <typename K, typename V> typename Map, std::size_t BlockLen,
           std::size_t VBlockLen = BlockLen,
-          typename Alloc = std::allocator<chunk<offset_type, BlockLen>>>
+          typename Alloc = std::allocator<std::array<offset_type, BlockLen>>>
 class index_builder {
   static constexpr std::size_t KBLOCKLEN = BlockLen;
   static constexpr std::size_t VBLOCKLEN = VBlockLen;

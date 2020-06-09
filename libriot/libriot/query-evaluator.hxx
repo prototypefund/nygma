@@ -56,6 +56,7 @@ struct environment {
       case binop::COMPLEMENT: return eval( b._a ) - eval( b._b );
       case binop::INTERSECTION: return eval( b._a ) & eval( b._b );
     }
+    return resultset_type::none();
   }
   resultset_type operator()( query const& q ) const {
     switch( q._method ) {

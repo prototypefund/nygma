@@ -40,6 +40,7 @@ struct precedence {
 };
 
 struct parser {
+  using expression_type = riot::expression;
   scanner _s;
   std::deque<token> _stack;
   explicit parser( std::string_view const query ) : _s{ query } {}
@@ -67,7 +68,7 @@ struct parser {
 
   std::string_view slice_of( token const t ) const noexcept { return _s.slice_of( t ); }
 
-  expression expression( precedence::type const precedence );
+  expression_type expression( precedence::type const precedence );
 };
 
 namespace parselet {
@@ -188,7 +189,7 @@ class ipv6 final : public prefix {
 class infix {
  public:
   virtual expression accept( parser& p, expression e, token const t ) const = 0;
-  virtual precedence::type precedence() const noexcept = 0;
+  virtual detail::precedence::type precedence() const noexcept = 0;
   virtual ~infix() = default;
 };
 
