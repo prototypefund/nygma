@@ -27,10 +27,10 @@ struct svb256d1_serializer //
                            streamvbyte::svb256d1_i128> {};
 
 template <typename OStream>
-svb128d1_serializer( OStream ) -> svb128d1_serializer<OStream>;
+svb128d1_serializer( OStream& ) -> svb128d1_serializer<OStream>;
 
 template <typename OStream>
-svb256d1_serializer( OStream ) -> svb256d1_serializer<OStream>;
+svb256d1_serializer( OStream& ) -> svb256d1_serializer<OStream>;
 
 //--streamvqb------------------------------------------------------------------
 
@@ -40,7 +40,7 @@ struct svq128d1_serializer //
                            streamvqb::svq128d1> {};
 
 template <typename OStream>
-svq128d1_serializer( OStream ) -> svq128d1_serializer<OStream>;
+svq128d1_serializer( OStream& ) -> svq128d1_serializer<OStream>;
 
 //--bitpack--------------------------------------------------------------------
 
@@ -50,7 +50,7 @@ struct bp256d1_serializer //
                            bitpack::bp256d1> {};
 
 template <typename OStream>
-bp256d1_serializer( OStream ) -> bp256d1_serializer<OStream>;
+bp256d1_serializer( OStream& ) -> bp256d1_serializer<OStream>;
 
 template <typename OStream>
 struct bp128d1_serializer //
@@ -58,6 +58,6 @@ struct bp128d1_serializer //
                            bitpack::bp128d1> {};
 
 template <typename OStream>
-bp128d1_serializer( OStream ) -> bp128d1_serializer<OStream>;
+bp128d1_serializer( OStream& ) -> bp128d1_serializer<OStream>;
 
 } // namespace riot
