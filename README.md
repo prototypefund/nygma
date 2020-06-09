@@ -24,7 +24,7 @@ instead of boring you to death the obligatory animated gif plus a little descrip
       - the indexer creates `index-files` for each ~4GB segment of the pcap. file extensions are used
         to identify the *index-kind*.
 
-| index-extension |       index-kind       |
+| index-extension | index-kind             |
 | --------------- | ---------------------- |
 | `.i4`           | ipv4-addresses         |
 | `.i6`           | ipv6-addresses         |
@@ -103,9 +103,11 @@ features & current status:
       - [x] provide indexing for *IOC*s ( multi-regexp that is basically )
           - @see [~stackless-goto/g0tham]( https://github.com/stackless-goto/g0tham )
   - [x] provide means of querying the index
+      - [x] set-based queries ( *intersection*, *union* and *complement* )
+      - [x] reverse index scans / lookups
+          - enables slicing of full sessions ( kind of "related data" ) with one query
+          - esp. interesting when combined with pattern based *IOC* indexing
   - [x] reassemble a pcap given an index query ( and the original pcap )
-  - [x] lightweight query engine supporting the basic set operations *union*, *intersection* and
-    *complement*
   - [ ] provide index compression using [~tlk00/BitMagic]( https://github.com/tlk00/BitMagic ) 
       - [ ] use `BitMagic` as alternative to the fairly ad-hoc `resultset` implementation based on
         sorted `std::vector<>` ( used in *index-view* and *query-evaluator* )
