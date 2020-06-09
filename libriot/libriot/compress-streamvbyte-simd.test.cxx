@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: BlueOak-1.0.0
 
 #include <pest/pest.hxx>
+#include <pest/xoshiro.hxx>
 
 #include <libriot/compress-streamvbyte-simd.hxx>
 
@@ -23,11 +24,11 @@ emptyspace::pest::suite basic( "streamvbyte compression basic suite", []( auto& 
     auto n = svb128::encode( in.data(), out.data() );
     expect( n, equal_to( svb128::CTRLLEN + svb128::BLOCKLEN ) );
     expect( hexify( out, n ),
-            equal_to( "000000000000000000000000000000000000000000000000000000000000000000"
-                      "000000000000000000000000000000000000000000000000000000000000000000"
-                      "000000000000000000000000000000000000000000000000000000000000000000"
-                      "000000000000000000000000000000000000000000000000000000000000000000"
-                      "00000000000000000000000000000000000000000000000000000000" ) );
+            equal_to( "0000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                      "0000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                      "0000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                      "0000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                      "0000" ) );
   } );
 
   test( "svb128_i128: compress #1", []( auto& expect ) {
@@ -39,13 +40,11 @@ emptyspace::pest::suite basic( "streamvbyte compression basic suite", []( auto& 
     auto n = svb128::encode( in.data(), out.data() );
     expect( n, equal_to( svb128::CTRLLEN + svb128::BLOCKLEN ) );
     expect( hexify( out, n ),
-            equal_to( "0000fe000000000000000000000000000000000000000000000000000000000000"
-                      "000000000000000000000000000000000000000000000000000000000000000000"
-                      "000000000000000000000000000000000000000000000000000000000000000000"
-                      "000000000000000000000000000000000000000000000000000000000000000000"
-                      "00000000000000000000000000000000000000000000000000000000"
-
-                      ) );
+            equal_to( "0000fe0000000000000000000000000000000000000000000000000000000000000000000000000"
+                      "0000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                      "0000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                      "0000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                      "0000" ) );
   } );
 
   test( "svb128d1_i128: compress all zeros", []( auto& expect ) {
@@ -56,11 +55,11 @@ emptyspace::pest::suite basic( "streamvbyte compression basic suite", []( auto& 
     auto n = svb128d1::encode( in.data(), out.data() );
     expect( n, equal_to( svb128d1::CTRLLEN + svb128d1::BLOCKLEN ) );
     expect( hexify( out, n ),
-            equal_to( "000000000000000000000000000000000000000000000000000000000000000000"
-                      "000000000000000000000000000000000000000000000000000000000000000000"
-                      "000000000000000000000000000000000000000000000000000000000000000000"
-                      "000000000000000000000000000000000000000000000000000000000000000000"
-                      "00000000000000000000000000000000000000000000000000000000" ) );
+            equal_to( "0000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                      "0000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                      "0000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                      "0000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                      "0000" ) );
   } );
 
   test( "svb128d1_i128: compress 8", []( auto& expect ) {
@@ -83,11 +82,11 @@ emptyspace::pest::suite basic( "streamvbyte compression basic suite", []( auto& 
     auto n = svb128d1::encode( in.data(), out.data() );
     expect( n, equal_to( svb128d1::CTRLLEN + svb128d1::BLOCKLEN ) );
     expect( hexify( out, n ),
-            equal_to( "0000fe010000000000000000000000000000000000000000000000000000000000"
-                      "000000000000000000000000000000000000000000000000000000000000000000"
-                      "000000000000000000000000000000000000000000000000000000000000000000"
-                      "000000000000000000000000000000000000000000000000000000000000000000"
-                      "00000000000000000000000000000000000000000000000000000000" ) );
+            equal_to( "0000fe0100000000000000000000000000000000000000000000000000000000000000000000000"
+                      "0000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                      "0000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                      "0000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                      "0000" ) );
   } );
 
   test( "svb128d1: check packing delta range <60, 2500>", []( auto& expect ) {
@@ -95,44 +94,42 @@ emptyspace::pest::suite basic( "streamvbyte compression basic suite", []( auto& 
     std::array<std::byte, svb128d1::estimate_compressed_size()> out;
     std::array<svb128d1::integer_type, svb128d1::BLOCKLEN> dec;
     dec.fill( 0xffffffffu );
-    std::mt19937 mt{ 0x42421337 };
+    emptyspace::xoshiro::xoshiro128starstar32 mt{ 0x42421337 };
     std::uniform_int_distribution<svb128d1::integer_type> random{ 60, 2500 };
     in[0] = random( mt );
     for( std::size_t i = 1; i < svb128d1::BLOCKLEN; ++i ) { in[i] = in[i - 1] + random( mt ); }
     auto n = svb128d1::encode( in.data(), svb128d1::BLOCKLEN, out.data() );
-    expect( n, equal_to( 277u ) );
+    expect( n, equal_to( 274u ) );
     expect( hexify( out, n ),
-            equal_to( "555582021e012b01400687043003be01cf0815513804660973065fd6023e8f0211"
-                      "051555e4086d05d206f63e0190091806170715517b0364075b09b11e013dc7052d"
-                      "055555c4092a03ee064307b305a0035502a20255548203f4070808290271ec0213"
-                      "01aa085554f6085906cc03c502cf3403cc046d0555542f037305a10446079b0507"
-                      "500499055555e60787035901840215045d040409c10955552506140735062d0593"
-                      "019509490750055555550344086b018208c6010b07b006d80255557f079d04ce05"
-                      "9b0409091707f701cd065515560131035d051a07530531024b03df555444077c05"
-                      "6908be08f4560790086c065555f40537092804f10351029a09b6078a0415558703"
-                      "5305d9027224046406f9079d09" ) );
+            equal_to( "55112b06ae02bc06e003a401626403945555fa02e3081b01c0044502fd01c502f0035555e301e60"
+                      "4cd027f081e056f037405bb075554a90945013801b9016a510457031b025555c101fb080d05b004"
+                      "290588068b01dd025455ea230306073b0192021706da018e045555660706090f03a80124020c02d"
+                      "a06c305555033025408d00803085d426804f508555523042409120765056a07410486071a095555"
+                      "4a0966026b0607079a0885079806df0545512d068b067b9f06bf02a3900994071555c3059f074d0"
+                      "66a82030f031f08d6065555df070d027b09f201db019801bc0883041454f38106f1055c438505fe"
+                      "03f5045055dedd4a03760763018007c10512055555f404fe0237059108ab021a0488092e04" ) );
     auto n_dec = svb128d1::decode( out.data(), n, dec.data() );
     expect( n_dec, equal_to( n ) );
     expect( in == dec, equal_to( true ) );
   } );
 
-  test( "svb128d1: encode BLOCKLEN delta range <60, 2500>", []( auto& expect ) {
+  test( "svb128d1: encode STEPLEN delta range <60, 2500>", []( auto& expect ) {
     std::array<svb128d1::integer_type, svb128d1::BLOCKLEN> in;
     std::array<std::byte, svb128d1::estimate_compressed_size()> out;
     std::array<svb128d1::integer_type, svb128d1::BLOCKLEN> dec;
     dec.fill( 0xffffffffu );
-    std::mt19937 mt{ 0x42421337 };
+    emptyspace::xoshiro::xoshiro128starstar32 mt{ 0x42421337 };
     std::uniform_int_distribution<svb128d1::integer_type> random{ 60, 2500 };
     in[0] = random( mt );
     for( std::size_t i = 1; i < svb128d1::STEPLEN; ++i ) { in[i] = in[i - 1] + random( mt ); }
     std::fill_n( in.data() + svb128d1::STEPLEN, svb128d1::BLOCKLEN - svb128d1::STEPLEN,
                  in[svb128d1::STEPLEN - 1] );
     auto n = svb128d1::encode( in.data(), svb128d1::STEPLEN, out.data() );
-    expect( n, equal_to( 18u ) );
-    expect( hexify( out, n ), equal_to( "555582021e012b01400687043003be01cf08" ) );
+    expect( n, equal_to( 16u ) );
+    expect( hexify( out, n ), equal_to( "55112b06ae02bc06e003a40162640394" ) );
     auto n_dec = svb128d1::decode( out.data(), n, dec.data() );
     expect( n_dec, equal_to( n ) );
-    expect( in == dec, equal_to( true ) );
+    for( std::size_t i = 0; i < svb128d1::STEPLEN; ++i ) { expect( in[i] == dec[i] ); }
   } );
 } );
 

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: BlueOak-1.0.0
 
 #include <pest/pest.hxx>
+#include <pest/xoshiro.hxx>
 
 #include <libriot/compress-bitpack-simd.hxx>
 
@@ -127,25 +128,23 @@ emptyspace::pest::suite basic( "bitpack compression suite", []( auto& test ) {
     std::array<std::byte, bp256d1::estimate_compressed_size()> out;
     std::array<bp256d1::integer_type, bp256d1::BLOCKLEN> dec;
     dec.fill( 0xffffffffu );
-    std::mt19937 mt{ 0x42421337 };
+    emptyspace::xoshiro::xoshiro128starstar32 mt{ 0x42421337 };
     std::uniform_int_distribution<bp256d1::integer_type> random{ 60, 2500 };
     in[0] = random( mt );
     for( std::size_t i = 1; i < bp256d1::BLOCKLEN; ++i ) { in[i] = in[i - 1] + random( mt ); }
     auto n = bp256d1::encode( in.data(), bp256d1::BLOCKLEN, out.data() );
     expect( n, equal_to( 387u ) );
     expect( hexify( out, n ),
-            equal_to( "4c0282008043e41e61966d2b3167d240f605f687642d3e30e30390bef12818cf18"
-                      "5117b837c42945762a43b695ee86100b4397e111b315d903a0c3765c5532d752a2"
-                      "a238f6f8327f59365780cc134a22c5627407cfb0092e34537011cc04458a6d9559"
-                      "e6576255874371445951636b84d25282153419c65d54990b049974b0c10955d8f3"
-                      "775641d84931c3e15c5d95b8491ae79190534577713162761f4b03d26cdfc074f4"
-                      "7538573739558628942d8bf123070f514242759a496689b6977f668ad499bd088d"
-                      "c63507089f29262eb4d5f6131221080cd5d0213aabfd653afd826875b0b5684a89"
-                      "439cd4377578a7f4f8287da8460953c9a9236b2568108911772604b33ca8241544"
-                      "27041712d0e576384e9160220855148e84b27a5c552186793e5591500736cf1386"
-                      "496b3a933780e7620e999cd2480b6f803ba455f7351a08c32aff748b4cb9b94d42"
-                      "e7f026739430376851263f9346b6089f65168a47a0620aa7f461dbb57420eb4612"
-                      "49afd9867d9936977e3a04865465d93114a79484046f5989" ) );
+            equal_to( "4c062b00a02fe3ae328ee6bcb611cde0034c7fa451241e62d01f6f64532c7494003fbb919ac1a15"
+                      "414fb3882130d65981bb0b4a50629251345887675358ba1b721dde20e66372332064985700f038d"
+                      "13a831802924d205610c22041dda864648c3558f23a4942d2469268b12b7667b6575709f6aa789b"
+                      "f415478a3868769901af95d94365cdf37f6790d12d0647b19a606f2c12238db31f0309851f981bc"
+                      "e8676d83540fde404f68dde02f5f4a7353057617890463b12a5880a7413fc185984f12e542d4b73"
+                      "fc47d2497febb4221a9d97643d848b996fe5d26869f8dc81f1efc952de0893fd522d826a126f241"
+                      "7db4274f2c5778185ce0c42759e8565e95798151a1e25b32a42972db559492804543109e261e84d"
+                      "d282917d0b3465e689541663d64813ad61d4755c52678e7c3829174a96dcab6e41e288b95945d6c"
+                      "022791c0803263a2768c860644a3b9c8057cf2045a45498141fa27c7935564925b36d6241785a88"
+                      "db95165221299944041128b8191e72d1bddb09a2022f9267ed4b75085e65681" ) );
     auto n_dec = bp256d1::decode( out.data(), n, dec.data() );
     expect( n_dec, equal_to( n ) );
     expect( in == dec, equal_to( true ) );
@@ -156,19 +155,18 @@ emptyspace::pest::suite basic( "bitpack compression suite", []( auto& test ) {
     std::array<std::byte, bp128d1::estimate_compressed_size()> out;
     std::array<bp128d1::integer_type, bp128d1::BLOCKLEN> dec;
     dec.fill( 0xffffffffu );
-    std::mt19937 mt{ 0x42421337 };
+    emptyspace::xoshiro::xoshiro128starstar32 mt{ 0x42421337 };
     std::uniform_int_distribution<bp128d1::integer_type> random{ 60, 2500 };
     in[0] = random( mt );
     for( std::size_t i = 1; i < bp128d1::BLOCKLEN; ++i ) { in[i] = in[i - 1] + random( mt ); }
     auto n = bp128d1::encode( in.data(), bp128d1::BLOCKLEN, out.data() );
     expect( n, equal_to( 195u ) );
     expect( hexify( out, n ),
-            equal_to( "4c0282007048381e0133662be11b7340f68c5f642de4e8e9036d05f628d2861051"
-                      "f670137be3119964d703615b795c71b1d052c4395b822a033af4ee56250843272a"
-                      "291307f6f8c72e59463811ccc3a28ac5d20c2fb309337355704ca1044556469759"
-                      "e657412587d345145941903584129c2d36195563579944b896746b01055582881c"
-                      "7f9790709d74716bce751f2d9bd46c563155443113237c5db534691af70dbe470f"
-                      "f415657537a908892864c866f1a325874342995345667bd9927f4872d099" ) );
+            equal_to( "4c062b00401afaae2206e3bc46361be04309c05224e3e1d81fe6f4512ccd42043f7fb851a9a9063"
+                      "6451145573871357bb9b121c19152eafb8868230db51806b0d42d3b20296647736106c9a71d0fa3"
+                      "e148a8312233d205205428046dd088465c03588f23a4764a241944661267786b65a59107a9892df"
+                      "652788b3686697b00f75d9f462bc325380a9ff730994df681796a606ddfb71df30d8219817bc98b"
+                      "f1f231485c3004de305658dd00e53f4a13504f762716f4b42a78fea2415c3785985191e842" ) );
     auto n_dec = bp128d1::decode( out.data(), n, dec.data() );
     expect( n_dec, equal_to( n ) );
     expect( in == dec, equal_to( true ) );
@@ -179,7 +177,7 @@ emptyspace::pest::suite basic( "bitpack compression suite", []( auto& test ) {
     std::array<std::byte, bp256d1::estimate_compressed_size()> out;
     std::array<bp256d1::integer_type, bp256d1::BLOCKLEN> dec;
     dec.fill( 0xffffffffu );
-    std::mt19937 mt{ 0x42421337 };
+    emptyspace::xoshiro::xoshiro128starstar32 mt{ 0x42421337 };
     std::uniform_int_distribution<bp256d1::integer_type> random{ 60, 2500 };
     in[0] = random( mt );
     for( std::size_t i = 1; i < bp256d1::STEPLEN; ++i ) { in[i] = in[i - 1] + random( mt ); }
@@ -188,8 +186,7 @@ emptyspace::pest::suite basic( "bitpack compression suite", []( auto& test ) {
     auto n = bp256d1::encode( in.data(), bp256d1::STEPLEN, out.data() );
     expect( n, equal_to( 35u ) );
     expect( hexify( out, n ),
-            equal_to( "4c0282000000001e0100002b010000400600008704000030030000be0100"
-                      "00cf080000" ) );
+            equal_to( "4b062b00000000ae020000bc060000e0030000a4010000620000006403000094000000" ) );
     auto n_dec = bp256d1::decode( out.data(), n, dec.data() );
     expect( n_dec, equal_to( n ) );
     expect( in == dec, equal_to( true ) );
@@ -200,7 +197,7 @@ emptyspace::pest::suite basic( "bitpack compression suite", []( auto& test ) {
     std::array<std::byte, bp128d1::estimate_compressed_size()> out;
     std::array<bp128d1::integer_type, bp128d1::BLOCKLEN> dec;
     dec.fill( 0xffffffffu );
-    std::mt19937 mt{ 0x42421337 };
+    emptyspace::xoshiro::xoshiro128starstar32 mt{ 0x42421337 };
     std::uniform_int_distribution<bp128d1::integer_type> random{ 60, 2500 };
     in[0] = random( mt );
     for( std::size_t i = 1; i < bp128d1::STEPLEN; ++i ) { in[i] = in[i - 1] + random( mt ); }
@@ -208,7 +205,7 @@ emptyspace::pest::suite basic( "bitpack compression suite", []( auto& test ) {
                  in[bp128d1::STEPLEN - 1] );
     auto n = bp128d1::encode( in.data(), bp128d1::STEPLEN, out.data() );
     expect( n, equal_to( 19u ) );
-    expect( hexify( out, n ), equal_to( "4b0282000000001e0100002b01000040060000" ) );
+    expect( hexify( out, n ), equal_to( "4b062b00000000ae020000bc060000e0030000" ) );
     auto n_dec = bp128d1::decode( out.data(), n, dec.data() );
     expect( n_dec, equal_to( n ) );
     expect( in == dec, equal_to( true ) );
