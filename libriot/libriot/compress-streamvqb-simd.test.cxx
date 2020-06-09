@@ -62,7 +62,7 @@ emptyspace::pest::suite basic( "streamvqb compression suite", []( auto& test ) {
   } );
 } );
 
-std::ostream& operator<<( std::ostream& os, __m128 const in ) {
+std::ostream& operator<<( std::ostream& os, __m128i const in ) {
   alignas( 32 ) std::array<std::uint8_t, 16> v;
   _mm_store_si128( reinterpret_cast<__m128i*>( v.data() ), in );
   unsigned cnt = 0;
