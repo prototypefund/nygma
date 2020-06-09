@@ -160,12 +160,12 @@ int main( int argc, const char** argv ) {
   } catch( argh::Help const& ) { //
     std::cerr << argh;
     return EXIT_SUCCESS;
-  } catch( argh::Error const& e ) { //
-    std::cerr << "error: " << e.what() << std::endl << argh;
-    return EXIT_FAILURE;
   } catch( argh::ValidationError const& e ) { //
     std::cerr << e.what() << std::endl;
     argh.Help( std::cerr );
+    return EXIT_FAILURE;
+  } catch( argh::Error const& e ) { //
+    std::cerr << "error: " << e.what() << std::endl << argh;
     return EXIT_FAILURE;
   } catch( std::exception const& e ) { //
     std::cerr << "error: " << e.what() << std::endl;

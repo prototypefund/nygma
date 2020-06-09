@@ -18,6 +18,7 @@ inline std::string_view const to_string( compression_method const m ) {
     case compression_method::STREAMVBYTE: return "STREAMVBYTE";
     case compression_method::NONE: return "NONE";
   }
+  return "UNKOWN";
 }
 } // namespace
 
