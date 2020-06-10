@@ -88,21 +88,21 @@ inline unsigned ndecode( byte_t const* const p ) noexcept {
 inline std::uint64_t decode( byte_t* const p, unsigned const n ) noexcept {
   using u = std::uint64_t;
   using b = byte_t;
-  static constexpr auto be = endianess::BE;
+  static constexpr auto BE = endianess::BE;
+  // clang-format off
   switch( n ) {
-    // clang-format off
     case 1: return u( p[0] );
     case 2: return u( p[0] & ~b( 0b1000'0000 ) ) << 8 | u( p[1] );
-    case 3: return u( p[0] & ~b( 0b1100'0000 ) ) << 16 | unsafe::rd16<be>( p + 1 );
-    case 4: return u( p[0] & ~b( 0b1110'0000 ) ) << 24 | unsafe::rd24<be>( p + 1 );
-    case 5: return u( p[0] & ~b( 0b1111'0000 ) ) << 32 | unsafe::rd32<be>( p + 1 );
-    case 6: return u( p[0] & ~b( 0b1111'1000 ) ) << 40 | unsafe::rd40<be>( p + 1 );
-    case 7: return u( p[0] & ~b( 0b1111'1100 ) ) << 48 | unsafe::rd48<be>( p + 1 );
-    case 8: return u( p[0] & ~b( 0b1111'1110 ) ) << 56 | unsafe::rd56<be>( p + 1 );
-    case 9: return unsafe::rd64<be>( p + 1 );
+    case 3: return u( p[0] & ~b( 0b1100'0000 ) ) << 16 | unsafe::rd16<BE>( p + 1 );
+    case 4: return u( p[0] & ~b( 0b1110'0000 ) ) << 24 | unsafe::rd24<BE>( p + 1 );
+    case 5: return u( p[0] & ~b( 0b1111'0000 ) ) << 32 | unsafe::rd32<BE>( p + 1 );
+    case 6: return u( p[0] & ~b( 0b1111'1000 ) ) << 40 | unsafe::rd40<BE>( p + 1 );
+    case 7: return u( p[0] & ~b( 0b1111'1100 ) ) << 48 | unsafe::rd48<BE>( p + 1 );
+    case 8: return u( p[0] & ~b( 0b1111'1110 ) ) << 56 | unsafe::rd56<BE>( p + 1 );
+    case 9: return unsafe::rd64<BE>( p + 1 );
     default: __builtin_unreachable();
-      // clang-format on
   }
+  // clang-format on
   return n;
 }
 
