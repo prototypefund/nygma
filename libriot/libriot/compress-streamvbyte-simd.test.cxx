@@ -2,11 +2,11 @@
 
 #include <pest/pest.hxx>
 #include <pest/xoshiro.hxx>
+#include <pest/bitmask-distribution.hxx>
 
 #include <libriot/compress-streamvbyte-simd.hxx>
 
 #include <array>
-#include <random>
 
 namespace {
 
@@ -95,7 +95,7 @@ emptyspace::pest::suite basic( "streamvbyte compression basic suite", []( auto& 
     std::array<svb128d1::integer_type, svb128d1::BLOCKLEN> dec;
     dec.fill( 0xffffffffu );
     emptyspace::xoshiro::xoshiro128starstar32 mt{ 0x42421337 };
-    std::uniform_int_distribution<svb128d1::integer_type> random{ 60, 2500 };
+    emptyspace::bitmask_distribution<svb128d1::integer_type> random{ 60, 2500 };
     in[0] = random( mt );
     for( std::size_t i = 1; i < svb128d1::BLOCKLEN; ++i ) { in[i] = in[i - 1] + random( mt ); }
     auto n = svb128d1::encode( in.data(), svb128d1::BLOCKLEN, out.data() );
@@ -119,7 +119,7 @@ emptyspace::pest::suite basic( "streamvbyte compression basic suite", []( auto& 
     std::array<svb128d1::integer_type, svb128d1::BLOCKLEN> dec;
     dec.fill( 0xffffffffu );
     emptyspace::xoshiro::xoshiro128starstar32 mt{ 0x42421337 };
-    std::uniform_int_distribution<svb128d1::integer_type> random{ 60, 2500 };
+    emptyspace::bitmask_distribution<svb128d1::integer_type> random{ 60, 2500 };
     in[0] = random( mt );
     for( std::size_t i = 1; i < svb128d1::STEPLEN; ++i ) { in[i] = in[i - 1] + random( mt ); }
     std::fill_n( in.data() + svb128d1::STEPLEN, svb128d1::BLOCKLEN - svb128d1::STEPLEN,
