@@ -17,7 +17,7 @@ concept convertible_to =
 };
 
 template <typename T, typename KeyType, std::size_t KBlockLen, std::size_t VBlockLen>
-concept Serializer = requires( T s, bool begin, offset_type const* p, std::size_t const n,
+concept serializer = requires( T s, bool begin, offset_type const* p, std::size_t const n,
                                offset_type const key_begin, offset_type const offset_begin,
                                std::uint64_t const segment_begin ) {
   // clang-format off
@@ -143,7 +143,7 @@ class index_builder {
   }
 
   // this invalidates the index builder
-  void accept( Serializer<key_type, KBLOCKLEN, VBLOCKLEN> auto& serializer,
+  void accept( serializer<key_type, KBLOCKLEN, VBLOCKLEN> auto& serializer,
                std::uint64_t const segment_begin ) noexcept {
 
     // - serialize all chunked vectors ( and patch index to external offsets )
