@@ -44,11 +44,26 @@ hxx{version}: in{version} $src_root/manifest
 #
 cxx.poptions =+ "-I$out_root" "-I$src_root"
 
+export_poptions = -mavx -mavx2 -mbmi2 -mlzcnt -mpopcnt -mcx16
+
+switch $cxx.class
+{
+  case 'gcc'
+  {
+    # disable warnings that pop up with -Wall -Wextra ( and -Weverything in case of clang ).
+    #
+    #cc.coptions += -Wno-all -Wno-extra -Wno-pedantic -Wno-error
+    if ( $cxx.id == 'clang' )
+      export_poptions += -Wno-c++98-compat -Wno-padded -Wno-c++98-compat-pedantic -Wno-c99-designator \
+        -Wno-weak-vtables -Wno-exit-time-destructors -Wno-global-constructors -Wno-unused-template -Wno-covered-switch-default
+  }
+}
+
 # export options.
 #
 lib{riot}:
 {
-  cxx.export.poptions = "-I$out_root" "-I$src_root"
+  cxx.export.poptions = "-I$out_root" "-I$src_root" $export_poptions
   cxx.export.libs = $int_libs
 }
 

@@ -37,7 +37,7 @@ class mmap_view {
     if( fd < 0 ) {
       throw std::system_error( errno, std::system_category(), "mmap_view: unable to open file" );
     }
-    auto const* p = mmap( NULL, size, PROT_READ, MAP_PRIVATE, fd, 0 );
+    auto const* p = mmap( nullptr, size, PROT_READ, MAP_PRIVATE, fd, 0 );
     if( p == MAP_FAILED ) {
       auto const err = errno;
       close( fd );
@@ -84,8 +84,8 @@ class mmap_block {
 
   static inline void* try_mmap( mmap_block_hint::type const wanted,
                                 mmap_block_hint::type const fallback ) {
-    void* const p = mmap( NULL, SIZE, PROT_READ | PROT_WRITE, wanted, -1, 0 );
-    if( p == MAP_FAILED ) { return mmap( NULL, SIZE, PROT_READ | PROT_WRITE, fallback, -1, 0 ); }
+    void* const p = mmap( nullptr, SIZE, PROT_READ | PROT_WRITE, wanted, -1, 0 );
+    if( p == MAP_FAILED ) { return mmap( nullptr, SIZE, PROT_READ | PROT_WRITE, fallback, -1, 0 ); }
     return p;
   }
 

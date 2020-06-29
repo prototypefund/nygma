@@ -23,3 +23,5 @@
 *.exe.dlls/
 *.exe.manifest
 *.pc
+*.test
+driver
