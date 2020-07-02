@@ -216,6 +216,15 @@ class index_view {
     }
   }
 
+  template <typename OutIt>
+  void output_histogram( OutIt& out ) const {
+    value_type last_offset = static_cast<value_type>( _data.size() - METASZ );
+    for( std::size_t i = 0; i < _offsets.size(); i++ ) {
+      auto const next_offset = i == _offsets.size() - 1 ? last_offset : _offsets[i + 1];
+      out = next_offset - _offsets[i];
+    }
+  }
+
   //--reverse-lookup-using-scanning-------------------------------------------
 
   template <auto Combine>
@@ -337,6 +346,7 @@ class poly_index_view {
     virtual std::size_t size() const noexcept = 0;
     virtual std::uint64_t segment_offset() const noexcept = 0;
     virtual void output_keys( std::ostream& os ) const noexcept = 0;
+    virtual void output_histogram( std::vector<value_type>& sizes ) const noexcept = 0;
   };
 
   template <typename T, typename VC>
@@ -361,6 +371,11 @@ class poly_index_view {
       } else {
         os << "<index_view::output_keys: 128bit keys unimplemented>";
       }
+    }
+
+    void output_histogram( std::vector<value_type>& sizes ) const noexcept override {
+      auto it = std::back_inserter( sizes );
+      _view.output_histogram( it );
     }
 
     //--forward-lookup-wrappers-----------------------------------------------
@@ -451,8 +466,11 @@ class poly_index_view {
   auto key_count() const noexcept { return _p->size(); }
   auto sizeof_domain_value() const noexcept { return _p->sizeof_domain_value(); }
   std::uint64_t segment_offset() const noexcept { return _p->segment_offset(); }
-  void output_keys( std::ostream& os ) const noexcept { return _p->output_keys( os ); }
   void prepare_reverse_lookups() noexcept { return _p->prepare_reverse_lookups(); }
+  void output_keys( std::ostream& os ) const noexcept { return _p->output_keys( os ); }
+  void output_histogram( std::vector<value_type>& sizes ) const noexcept {
+    return _p->output_histogram( sizes );
+  }
 
   resultset_forward_type scan_and( resultset_forward_type const& values ) const noexcept {
     return _p->scan_and( values );
