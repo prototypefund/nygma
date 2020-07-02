@@ -203,6 +203,16 @@ class index_view {
     return resultset_forward_type{ _segment_offset, rc, std::move( values ) };
   }
 
+  value_type compressed_size( key_type const k ) const noexcept {
+    value_type last_offset = static_cast<value_type>( _data.size() - METASZ );
+    auto it = std::lower_bound( _keys.begin(), _keys.end(), k );
+    if( it == _keys.end() || k < *it ) { return 0; }
+    auto const o = static_cast<std::size_t>( it - _keys.begin() );
+    assert( o < _offsets.size() );
+    auto const next_offset = o == _keys.size() - 1 ? last_offset : _offsets[o + 1];
+    return next_offset - _offsets[o];
+  }
+
   template <typename OutIt>
   void output_keys( OutIt& out ) const {
     value_type last_offset = static_cast<value_type>( _data.size() - METASZ );
@@ -341,6 +351,8 @@ class poly_index_view {
     virtual resultset_reverse_32 lookup_inverse_32( value_type const v ) noexcept = 0;
     virtual resultset_reverse_64 lookup_inverse_64( value_type const v ) noexcept = 0;
     virtual resultset_reverse_128 lookup_inverse_128( value_type const v ) noexcept = 0;
+    virtual value_type compressed_size( key64_t const v ) const noexcept = 0;
+    virtual value_type compressed_size( key128_t const v ) const noexcept = 0;
     virtual void prepare_reverse_lookups() noexcept = 0;
     virtual std::size_t sizeof_domain_value() const noexcept = 0;
     virtual std::size_t size() const noexcept = 0;
@@ -399,6 +411,18 @@ class poly_index_view {
         return _view.lookup_forward( k );
       }
       return resultset_forward_type{ 0 };
+    }
+
+    value_type compressed_size( key64_t const k ) const noexcept override {
+      if constexpr( std::is_same_v<key128_t, typename index_view<T, VC>::key_type> ) { return 0; }
+      return _view.compressed_size( static_cast<typename index_view<T, VC>::key_type>( k ) );
+    }
+
+    value_type compressed_size( key128_t const k ) const noexcept override {
+      if constexpr( std::is_same_v<key128_t, typename index_view<T, VC>::key_type> ) {
+        return _view.compressed_size( k );
+      }
+      return 0;
     }
 
     //--reverse-lookup-wrappers-----------------------------------------------
@@ -499,6 +523,10 @@ class poly_index_view {
   resultset_forward_type lookup_forward_128( key128_t const k ) const noexcept {
     return _p->lookup_forward_128( k );
   }
+
+  value_type compressed_size( key128_t const k ) const noexcept { return _p->compressed_size( k ); }
+
+  value_type compressed_size( key64_t const k ) const noexcept { return _p->compressed_size( k ); }
 
   resultset_forward_type lookup_reverse( value_type const v ) const noexcept {
     return _p->lookup_reverse( v );
