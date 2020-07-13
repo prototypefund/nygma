@@ -1,6 +1,7 @@
 include_rules
 
 CXXFLAGS += -I..
+CXXFLAGS += -I$(ROOT)/libnygma
 CXXFLAGS += -I$(ROOT)/repositories/libunclassified
 CXXFLAGS += -I$(ROOT)/repositories/pest
 

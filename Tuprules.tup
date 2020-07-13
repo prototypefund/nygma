@@ -9,6 +9,8 @@ WARNINGS += -Wno-exit-time-destructors
 WARNINGS += -Wno-global-constructors
 WARNINGS += -Wno-weak-vtables
 WARNINGS += -Wno-gnu-case-range
+WARNINGS += -Wno-padded
+WARNINGS += -Wno-covered-switch-default
 
 CXXFLAGS += -I$(TUP_CWD)
 CXXFLAGS += -std=c++2a
@@ -42,5 +44,6 @@ ifeq (@(TUP_PLATFORM),linux)
 endif
 
 !compile_test = |> @(CXX) -x c++ $(WARNINGS) $(CXXFLAGS) %f $(LDFLAGS) -o %o |> %B
-!compile_exe = |> @(CXX) -x c++ $(WARNINGS) $(CXXFLAGS) %f $(LDFLAGS) -o %o |> %B
-!compile_stripped = |> @(CXX) -x c++ $(WARNINGS) $(CXXFLAGS) %f $(LDFLAGS) -s -o %o |> %B
+!compile_o = |> @(CXX) -x c++ $(WARNINGS) $(CXXFLAGS) -c %f -o %o |> %B.o
+!link_exe = |> @(CXX) $(WARNINGS) $(CXXFLAGS) %f $(LDFLAGS) -o %o |>
+!link_exe_stripped = |> @(CXX) -x c++ $(WARNINGS) $(CXXFLAGS) %f $(LDFLAGS) -s -o %o |> %B

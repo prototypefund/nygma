@@ -1,0 +1,9 @@
+#pragma once
+
+#define LIBRIOT_VERSION_STR   "0.0.1-a.1"
+
+#define LIBRIOT_VERSION_MAJOR 0
+#define LIBRIOT_VERSION_MINOR 0
+#define LIBRIOT_VERSION_PATCH 1
+
+

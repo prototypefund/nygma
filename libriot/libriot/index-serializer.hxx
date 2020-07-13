@@ -61,6 +61,11 @@ struct block_subtype {
   };
 };
 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wgnu-anonymous-struct"
+#endif
+
 union encoding {
   struct {
     std::uint8_t _tag : 2;
@@ -87,6 +92,10 @@ union encoding {
     return { tag::CBLOCK, subty };
   }
 };
+
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
 
 static_assert( sizeof( encoding ) == 1 );
 
