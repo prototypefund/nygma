@@ -1,3 +1,0 @@
-import libs = libriot%lib{riot}
-
-exe{driver}: {hxx ixx txx cxx}{**} $libs testscript{**}

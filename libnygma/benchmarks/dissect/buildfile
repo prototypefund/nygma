@@ -1,5 +1,0 @@
-import libs = libnygma%lib{nygma}
-import libs += libunclassified%lib{unclassified}
-import libs += pest%lib{pest}
-
-exe{driver}: {hxx ixx txx cxx}{**} $libs testscript{**}

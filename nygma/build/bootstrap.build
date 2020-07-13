@@ -1,7 +1,0 @@
-project = nygma
-
-using version
-using config
-using test
-using install
-using dist

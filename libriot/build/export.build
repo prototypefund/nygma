@@ -1,6 +1,0 @@
-$out_root/
-{
-  include libriot/
-}
-
-export $out_root/libriot/$import.target

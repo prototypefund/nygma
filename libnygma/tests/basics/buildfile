@@ -1,3 +1,0 @@
-import libs = libnygma%lib{nygma}
-
-exe{driver}: {hxx ixx txx cxx}{**} $libs testscript{**}
