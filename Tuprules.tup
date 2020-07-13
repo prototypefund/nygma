@@ -1,0 +1,46 @@
+WARNINGS += -W
+WARNINGS += -Wall
+WARNINGS += -Wextra
+WARNINGS += -Weverything
+WARNINGS += -pedantic
+WARNINGS += -Wno-c++98-compat
+WARNINGS += -Wno-c++98-compat-pedantic
+WARNINGS += -Wno-exit-time-destructors
+WARNINGS += -Wno-global-constructors
+WARNINGS += -Wno-weak-vtables
+WARNINGS += -Wno-gnu-case-range
+
+CXXFLAGS += -I$(TUP_CWD)
+CXXFLAGS += -std=c++2a
+
+ROOT = $(TUP_CWD)
+
+ifeq (@(BUILD_TYPE),default)
+  CXXFLAGS += -Ofast
+  CXXFLAGS += -ffast-math
+  CXXFLAGS += -fomit-frame-pointer
+  CXXFLAGS += -DNDEBUG
+  CXXFLAGS += -march=core-avx2
+  CXXFLAGS += -mtune=generic
+  CXXFLAGS += -mlzcnt
+  CXXFLAGS += -mpopcnt
+  CXXFLAGS += -mcx16
+  CXXFLAGS += -msse4.2
+  CXXFLAGS += -mavx
+  CXXFLAGS += -mavx2
+  CXXFLAGS += -flto
+endif
+
+ifeq (@(COMPILER),clang)
+  CXXFLAGS += -stdlib=libc++
+endif
+
+LDFLAGS += -lpthread
+
+ifeq (@(TUP_PLATFORM),linux)
+  LDFLAGS += -lrt
+endif
+
+!compile_test = |> @(CXX) -x c++ $(WARNINGS) $(CXXFLAGS) %f $(LDFLAGS) -o %o |> %B
+!compile_exe = |> @(CXX) -x c++ $(WARNINGS) $(CXXFLAGS) %f $(LDFLAGS) -o %o |> %B
+!compile_stripped = |> @(CXX) -x c++ $(WARNINGS) $(CXXFLAGS) %f $(LDFLAGS) -s -o %o |> %B
