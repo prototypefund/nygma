@@ -32,7 +32,7 @@ int main( int argc, char const** argv ) {
   std::size_t _total_bytes{ 0 };
   std::uint64_t _first_seen{ std::numeric_limits<std::uint64_t>::max() };
   std::uint64_t _last_seen{ 0 };
-  std::uint64_t _dns_count{ 0 };
+  std::uint64_t _total_dns_packets{ 0 };
 
   dns_trace _trace{};
   hash_type _hash_policy{};
@@ -48,7 +48,7 @@ int main( int argc, char const** argv ) {
       dissect::dissect_en10mb( _hash_policy, _trace, pkt._slice );
       if( _trace._assume_dns && _trace.valid() ) {
         auto const rc = _dns.dissect( _trace._dns_begin, _trace._end );
-        if( rc == dns::dns_dissect_rc::OK ) { _dns_count++; }
+        if( rc == dns::dns_dissect_rc::OK ) { _total_dns_packets++; }
       }
       _total_packets++;
       _total_bytes += pkt._slice.size();
@@ -58,7 +58,7 @@ int main( int argc, char const** argv ) {
   } );
 
   std::clog << "total_packets = " << _total_packets << std::endl;
-  std::clog << "dns_count = " << _dns_count << std::endl;
+  std::clog << "dns_count = " << _total_dns_packets << std::endl;
 
   return 0;
 }
