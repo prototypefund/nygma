@@ -1,0 +1,10 @@
+include_rules
+
+CXXFLAGS += -I..
+CXXFLAGS += -I$(ROOT)/libnygma
+CXXFLAGS += -I$(ROOT)/libriot
+CXXFLAGS += -I$(ROOT)/repositories/argh
+CXXFLAGS += -I$(ROOT)/repositories/libunclassified
+CXXFLAGS += -g3
+
+: foreach *.reproduce.cxx |> !compile_test |> 
