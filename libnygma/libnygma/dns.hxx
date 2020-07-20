@@ -231,6 +231,8 @@ template <std::size_t RecordCnt, std::size_t LabelSize>
 struct dns {
   using dns_rr_t = dns_rr<LabelSize>;
 
+  static constexpr auto MAX_RECORD_COUNT = RecordCnt;
+
   unsigned _is_header_finished : 1;
   unsigned _is_packet_finished : 1;
   unsigned _qr : 1; // 'query' or 'response'
@@ -256,7 +258,7 @@ struct dns {
   std::byte const* _dst_end;
   unsigned _req_length;
   unsigned _rr_count;
-  dns_rr_t _rr[RecordCnt];
+  dns_rr_t _rr[MAX_RECORD_COUNT];
   std::byte _timestamp[sizeof( std::uint64_t )];
 
   inline unsigned char const* extract_name( unsigned char const* const begin,
@@ -384,7 +386,7 @@ struct dns {
     */
 
     for( unsigned i = 0; i < _qdcount && p < end; i++ ) {
-      if( _rr_count >= RecordCnt ) { return dns_dissect_rc::RECORD_OVERFLOW; }
+      if( _rr_count >= MAX_RECORD_COUNT ) { return dns_dissect_rc::RECORD_OVERFLOW; }
       auto& rr = _rr[_rr_count];
       rr._is_edns0 = 0;
       rr._rr_begin = p;
@@ -423,7 +425,7 @@ struct dns {
     +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
     */
     for( unsigned i = 0; i < _ancount + _nscount && p < end; i++ ) {
-      if( _rr_count >= RecordCnt ) { return dns_dissect_rc::RECORD_OVERFLOW; }
+      if( _rr_count >= MAX_RECORD_COUNT ) { return dns_dissect_rc::RECORD_OVERFLOW; }
       auto& rr = _rr[_rr_count];
       rr._is_edns0 = 0;
       rr._rr_begin = p;
@@ -440,7 +442,7 @@ struct dns {
     }
 
     for( unsigned i = 0; i < _arcount && p < end; i++ ) {
-      if( _rr_count >= RecordCnt ) { return dns_dissect_rc::RECORD_OVERFLOW; }
+      if( _rr_count >= MAX_RECORD_COUNT ) { return dns_dissect_rc::RECORD_OVERFLOW; }
       auto& rr = _rr[_rr_count];
       rr._is_edns0 = 0;
       rr._rr_begin = p;
