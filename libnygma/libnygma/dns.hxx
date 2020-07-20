@@ -300,7 +300,7 @@ struct dns {
           if( rr._is_compressed ) { return link; }
           return p;
         } else {
-          if( ( label_out + len + 1 ) > label_end ) {
+          if( ( label_out + len + 1 ) > label_end or ( p + len ) > end ) {
             rr._label[0] = '\0';
             rr._label_len = 0;
             return end;

@@ -142,7 +142,7 @@ class dissect_stack_trace : public dissect::dissect_trace {
   }
 };
 
-#define DISSECT_NEXT( allow_vlan, x )                                                                      \
+#define DISSECT_NEXT( allow_vlan, x )                                                                 \
   do {                                                                                                \
     if constexpr( allow_vlan ) {                                                                      \
       switch( x ) {                                                                                   \
@@ -243,7 +243,7 @@ parse_tcp : {
     trace( unkown{ { p, end } } );
     return hash;
   }
-  unsigned const len = ( unsigned( p[12] ) >> 2 ) & ~0b11;
+  unsigned const len = ( unsigned( p[12] ) >> 2 ) & ~0b11u;
   if( p + len > end ) {
     trace( unkown{ { p, end } } );
     return hash;
