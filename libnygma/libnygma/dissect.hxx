@@ -142,7 +142,7 @@ class dissect_stack_trace : public dissect::dissect_trace {
   }
 };
 
-#define _next0_( allow_vlan, x )                                                                      \
+#define DISSECT_NEXT( allow_vlan, x )                                                                      \
   do {                                                                                                \
     if constexpr( allow_vlan ) {                                                                      \
       switch( x ) {                                                                                   \
@@ -195,13 +195,13 @@ static inline std::uint32_t dissect_en10mb( HashPolicy& hash_policy, Trace&& tra
   auto const vlan_et = unsafe::rd16<BE>( p + 20 );
   p += 14;
 
-  _next0_( true, ethertype );
+  DISSECT_NEXT( true, ethertype );
 
 parse_vlan_8021q:
   trace( vlan_8021q{ { p, end } } );
   p += vlan_ex == 0x8100u ? 8 : 4;
   ethertype = vlan_ex == 0x8100u ? vlan_et : vlan_ex;
-  _next0_( false, ethertype );
+  DISSECT_NEXT( false, ethertype );
 
 parse_ipv4 : {
   if( p >= end ) {
@@ -238,11 +238,25 @@ parse_ipv4 : {
   return hash;
 }
 
-parse_tcp:
+parse_tcp : {
+  if( p + 20 > end ) {
+    trace( unkown{ { p, end } } );
+    return hash;
+  }
+  unsigned const len = ( unsigned( p[12] ) >> 2 ) & ~0b11;
+  if( p + len > end ) {
+    trace( unkown{ { p, end } } );
+    return hash;
+  }
   trace( tcp{ { p, end } } );
   return hash;
+}
 
 parse_udp:
+  if( p + 8 > end ) {
+    trace( unkown{ { p, end } } );
+    return hash;
+  }
   trace( udp{ { p, end } } );
   return hash;
 
@@ -300,6 +314,6 @@ parse_vlan_mpls:
   return hash;
 }
 
-#undef _next0_
+#undef DISSECT_NEXT
 
 } // namespace nygma::dissect

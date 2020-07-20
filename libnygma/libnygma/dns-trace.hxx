@@ -50,7 +50,7 @@ struct dns_trace : public dissect::dissect_trace {
       _begin = v._begin;
       _end = v._end;
       std::byte const* const p = _begin;
-      unsigned len = unsigned( p[12] ) >> 2;
+      unsigned const len = ( unsigned( p[12] ) >> 2 ) & ~0b11;
       unsigned sp = unsafe::rd16<BE>( p );
       unsigned dp = unsafe::rd16<BE>( p + 2 );
       _assume_dns = sp == 53u || sp == 5353u || sp == 5355 || dp == 53u || dp == 5353u || dp == 5355u;
