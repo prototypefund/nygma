@@ -352,7 +352,7 @@ class poly_index_view {
     virtual resultset_reverse_64 lookup_inverse_64( value_type const v ) noexcept = 0;
     virtual resultset_reverse_128 lookup_inverse_128( value_type const v ) noexcept = 0;
     virtual value_type compressed_size( key64_t const v ) const noexcept = 0;
-    virtual value_type compressed_size( key128_t const v ) const noexcept = 0;
+    virtual value_type compressed_size_128( key128_t const v ) const noexcept = 0;
     virtual void prepare_reverse_lookups() noexcept = 0;
     virtual std::size_t sizeof_domain_value() const noexcept = 0;
     virtual std::size_t size() const noexcept = 0;
@@ -418,7 +418,7 @@ class poly_index_view {
       return _view.compressed_size( static_cast<typename index_view<T, VC>::key_type>( k ) );
     }
 
-    value_type compressed_size( key128_t const k ) const noexcept override {
+    value_type compressed_size_128( key128_t const k ) const noexcept override {
       if constexpr( std::is_same_v<key128_t, typename index_view<T, VC>::key_type> ) {
         return _view.compressed_size( k );
       }
@@ -524,7 +524,9 @@ class poly_index_view {
     return _p->lookup_forward_128( k );
   }
 
-  value_type compressed_size( key128_t const k ) const noexcept { return _p->compressed_size( k ); }
+  value_type compressed_size_128( key128_t const k ) const noexcept {
+    return _p->compressed_size_128( k );
+  }
 
   value_type compressed_size( key64_t const k ) const noexcept { return _p->compressed_size( k ); }
 
