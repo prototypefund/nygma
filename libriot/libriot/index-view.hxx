@@ -28,9 +28,10 @@ using endianess = unclassified::endianess;
 
 namespace detail {
 
-template <std::size_t BlockLen>
+template <method::type CompressionMethod, std::size_t BlockLen>
 struct raw {
   using integer_type = std::uint32_t;
+  static constexpr method::type COMPRESSION_METHOD = CompressionMethod;
   static constexpr endianess LE = endianess::LE;
   static constexpr std::size_t BLOCKLEN = BlockLen;
   static constexpr std::size_t estimate_compressed_size() noexcept {
@@ -49,9 +50,10 @@ struct raw {
   }
 };
 
-template <std::size_t BlockLen>
-struct raw128 {
+template <method::type CompressionMethod, std::size_t BlockLen>
+struct raw_key128 {
   using integer_type = __uint128_t;
+  static constexpr method::type COMPRESSION_METHOD = CompressionMethod;
   static constexpr std::size_t BLOCKLEN = BlockLen;
   static constexpr std::size_t estimate_compressed_size() noexcept {
     return sizeof( offset_type ) * BlockLen;
@@ -73,9 +75,10 @@ struct raw128 {
   }
 };
 
-template <typename Decode>
+template <method::type CompressionMethod, typename Decode>
 struct decode_wrapper {
   using integer_type = typename Decode::integer_type;
+  static constexpr method::type COMPRESSION_METHOD = CompressionMethod;
   static constexpr std::size_t BLOCKLEN = Decode::BLOCKLEN;
   static constexpr std::size_t estimate_compressed_size() noexcept {
     return Decode::estimate_compressed_size();
@@ -92,10 +95,12 @@ struct decode_wrapper {
   }
 };
 
-using svb128d1 = decode_wrapper<riot::streamvbyte::svb128d1_i128>;
-using svb256d1 = decode_wrapper<riot::streamvbyte::svb256d1_i128>;
-using bp128d1 = decode_wrapper<riot::bitpack::bp128d1>;
-using bp256d1 = decode_wrapper<riot::bitpack::bp256d1>;
+using svb128d1 = decode_wrapper<method::SVB128D1, riot::streamvbyte::svb128d1_i128>;
+using svb256d1 = decode_wrapper<method::SVB256D1, riot::streamvbyte::svb256d1_i128>;
+using bp128d1 = decode_wrapper<method::BP128D1, riot::bitpack::bp128d1>;
+using bp256d1 = decode_wrapper<method::BP256D1, riot::bitpack::bp256d1>;
+using raw128 = raw<method::UC128, 128>;
+using raw256 = raw<method::UC256, 256>;
 
 } // namespace detail
 
@@ -186,7 +191,8 @@ class index_view {
 
  public:
   auto key_count() const noexcept { return _keys.size(); }
-  auto segment_offset() const noexcept { return _segment_offset; }
+  constexpr auto segment_offset() const noexcept { return _segment_offset; }
+  constexpr auto compression_method() const noexcept { return VC::COMPRESSION_METHOD; }
 
   template <typename OutIt>
   bool lookup_forward( key_type const k, OutIt out ) const noexcept {
@@ -355,6 +361,7 @@ class poly_index_view {
     virtual value_type compressed_size_128( key128_t const v ) const noexcept = 0;
     virtual void prepare_reverse_lookups() noexcept = 0;
     virtual std::size_t sizeof_domain_value() const noexcept = 0;
+    virtual method::type compression_method() const noexcept = 0;
     virtual std::size_t size() const noexcept = 0;
     virtual std::uint64_t segment_offset() const noexcept = 0;
     virtual void output_keys( std::ostream& os ) const noexcept = 0;
@@ -371,6 +378,7 @@ class poly_index_view {
     std::size_t sizeof_domain_value() const noexcept override {
       return sizeof( typename index_view<T, VC>::key_type );
     }
+    method::type compression_method() const noexcept override { return _view.compression_method(); }
 
     void output_keys( std::ostream& os ) const noexcept override {
       // TODO: we want a transformation function
@@ -492,6 +500,7 @@ class poly_index_view {
   std::uint64_t segment_offset() const noexcept { return _p->segment_offset(); }
   void prepare_reverse_lookups() noexcept { return _p->prepare_reverse_lookups(); }
   void output_keys( std::ostream& os ) const noexcept { return _p->output_keys( os ); }
+  auto compression_method() const noexcept { return _p->compression_method(); }
   void output_histogram( std::vector<value_type>& sizes ) const noexcept {
     return _p->output_histogram( sizes );
   }
@@ -545,6 +554,36 @@ class poly_index_view {
   resultset_reverse_128 lookup_inverse_128( value_type const v ) const noexcept {
     return _p->lookup_inverse_128( v );
   }
+
+#define DISPTACH( type, method, fn )                                                                  \
+  do {                                                                                                \
+    auto const& index = static_cast<view<type, method> const*>( _p.get() )->_view;                    \
+    fn( index );                                                                                      \
+  } while( false )
+
+#define DISPATCH_COMPRESSION_METHOD( type, fn )                                                       \
+  do {                                                                                                \
+    switch( _p->compression_method() ) {                                                              \
+      case method::UC128: DISPTACH( type, detail::raw128, fn ); break;                                \
+      case method::UC256: DISPTACH( type, detail::raw256, fn ); break;                                \
+      case method::SVB128D1: DISPTACH( type, detail::svb128d1, fn ); break;                           \
+      case method::SVB256D1: DISPTACH( type, detail::svb256d1, fn ); break;                           \
+      case method::BP128D1: DISPTACH( type, detail::bp128d1, fn ); break;                             \
+      case method::BP256D1: DISPTACH( type, detail::bp256d1, fn ); break;                             \
+      default: break;                                                                                 \
+    }                                                                                                 \
+  } while( false )
+
+  template <typename Fn>
+  void map( Fn const fn ) const {
+    switch( _p->sizeof_domain_value() ) {
+      case 4: DISPATCH_COMPRESSION_METHOD( key32_t, fn ); break;
+      case 16: DISPATCH_COMPRESSION_METHOD( key128_t, fn ); break;
+      default: return;
+    }
+  }
+#undef DISPATCH_COMPRESSION_METHOD
+#undef DISPTACH
 };
 
 //--opening-/-constructing-an-index-view----------------------------------------------------
@@ -607,11 +646,11 @@ static auto from( bytestring_view const data, std::uint64_t const segment_offset
   return f( index_view<key_t, VC>( data, segment_offset, std::move( keys ), std::move( offsets ) ) );
 }
 
-#define _vmethod_                                                                                     \
+#define DISPATCH_VALUE_COMPRESSION( m )                                                               \
   do {                                                                                                \
-    switch( meta.vmethod ) {                                                                          \
-      case method::UC128: return from<KC, detail::raw<128>>( data, meta.segment_offset, f );          \
-      case method::UC256: return from<KC, detail::raw<256>>( data, meta.segment_offset, f );          \
+    switch( m ) {                                                                                     \
+      case method::UC128: return from<KC, detail::raw128>( data, meta.segment_offset, f );            \
+      case method::UC256: return from<KC, detail::raw256>( data, meta.segment_offset, f );            \
       case method::SVB128D1: return from<KC, detail::svb128d1>( data, meta.segment_offset, f );       \
       case method::SVB256D1: return from<KC, detail::svb256d1>( data, meta.segment_offset, f );       \
       case method::BP128D1: return from<KC, detail::bp128d1>( data, meta.segment_offset, f );         \
@@ -647,25 +686,25 @@ static auto from( bytestring_view const data, F const f ) {
   // clang-format off
   if( meta.keyty == 0b01 ) {
     switch( meta.kmethod ) {
-      case method::UC128: { using KC = detail::raw<128>; _vmethod_; }
-      case method::UC256: { using KC = detail::raw<256>; _vmethod_; }
-      case method::SVB128D1: { using KC = detail::svb128d1; _vmethod_; }
-      case method::SVB256D1: { using KC = detail::svb256d1; _vmethod_; }
-      case method::BP128D1: { using KC = detail::bp128d1; _vmethod_; }
-      case method::BP256D1: { using KC = detail::bp256d1; _vmethod_; }
+      case method::UC128: { using KC = detail::raw128; DISPATCH_VALUE_COMPRESSION( meta.vmethod ); }
+      case method::UC256: { using KC = detail::raw256; DISPATCH_VALUE_COMPRESSION( meta.vmethod ); }
+      case method::SVB128D1: { using KC = detail::svb128d1; DISPATCH_VALUE_COMPRESSION( meta.vmethod ); }
+      case method::SVB256D1: { using KC = detail::svb256d1; DISPATCH_VALUE_COMPRESSION( meta.vmethod ); }
+      case method::BP128D1: { using KC = detail::bp128d1; DISPATCH_VALUE_COMPRESSION( meta.vmethod ); }
+      case method::BP256D1: { using KC = detail::bp256d1; DISPATCH_VALUE_COMPRESSION( meta.vmethod ); }
       default: throw std::runtime_error( "UNSUPPORTED_32BIT_KEY_COMPRESSION_METHOD" );
     }
   } else {
     switch( meta.kmethod ) {
-      case method::UC128: { using KC = detail::raw128<128>; _vmethod_; }
-      case method::UC256: { using KC = detail::raw128<256>; _vmethod_; }
+      case method::UC128: { using KC = detail::raw_key128<method::UC128, 128>; DISPATCH_VALUE_COMPRESSION( meta.vmethod ); }
+      case method::UC256: { using KC = detail::raw_key128<method::UC256, 256>; DISPATCH_VALUE_COMPRESSION( meta.vmethod ); }
       default: throw std::runtime_error( "UNSUPPORTED_128BIT_KEY_COMPRESSION_METHOD" );
     }
   }
   // clang-format on
 }
 
-#undef _vmethod_
+#undef DISPATCH_VALUE_COMPRESSION
 
 namespace {
 

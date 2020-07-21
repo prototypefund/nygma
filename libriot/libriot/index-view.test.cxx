@@ -126,6 +126,14 @@ emptyspace::pest::suite basic( "index-view basic suite", []( auto& test ) {
     auto sr = iv->sparse_scan( iv->lookup_forward_32( 23421337u ) );
     expect( sr._values[16]._values, equal_to( { 16u, 400u } ) );
     expect( sr._values[400]._values, equal_to( { 16u, 400u } ) );
+    bool is_expected_type{ false };
+    iv->map( [&]( auto const& index ) noexcept {
+      using T = std::decay_t<decltype( index )>;
+      if constexpr( std::is_same_v<T, riot::index_view<std::uint32_t, riot::detail::raw128>> ) {
+        is_expected_type = true;
+      }
+    } );
+    expect( is_expected_type );
   } );
 
   test( "sparse-scan #2", []( auto& expect ) {
