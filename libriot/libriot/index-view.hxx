@@ -193,6 +193,8 @@ class index_view {
   auto key_count() const noexcept { return _keys.size(); }
   constexpr auto segment_offset() const noexcept { return _segment_offset; }
   constexpr auto compression_method() const noexcept { return VC::COMPRESSION_METHOD; }
+  constexpr auto const& keys() const noexcept { return _keys; }
+  constexpr auto const& offsets() const noexcept { return _offsets; }
 
   template <typename OutIt>
   bool lookup_forward( key_type const k, OutIt out ) const noexcept {
