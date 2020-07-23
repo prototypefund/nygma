@@ -43,12 +43,11 @@ inline std::size_t encode_ctrl( std::uint32_t const bits, std::uint32_t const sv
   }
 }
 
-inline std::pair<std::uint_fast8_t, std::uint_fast8_t> decode_ctrl( std::byte const* const p,
-                                                                    std::size_t const n,
-                                                                    std::uint32_t& sv ) noexcept {
+inline std::pair<unsigned, unsigned> decode_ctrl( std::byte const* const p, std::size_t const n,
+                                                  std::uint32_t& sv ) noexcept {
   using u = std::uint32_t;
-  auto const tag = static_cast<std::uint_fast8_t>( p[0] );
-  auto const bits = tag & ( ( 1 << 6 ) - 1 );
+  auto const tag = static_cast<unsigned>( p[0] );
+  auto const bits = std::min( tag & ( ( 1u << 6 ) - 1u ), 32u );
   auto const len = ( tag >> 6 ) & 3;
   if( static_cast<std::size_t>( len + 2 ) > n ) { return { 0, 0 }; }
   // clang-format off
