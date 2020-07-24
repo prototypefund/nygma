@@ -179,6 +179,7 @@ class index_view {
       auto const uncompressed_size = enc._ulen == 0b11 ? VC::BLOCKLEN : vbyte::decode( p, enc._ulen );
       auto const n = enc._ulen == 0b11 ? 0u : enc._ulen + 1;
       auto const m = enc._clen + 1u;
+      if( p + n >= end ) { return false; }
       auto const compressed_size = vbyte::decode( p + n, enc._clen );
       if( p + n + m + compressed_size > end ) { return false; }
       VC::decode( p + n + m, compressed_size, uncompressed_size, out );

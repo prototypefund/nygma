@@ -152,13 +152,13 @@ inline unsigned encode( std::byte* out, unsigned n, std::uint32_t const x ) noex
 inline std::uint8_t decode_tag( byte_t const* const p ) noexcept {
   static_assert( sizeof( unsigned ) == 4 );
   std::uint8_t tag = static_cast<std::uint8_t>( p[0] );
-  return ( tag & 3 );
+  return ( tag & 0b11 );
 }
 
 inline std::uint32_t decode( byte_t const* p, std::uint8_t const tag ) noexcept {
   using u = std::uint32_t;
   static constexpr auto BE = endianess::BE;
-  switch( tag ) {
+  switch( tag & 0b11 ) {
     case 0b00: return u( p[0] );
     case 0b01: return unsafe::rd16<BE>( p );
     case 0b10: return unsafe::rd24<BE>( p );

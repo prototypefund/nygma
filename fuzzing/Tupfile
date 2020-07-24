@@ -6,6 +6,6 @@ CXXFLAGS += -I$(ROOT)/libriot
 CXXFLAGS += -I$(ROOT)/repositories/argh
 CXXFLAGS += -I$(ROOT)/repositories/libunclassified
 CXXFLAGS += -g3
-CXXFLAGS += -fsanitize=address
+CXXFLAGS += -fsanitize=address,undefined,alignment
 
 : foreach *.reproduce.cxx |> !compile_test |> 
