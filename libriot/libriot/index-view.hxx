@@ -170,23 +170,21 @@ class index_view {
   template <typename OutIt>
   bool decode( value_type const offset, OutIt out ) const noexcept {
     auto const* p = _data.begin() + offset;
-    auto const* const end = _data.end();
-    if( p + METASZ >= end ) { return false; }
+    if( p + 1 + METASZ >= _data.end() ) { return false; }
+    auto const* const end = _data.end() - METASZ;
     encoding enc{ *p++ };
-    if( not ( enc._tag == tag::CBLOCK && enc._type == block_subtype::CBEGIN ) ) { return false; }
-    std::size_t total = 0;
+    if( not ( enc._tag == tag::CBLOCK and enc._type == block_subtype::CBEGIN ) ) { return false; }
     do {
-      auto const uncompressed_size = enc._ulen == 0b11 ? VC::BLOCKLEN : vbyte::decode( p, enc._ulen );
       auto const n = enc._ulen == 0b11 ? 0u : enc._ulen + 1;
       auto const m = enc._clen + 1u;
-      if( p + n >= end ) { return false; }
+      if( p + n + m > end ) { return false; }
+      auto const uncompressed_size = enc._ulen == 0b11 ? VC::BLOCKLEN : vbyte::decode( p, enc._ulen );
       auto const compressed_size = vbyte::decode( p + n, enc._clen );
       if( p + n + m + compressed_size > end ) { return false; }
       VC::decode( p + n + m, compressed_size, uncompressed_size, out );
       p += n + m + compressed_size;
-      total += uncompressed_size;
       enc._value = *p++;
-    } while( p < end && enc._tag == tag::CBLOCK && enc._type != block_subtype::CBEGIN );
+    } while( p < end and enc._tag == tag::CBLOCK and enc._type != block_subtype::CBEGIN );
     return true;
   }
 
