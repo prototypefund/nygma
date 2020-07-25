@@ -12,9 +12,9 @@
 #include <libriot/compress-delta-simd.hxx>
 #include <libriot/compress-integer.hxx>
 
-#include <cstring>
 #include <cstddef>
 #include <cstdint>
+#include <cstring>
 
 #include <algorithm>
 
@@ -442,7 +442,7 @@ struct streamvbyte_i128 : public streamvbyte_base<BlockLen> {
       _mm_storeu_si128( reinterpret_cast<__m128i*>( out_p ), x0 );
       out_p += detail::length_lut[ctrl & 0xff];
       _mm_storeu_si128( reinterpret_cast<__m128i*>( out_p ), x1 );
-      out_p += detail::length_lut[ctrl >> 8];
+      out_p += detail::length_lut[( ctrl >> 8 ) & 0xff];
       p += 8;
     }
 
@@ -451,15 +451,16 @@ struct streamvbyte_i128 : public streamvbyte_base<BlockLen> {
 
   static inline std::size_t decode( std::byte const* const in, std::size_t const n,
                                     integer_type* const out ) noexcept {
+    static constexpr auto CTRLBYTES_SIZE = 2;
     auto const* const out_end = reinterpret_cast<__m128i const*>( out + base_type::BLOCKLEN );
     auto* out_p = reinterpret_cast<__m128i*>( out );
     auto const* const end = in + n;
     auto const* p = in;
     __m128i prev = _mm_set1_epi32( 0 );
-    while( p < end && out_p < out_end ) {
+    while( ( p + CTRLBYTES_SIZE ) < end ) {
       auto const ctrl0 = static_cast<std::uint_fast8_t>( p[0] );
       auto const ctrl1 = static_cast<std::uint_fast8_t>( p[1] );
-      auto const in0_v = reinterpret_cast<__m128i const*>( p + 2 );
+      auto const in0_v = reinterpret_cast<__m128i const*>( p + CTRLBYTES_SIZE );
 
       auto const x0_p = _mm_loadu_si128( in0_v );
       auto const* lut0 = reinterpret_cast<std::uint8_t const*>( &detail::decode_shuffle_lut[ctrl0] );
@@ -468,19 +469,23 @@ struct streamvbyte_i128 : public streamvbyte_base<BlockLen> {
       auto const x0_raw = _mm_shuffle_epi8( x0_p, s0 );
       auto const x0 = Delta::undelta( x0_raw, prev );
 
-      auto const in1_v = reinterpret_cast<__m128i const*>( p + 2 + len0 );
+      if( p + len0 + CTRLBYTES_SIZE > end ) { return 0; }
+
+      auto const in1_v = reinterpret_cast<__m128i const*>( p + len0 + CTRLBYTES_SIZE );
       auto const x1_p = _mm_loadu_si128( in1_v );
       auto const* lut1 = reinterpret_cast<std::uint8_t const*>( &detail::decode_shuffle_lut[ctrl1] );
       auto const s1 = _mm_loadu_si128( reinterpret_cast<__m128i const*>( lut1 ) );
       auto const len1 = static_cast<unsigned>( lut1[12 + ( ctrl1 >> 6 )] ) + 1;
       auto const x1 = Delta::undelta( _mm_shuffle_epi8( x1_p, s1 ), x0 );
 
+      if( out_p + 1 >= out_end ) { return 0; }
+
       _mm_storeu_si128( out_p, x0 );
       _mm_storeu_si128( out_p + 1, x1 );
 
       prev = x1;
       out_p += 2;
-      p += 2 + len0 + len1;
+      p += CTRLBYTES_SIZE + len0 + len1;
     }
 
     return static_cast<std::size_t>( p - in );

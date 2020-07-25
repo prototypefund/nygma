@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BlueOak-1.0.0
 
+#include <pest/bitmask-distribution.hxx>
 #include <pest/pest.hxx>
 #include <pest/xoshiro.hxx>
-#include <pest/bitmask-distribution.hxx>
 
 #include <libriot/compress-streamvbyte-simd.hxx>
 
@@ -108,7 +108,9 @@ emptyspace::pest::suite basic( "streamvbyte compression basic suite", []( auto& 
                       "4a0966026b0607079a0885079806df0545512d068b067b9f06bf02a3900994071555c3059f074d0"
                       "66a82030f031f08d6065555df070d027b09f201db019801bc0883041454f38106f1055c438505fe"
                       "03f5045055dedd4a03760763018007c10512055555f404fe0237059108ab021a0488092e04" ) );
-    auto n_dec = svb128d1::decode( out.data(), n, dec.data() );
+    std::array<std::byte, svb128d1::estimate_compressed_size()> out_copy;
+    std::copy( out.begin(), out.begin() + n, out_copy.begin() );
+    auto n_dec = svb128d1::decode( out_copy.data(), n, dec.data() );
     expect( n_dec, equal_to( n ) );
     expect( in == dec, equal_to( true ) );
   } );
