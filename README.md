@@ -267,23 +267,23 @@ at the following repository ( containing libioc / libt3tch / t3tch ):
 
 ## building & development
 
-development happens mainly on [freebsd]( https://freebsd.org ). theoretically linux should work as
-well. if not it's a bug. please report.
+development happens mainly on [void]( https://voidlinux.org ).
+
+dependencies for voidlinux:
+
+```shell
+# xbps-install -Su llvm libcxx libcxxabi tup lld
+```
 
 building `ny` example using `clang10`.
 
 ```
-$ git clone https://github.com/stackless-goto/nygma
+$ git clone --recursive https://github.com/stackless-goto/nygma
 $ cd nygma/
-$ bdep init -C @clang10 cc \
-    config.cxx=clang++10 \
-    config.cxx.poptions="-DNDEBUG" \
-    config.cxx.coptions="-flto -stdlib=libc++ -Ofast -fno-rtti -mavx2 -mlzcnt -Wall -Wextra -Wno-c99-designator"
+$ tup init
+$ tup
 ...
-# the trailing slash is important
-$ b nygma/
-...
-$ nygma/nygma/ny --help
+$ build-default/nygma/nygma/ny --help
   nygma/nygma/ny COMMAND {OPTIONS}
 
     ny index, query & reassembly of pcaps
@@ -310,5 +310,5 @@ magenbluten < mb [ at ] 64k.by > :: <https://64k.by>
 
 ## acknowledgements
 
- <a href="https://bmbf.de"><img src="https://64k.by/assets/bmbf-gefoerdert.jpg"></a> <a href="https://prototypefund.de"><img src="https://64k.by/assets/ptfp.png"></a>
+ <a href="https://bmbf.de"><img src="https://64k.by/assets/bmbf-gefoerdert.jpg"></a> <a href="https://prototypefund.de"><img src="https://64k.by/assets/ptfp.png"></a>
 
