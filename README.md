@@ -275,6 +275,9 @@ dependencies on [voidlinux]( https://voidlinux.org ):
 
 building `ny` example using `clang10`.
 
+NOTE: building of the fuzzing reproducers fails if `llvm/clang` do not have sanitizers runtime support. 
+( this is the case when using a `musl-libc` based system )
+
 ```
 $ git clone --recursive https://github.com/stackless-goto/nygma
 $ cd nygma/
