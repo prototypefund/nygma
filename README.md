@@ -249,16 +249,16 @@ int main() {
 
 ## dependencies
 
-`nygma` uses the [build2]( https://build2.org ) build system to manage all dependencies 
-( actually the full project lifecycle ).
+`nygma` uses the [tup]( https://gittup.org/tup ) build tool.
 
+  - clang10
   - [~stackless-goto/pest]( https://github.com/stackless-goto/pest ) for unit testing
   - [~stackless-goto/argh]( https://github.com/stackless-goto/argh ) for argument parsing in `ny`
   - [~stackless-goto/libforest]( https://github.com/stackless-goto/libforest ) for `std::map`
     alternatives and faster index generation
   - [~stackless-goto/libunclassified]( https://github.com/stackless-goto/libunclassified ) for otherwise
     unrelated auxiliary functions
-  - [build2]( https://build2.org ) as build system ( [install-doc]( https://build2.org/install.xhtml ) )
+  - [tup]( https://gittup.org/tup ) as build system ( [install-doc]( https://build2.org/install.xhtml ) )
 
 while not beeing a dependency of `nygma` for code related to ioc hunting using the indexing have a look
 at the following repository ( containing libioc / libt3tch / t3tch ):
@@ -267,9 +267,7 @@ at the following repository ( containing libioc / libt3tch / t3tch ):
 
 ## building & development
 
-development happens mainly on [void]( https://voidlinux.org ).
-
-dependencies for voidlinux:
+dependencies for [voidlinux]( https://voidlinux.org ):
 
 ```shell
 # xbps-install -Su llvm libcxx libcxxabi tup lld
