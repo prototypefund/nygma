@@ -267,7 +267,7 @@ at the following repository ( containing libioc / libt3tch / t3tch ):
 
 ## building & development
 
-dependencies for [voidlinux]( https://voidlinux.org ):
+dependencies on [voidlinux]( https://voidlinux.org ):
 
 ```shell
 # xbps-install -Su llvm libcxx libcxxabi tup lld
