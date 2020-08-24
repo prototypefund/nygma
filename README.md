@@ -278,6 +278,7 @@ building `ny` example using `clang10`.
 ```
 $ git clone --recursive https://github.com/stackless-goto/nygma
 $ cd nygma/
+# tweak build-default/tup.config and Tuprules
 $ tup init
 $ tup
 ...
