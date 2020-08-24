@@ -258,7 +258,7 @@ int main() {
     alternatives and faster index generation
   - [~stackless-goto/libunclassified]( https://github.com/stackless-goto/libunclassified ) for otherwise
     unrelated auxiliary functions
-  - [tup]( https://gittup.org/tup ) as build system ( [install-doc]( https://build2.org/install.xhtml ) )
+  - [tup]( https://gittup.org/tup ) as build system
 
 while not beeing a dependency of `nygma` for code related to ioc hunting using the indexing have a look
 at the following repository ( containing libioc / libt3tch / t3tch ):
