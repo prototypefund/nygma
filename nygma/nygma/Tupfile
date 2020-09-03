@@ -1,10 +1,10 @@
 include_rules
 
-CXXFLAGS += -I..
-CXXFLAGS += -I$(ROOT)/libnygma
-CXXFLAGS += -I$(ROOT)/libriot
-CXXFLAGS += -I$(ROOT)/repositories/argh
-CXXFLAGS += -I$(ROOT)/repositories/libunclassified
+CXXFLAGS += -I$(ONEUP_MODULES_ROOT)/nygma/libriot
+CXXFLAGS += -I$(ONEUP_MODULES_ROOT)/nygma/libnygma
+CXXFLAGS += -I$(ONEUP_MODULES_ROOT)/nygma/libunclassified
+CXXFLAGS += -I$(ONEUP_MODULES_ROOT)/pest
+CXXFLAGS += -I$(ONEUP_MODULES_ROOT)/argh
 
-: foreach *.cxx |> !compile_o |> {objs}
-: {objs} |> !link_exe |> ny
+: foreach *.cxx |> !oneup_cxx_o |> {objs}
+: {objs} |> !oneup_cxx |> ny

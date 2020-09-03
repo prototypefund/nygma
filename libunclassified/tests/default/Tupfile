@@ -1,0 +1,5 @@
+include_rules
+
+CXXFLAGS += -I$(ONEUP_MODULES_ROOT)/pest
+
+: foreach *.cxx |> !oneup_cxx |>
