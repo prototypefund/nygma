@@ -1,0 +1,847 @@
+1:/(#\d{1,2}){20}/
+2:/(((DestFile|encryptPass)\x3D[^\x26]{50})|((BaseDN|SearchFilter)\x3D[^\x26]{128}))/i
+3:/(((c|l)pi\x00.{1}(-\d|0)\x21)|(columns\x00.{1}(-\d|0)\x21)|(page-(right|left|top|bottom)\x00.{1}(-\d|0|([3-9]\d{5}|24\d{4}|236\d{3}|23593\d{1}|23592[2-9])\x21)))/is
+4:/(,\d{1,3}){20}/
+5:/(3BFFE033-BF43-11d5-A271-00A024A51325|iNotes6\.iNotes6|E008A543-CEFB-4559-912F-C27C2B89F13B|dwa7\.dwa7|983A9C21-8207-4B58-BBB8-0EBC3D7C5505|dwa85?\.dwa85?|75AA409D-05F9-4f27-BD53-C7339D4B1D0A)/i
+6:/(?P<obj>[A-Z\d_]+)\.DataURL\s*=\s*(\x22[^\x22]{128}|\x27[^\x27]{128})/s m i
+7:/(Context|Action)\x3D[^\x26\x3b]{1024}/i
+8:/(DisableSandboxAndDrop|ConfusedClass|FieldAccessVerifierExpl)\.class/s m i
+9:/(INSERT|UPDATE)\s*[\s\w]*((mysql\.)?func)[^\r\n]+values\s*\([^\)]+\x2c[\x22\x27][^\x22\x27]*\x2f/i
+#10:/(Image|Doc)/i
+11:/(OvAcceptLang|Accept-Language)\s*[\x3D\x3A]\s*[^\n]{69}/i
+12:/(OvJavaScript|OvTitleFrame|OvHelpWindow|OvMap|OvSession|OvJavaLocale|OvOSLocale|OvLogin|OvDebug|OvDeveloper|OvTreeControl|OvJavaScript|OvProduct|OvPort|OvLocale|OvWebSession)\s*\x3D[^\x3B\x2C]{1024}/i
+13:/(Set|Check)\x10Properties/i
+14:/(USER|PASS)[^\x80-\xff]*[\x80-\xff]/
+15:/([sp]key|csk)=[^\r\n\x26]+(script|onclick|onload|onmouseover|html|[\x22\x27\x3c\x3e\x28\x29])/i
+16:/(\x22|\x27)daap\x3a\x2f\x2f[^\x22\x27]*\x3a[^\x22\x27\x2f]{256}/i
+17:/(\x22|\x27)itms\x3a\x2f\x2f[^\x22\x27]*\x3a[^\x22\x27\x2f]{256}/i
+18:/(\x22|\x27)itmss\x3a\x2f\x2f[^\x22\x27]*\x3a[^\x22\x27\x2f]{256}/i
+19:/(\x22|\x27)itpc\x3a\x2f\x2f[^\x22\x27]*\x3a[^\x22\x27\x2f]{256}/i
+20:/(\x22|\x27)pcast\x3a\x2f\x2f[^\x22\x27]*\x3a[^\x22\x27\x2f]{256}/i
+21:/(\x25(n|t|d)\x20){85}/s m
+22:/(\x3F|\x26)[^\x3D]*(\x27|%27)[^\x3D]*(\x3C|%3c)script(\x3E|%3e)/s m i
+23:/(\x40\x09.{19}|\x41\x0b.{23})[\xf0-\xff].{8}\x01\x00[\x00\x01\x02\x04\x08\x10\x18\x20]\x00/s m i
+24:/(^|&)SelectedID=[^&]+?(\x3B|%3B)/m i
+25:/(^|&)paths(%5b|\x5b)(%5d|\x5d)=[^&]*?(%2e|\x2e){2}(%2f|\x2f)/m i
+26:/(^|&)selectedLocale=[^&]+?([\x22\x27]|%22|%27)/i
+27:/(^|[\x3b\x7b\x7d]|%3b|%7b|%7d)O(%3a|\x3a)(\x2b|%2b)?[0-9]+?(%3a|\x3a)(%22|\x22)/i
+28:/(action|setup)=[a-z]{1,4}/i
+29:/(arg=[^\x26]*?OVwSelection[^\x26]*?\x26.*?sel=[^\s\x26]{1023}|sel=[^\x26]{1023,}\x26.*?arg=[^\s\x26]*?OVwSelection)/s
+30:/(caption,\x22\x5c\x5c\x5c|\x22\x5cn\x5cn\x5cn\x22\x20\x2b\x20str)/s m i
+31:/(data_select1|nameParams|schdParams|text1|schd_select1)=[^\x26]{512}/i
+32:/(displayWidth[\x2b\x20]\d[^\x2b\s\n]{128})/s i
+33:/(filename|type)=[^\x26]*?\x2E\x2E/
+34:/(ora_osb_bgcookie|rbtool)=[^\x20\x26\x3b]{1}/i
+35:/(sIda\/sId|urua\/uru)[abcd]\.classPK/s m i
+36:/.{20}[\x01\x02]\x00\x03\x00.*?\x5c\x00\x5c\x00/s m
+37:/5FDC81917DE08A41A6AC(E9B8ECA1EE.8|.98ECB1EEA8E)/s m i
+38:/<FILE>(\x2e\x2e\x5c|%2E%2E%5C){2}[^<]+?</FILE>/i
+39:/<SelectedID>[^<]+?(\x3B|%3B)/m i
+40:/<[^>]*?style\s*[>=].{1,1024}margin\s*\x3a\s*[^\x3b\x7d]*?-(\d{4}|1[0-9][1-9]|[2-9]\d\d)[ce][mx].*?[\x7b\x3b]/s m i
+41:/<\?(php)?.{1,256}define\s*\x28\s*str_repeat\s*\x28\s*[\x22\x27][^\x22\x27]+[\x22\x27]\s*\x2c\s*\x24argv/s m i
+42:/<\s*object[^>]*?data\s*\x3A[^,>]*?base64/s m i
+43:/<\s*valitem[^>]*\s(value|name)\s*=\s*([\x22\x27])[^\x22\x27]{104}/i
+44:/<\x21DOCTYPE\s+[^>]*?SYSTEM[^>]*?>.*?\x2EparseError/s m i
+45:/<\x21ENTITY[^>]+SYSTEM[^>]+http\x3A\x2F\x2F[^>\s]+http\x3A\x2F\x2F/s m i
+46:/<applet[^>]+(archive|src)\s*?=\s*?(\x22|\x27|)\s*?(\d{5}\.jar|[^>]+\/\d{5}\.jar)/s m i
+47:/<figure[^>]+?dir\s*?=\s*?[\x22\x27]\s*?rtl\s*?[\x22\x27].*?(&#?x?[a-z\d]{2,4}\x3b){100}/s i
+48:/<iframe[^>]*?height\x3d\s*[\x22\x27]?\s*[0-9]{6}/i
+49:/<script[^>]*?for\s*=\s*[\x22\x27]?.*?event\s*=\s*[\x22\x27]?onpropertychange[\x22\x27]?[^>]*?>/s m i
+50:/<script[^>]*src\s*=\s*[\x22\x27][^\x22\x27]*\.json[\x22\x27][^>]*language=vbs/i
+51:/<title>CRiMEPACK [\d\.]+</title>/
+52:/<treechildren.*?ordinal=.*?<treechildren/s m i
+53:/<zombis>\s*<JUNIPER-M3>.*?</JUNIPER-M3>\s*</zombis>/s i
+54:/AdminServlet.*(userid|adminurl)[^\x26\x20\x0a]*<script/s m i
+55:/Authorization\s*\x3A\s*Basic\s*[^\n]{437}/s m i
+56:/Collab\x2EaddStateModel\s*\x28\s*\x7B.*cName\s*\x3A\s*\x22(\x22|\x5Cx00)/s m i
+57:/ComputerName\s*\x3d\s*\x22[^\x22]{256}/i
+58:/Content-Type\x3A\s*misc/ultravox.+?(\r?\n){2}\x5A.9\x01/is
+59:/CreationDate\x28[^\x3c\x29]{500}/
+60:/DBMS_ASSERT\x2Esimple_sql_name\x28[^\x29\x22]*?\x22/s m i
+61:/EnteredAttrName=[^&]{32}/i
+62:/Entry\x20\x2f[^\x2f]*\x2f[^\x2f]{68}/
+63:/ExecWB\s*\x28\s*[^\x2c\x29]*(7|IDM_PRINTPREVIEW)[^\x29]+http\x3a\x2f\x2f/s m i
+64:/FILECODE=[^&]{96}/i
+65:/HEADER[\x20\r]*\n[\x20]*9[\x20\r]*\n\x24[^\n]{92}/
+66:/HTTP\/1.[01]\r\nUser\x2dAgent\x3a\x20[ -~]+\r\nHost\x3a\x20[a-z0-9\x2d\x2e]+\.info\r\n/
+67:/HostList=([^\r\n\x3B]{,296}\x3B)*[^\r\n\x3B]{297}/i
+68:/Host\x3A\s*[^\x0D\x0A]{121}/i
+69:/Hostname\x3D[^\x26\x3F\x3B\x0D\x0A\s]{300}/i
+70:/ICount\x3D\x2D[^\x26\x3F\x3B\x0D\x0A\s]{300}/i
+71:/IP=(https?|ftps?)/i
+72:/InformixServerList=([^\r\n\x3B]{,293}\x3B)*[^\r\n\x3B]{294}/i
+73:/Libs\/Starter(CmdExec|NetUtils|Rec|ScreenShots|Settings)\.py/
+74:/Math\x2efloor([^\x7d]{1,3})?\x7dcatch\x28/s m i
+75:/Math\x2eround([^\x7d]{1,3})?\x7dcatch\x28/s m i
+76:/MaxAge\x3D[^\x26\x3F\x3B\x0D\x0A]{300}/i
+77:/Oid\x3D[^\x0D\x0A]{1000}/i
+78:/OvAcceptLang\s*\x3d\s*[^\x3b\n]{300}/ism
+79:/OvOSLocale\s*\x3d\s*[^\x3b\s]{249}/m i
+80:/Referer\x3a[^\x0d\x0a]*\/world\//
+81:/Referer\x3a\s*?http\x3a\x2f{2}[a-z0-9\x2e\x2d]+\x2fs\x2f\x3fk\x3d/i
+82:/RegExp?\x23.{0,5}\x28\x3f[^\x29]{0,4}i.*?\x28\x3f\x2d[^\x29]{0,4}i.{0,50}\x7c\x7c/s m i
+83:/SET_(SENDFROM|MAILHOST)\x28\x27[^\x27]{256}/i
+84:/SOAPAction\x3A\s*?\x22[^\x22\x23]+?\x23([^\x22]{2048}|[^\x22]+$)/s i
+85:/SYS\.LT\.FINDRICSET\([^,\)]*\'\'\|\|/s i
+86:/SYS\x2eDBMS\x5fAQADM\x5fSYS\x2eGRANT\x5fTYPE\x5fACCESS\s*\x28\s*\x27[^\x2c\x20\x27]*[\x2c\x20]/is
+87:/SelectedSubTabId=[^>]*?([\x22\x27]|%22|%27)\s*?>\s*?<[^>]*?script/i
+88:/SignUrl=[^\x26\s]*[\x22\x27\x28\x29\x3C\x3E]/i
+89:/SoftwareRegistration\.do.*?updateRegn=[^\x26\r\n]+(script|onclick|onload|onmouseover|html|[\x22\x27\x3c\x3e\x28\x29])/i
+90:/TMlogonEncrypted=(\!|\%21)CRYPT(\!|\%21)[A-Z0-9]{512}/i
+91:/Template\x3D[^\x0D\x0A]{1000}/i
+92:/TimerMethod\x3D[^\x26]*[\x3C\x28\x22\x27]/i
+93:/USER\s*[^\x0d]+\x25\x27/s m i
+94:/User-Agent\:[^\x0a\x0d]+?Havij/
+95:/User-Agent\x3A\s+?mus[\x0d\x0a]/i
+96:/User-Agent\x3a[^\x0d\x0a]*Java\/1\./
+97:/User-Agent\x3a\x20Agent\d{5,9}/i
+98:/User-Agent\x3a\x20[^\n]*?WinHttp\x2eWinHttpRequest.*?\n/
+99:/Visio \x28TM\x29 Drawing\r\n\x00{4}([^\x00]|\x00[^\x00]|\x00\x00[^\x01-\x06\x0b]|\x00\x00[\x01-\x06\x0b][^\x00])/s m i
+100:/[1-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}/
+101:/[?&](CallbackParam|CallbackFn)=[^&]+?([\x22\x27\x3c\x3e\x28\x29]|eval|script|onload|src)/i
+102:/[?&](k|u|cs)=[^&]+?</i
+103:/[?&](path|file)Name=[^&]*?\x2e\x2e\x2f/i
+104:/[?&](search|topic)=[^&]*?(\x27|%27)(\s*|(%20)*)(\x3b|%3b)/s i
+105:/[?&]SelectedSubTabId=[^&]*?([\x22\x27\x3c\x3e\x28\x29]|onload|src)/i
+106:/[?&]Using=_layouts/query.iqy.*?&List=[^&]+(script|src|location|document|onlick|onload)/i
+107:/[?&]appName=[^&]+?([\x22\x27\x3c\x3e\x28\x29]|script|onload|src)/i
+108:/[?&]arg=[^-][^+&$]{189}/i
+109:/[?&]configName=[^&]+?([\x22\x27\x3c\x3e\x28\x29]|script|onload|src)/i
+110:/[?&]filename=[^&]*?[\x22\x27][^&]*?\x3B/i
+111:/[?&]iprange=[^&]{68}/i
+112:/[?&]key=[^&]+?([\x22\x27\x3c\x3e\x28\x29]|script|onload|src)/i
+113:/[?&]name=(\x5c\x5c|%5c%5c)/i
+114:/[?&]name=[^&]*\x2e\x2e\x2f[^&]*\x2e\x2e\x2f[^&]*\x2e\x2e\x2f/i
+115:/[?&]name=[^&]+?([\x22\x27\x3c\x3e\x28\x29]|script|onload|src)/i
+116:/[?&]site2pstoretoken=[^&]+?([\x22\x27\x3c\x3e\x28\x29]|script|onload|src)/i
+#117:/[\x35\x36\x41\x42\x44-\x49]\x00\x00/
+#118:/[\x37-\x40\x43]\x00\x00/
+119:/[\x3f\x26]id=\d*[\x28\x29\x22\x27]/is
+120:/[^&]+&[a-z]=[a-f0-9]{16}&[a-z]=[a-f0-9]{16}$/
+121:/[^R]CHAR\(.*?[^R]CHAR\(.*?[^R]CHAR\(.*?[^R]CHAR\(.*?[^R]CHAR\(/s m i
+122:/[^\x3E]*?text\s*\x3D\s*(\x27[^\x27]{500}|\x22[^\x22]{500}|\S{500})/i
+123:/[^\x3a\s]{309}\sPRIVMSG/i
+124:/[^\x3e]{0,300}\x2fURI \x28data/i
+125:/[^\x5C\x2F\x3A\x2A\x3F\x22\x3C\x3E\x7C\x3D\s]{256}\x2Eppt($|\x3f)/i
+126:/[a-z0-9]{32}\.jar/
+127:/\%5b\%5f[0-9]{16}/s m
+128:/\&h=\d{5}$/i
+129:/\.(jsp|html)\?[^\r\n]*PG=SPEEDBAR/i
+130:/\.dashstyle\.array\.length\s*?=[^\x3b]*?-\s*?\d/i
+131:/\.jpg\x20HTTP\/1\.[01]\r\nUser\x2dAgent\x3a\x20[a-z]+\r\nHost\x3a\x20[a-z0-9\x2d\x2e]+\.com\.br\r\n\r\n$/
+132:/\.js\/\?[a-z]+\=[a-z]{1,4}/
+133:/\.location(\.href)?\s*=\s*new\s+String\s*\x28\s*\x22\s*javascript\x3A/s i
+134:/\.onpropertychange\s*=\s*function[^{]*?\{[^}]*?\w+\.swapNode\x28/s m i
+135:/\.php\?[a-z]{2,12}=[a-f0-9]{10,64}&[a-z]{2,12}=.*?&[a-z]{2,12}=/
+136:/\.php\?[a-z]{2,8}=[a-z0-9]{2}\x3a[a-z0-9]{2}\x3a[a-z0-9]{2}\x3a[a-z0-9]{2}\x3a[a-z0-9]{2}\&[a-z]{2,8}=/
+137:/\.php\?action=jv\&h=\d+/i
+138:/\.php\?b=[A-F0-9]+&v=1\./
+139:/\.php\?j=1&k=[0-9](i=[0-9])?$/
+140:/\.php\?mac\x3d([a-f0-9]{2}\x3a){5}[a-f0-9]{2}$/
+141:/\.php\?setup=d\&s=\d+\&r=\d+/i
+142:/\.php\x3fw\x3d\d+\x26n\x3d\d+/
+143:/\.png$/i
+144:/\.replace\x28\x2F[^\x2F]+\x2F[A-Z]*\x2C(\x22\x22|\x27\x27)/s m i
+#145:/\/$/
+146:/\/%2E%2E(\\|%5C)\//
+147:/\/([0-9][0-9a-z]{2}|[0-9a-z][0-9][0-9a-z]|[0-9a-z]{2}[0-9])\.jar$/
+148:/\/(\\|%5C)%2E%2E\//
+149:/\/AES\d+O\d+\.jsp\?[a-z0-9=\x2b\x2f]{20}/i
+150:/\/AES\d{9}O\d{4,5}\x2ejsp/i
+151:/\/CreationDate\x28[^\x3c\x29]{500}/
+152:/\/DES\d+O\d+\.jsp\?[a-z0-9=\x2b\x2f]{20}/i
+153:/\/DES\d{9}O\d{4,5}\x2ejsp/i
+154:/\/F[^\/>]+\.(exe|dll|swf)/s m i
+155:/\/Java([0-9]{1,2})?\.jar\?java=[0-9]{2}/
+156:/\/La(.)*?\s*?\/F[^\/>]+\.(exe|dll|swf)/s m i
+157:/\/MacApp\/\d{2}(-\d{2}){3}(:\d{2}){2}\.png\r\n[^\x89]+?\x89PNG/s m i
+158:/\/OvCgi\/(jovgraph|webappmon)\.exe/i
+159:/\/OvCgi\/(jovgraph|webappmon)\.exe.*?-textFile+[^+]{201}/i
+160:/\/SUS\d+O\d+\.jsp\?[a-z0-9=\x2b\x2f]{20}/i
+161:/\/VertexNet\/adduser\.php\?uid=\x7B[^\r\n]+\x7D\x26la[^\r\n]+\x26cmpname=/i
+162:/\/VertexNet\/tasks\.php\?uid=\x7B[^\r\n]+\x7D\x26la[^\r\n]+\x26cmpname=/i
+163:/\/ZES\d+O\d+\.jsp\?[a-z0-9=\x2b\x2f]{20}/i
+164:/\/[a-f0-9]{16}([a-f0-9]{16})?\/ff\.php/
+165:/\/[a-f0-9]{16}\/a\.php/
+166:/\/[a-f0-9]{16}\/q\.php/
+167:/\/[a-f0-9]{32}\/a\.php/
+168:/\/[a-f0-9]{32}\/q\.php/
+169:/\/[a-z0-9]{12}\.txt$/
+170:/\/[a-zA-Z0-9]{150,}\/getmyfile\.exe\?o=1\&h=11$/
+171:/\/[a-z]{4}\.html\?h\=\d{6,7}$/i
+172:/\/[a-z]{4}\.html\?i\=\d{6,7}$/i
+173:/\/[a-z]{4}\.html\?j\=\d{6,7}$/i
+174:/\/\?[0-9a-f]{60,66}[\;\d]*$/
+175:/\/\?id=\d+\x26AnSSip=/i
+176:/\/\?java\=[0-9]{2,4}/
+177:/\/\[fx]\.jar$/
+178:/\/\d{2}\.html$/
+179:/\/api\/urls\/\?ts=[a-z0-9]+&affid=\d{5}/i
+180:/\/app\/\?prj=\d\x26pid=[^\r\n]+\x26mac=/i
+181:/\/blog/images/3521\.jpg\?v\d{2}=\d{2}\x26tq=/i
+182:/\/count\d{2}\.php$/
+183:/\/elections\.php\?([a-z0-9]+\x3d\d{1,3}\&){9}[a-z0-9]+\x3d\d{1,3}$/
+184:/\/f\.php\?k=\d/
+185:/\/html\/license_[0-9A-F]{550,}\.html$/i
+186:/\/images\/[a-zA-Z]\.php\?id\=[0-9]{2,3}(\.\d)?$/i
+187:/\/index\d{9}\.asp/i
+188:/\/install\.asp\?mac=[A-F\d]{12}\x26mode/i
+189:/\/jdb\/inf\.php\?id=[a-f0-9]{32}$/i
+190:/\/jlnp\.html$/
+191:/\/jorg\.html$/
+192:/\/jovf\.html$/
+193:/\/loader\.cpl$/
+194:/\/pdfx\.html$/
+195:/\/pte\.aspx\?ver=\d\.\d\.\d+\.\d\x26rnd=\d{5}/i
+196:/\/r_autoidcnt\.asp\?mer_seq=\d[^\r\n]*\x26mac=/i
+197:/\/se\/[a-f0-9]{100,200}\/[a-f0-9]{6,9}\/[A-Z0-9_]{4,200}\.com/i
+198:/\/setup_b\.asp\?prj=\d\x26pid=[^\r\n]*\x26mac=/i
+199:/\/stat_d\/$/
+200:/\/stat_n\/$/
+201:/\/stat_svc\/$/
+202:/\/stat_u\/$/
+203:/\/vic\.aspx\?ver=\d\.\d\.\d+\.\d\x26rnd=\d{5}/i
+204:/\/world\/[^\x2f]*\.pdf/i
+205:/\<a\s+[^\>]*href\s*\x3D\s*[\x22\x27]?[^\>\x22\x27]*\x23\x3A\x2F\x2F[^\>]+\>/i
+206:/\?[a-f0-9]{4}$/m i
+207:/\?id=[A-Z0-9]{20}&cmd=img/
+208:/\?inf\=[0-9a-f]{8}\x2Ex\d{2}\x2E\d{8}\x2E/i
+209:/\?page\=[a-f0-9]{16}/s m i
+210:/\?spl=\d&br=[^&]+&vers=[^&]+&s=/
+211:/\bcmd\x2eexe\b/is
+#212:/\d+&/m i
+213:/\r\nHost\x3A\s+[^\r\n]*?[bcdfghjklmnpqrstvwxyz]{5,}[^\r\n]*?\x2Einfo\r\n/i
+214:/\r\nHost\x3a\x20[a-z0-9\x2d\x2e]+\.com\x2d[a-z0-9\x2d\x2e]+(\x3a\d{1,5})?\r\n/i
+215:/\r\nReferer\x3A\x20http\x3A\x2F\x2f[a-z0-9\x2d\x2e]+\x2F\x3Fdo\x3Dpayment\x26ver\x3D\d+\x26sid\x3D\d+\x26sn\x3D\d+\r\n/
+#216:/\s*\x28(\x27[^\x27]{64}|\x27[^\x27]*\x27\s*,\s*\x27[^\x27]{64})/
+217:/\sAUTHENTICATE\s[^\n]{100}/s m i
+218:/\sEXAMINE\s[^\n]*?\s\{/s m i
+219:/\sFETCH\s[^\n]*?\s\{/s m i
+220:/\sLOGIN\s\w+\s\{\d+\}[\r]?\n[^\n]*?%/s m i
+221:/\x00[\x3b\x7c\x26\x60][^\x00]+\x00airappinstaller\x00ASnative\x00/s m i
+222:/\x00[\x70-\x74]\x00[\x00-\x09]/is
+223:/\x00\.\x00\.\x00[\x2f\x5c]/
+224:/\x00\x00\x00[\x00\x01].{4}\x00\x01\x00\x01espia_(video_get_dev_image|audio_get_dev_audio|image_get_dev_screen)/
+225:/\x00\x00\x00[\x00\x01].{4}\x00\x01\x00\x01incognito_(list_tokens|impersonate_token|add_user|add_group_user|add_localgroup_user|snarf_hashes)/
+226:/\x00\x00\x00[\x00\x01].{4}\x00\x01\x00\x01lanattacks_(start_dhcp|reset_dhcp|set_dhcp_option|stop_dhcp|dhcp_log|start_tftp|reset_tftp|add_tftp_file|stop_tftp)/
+227:/\x00\x00\x00[\x00\x01].{4}\x00\x01\x00\x01networkpug_(start|stop)/
+228:/\x00\x00\x00[\x00\x01].{4}\x00\x01\x00\x01priv_(elevate_getsystem|passwd_get_sam_hashes|fs_get_file_mace|fs_set_file_mace|fs_set_file_mace_from_file|fs_blank_file_mace|fs_blank_directory_mace)/
+229:/\x00\x00\x00[\x00\x01].{4}\x00\x01\x00\x01sniffer_(interfaces|capture_start|capture_stop|capture_stats|capture_dump|capture_dump_read)/
+230:/\x00\x00\x00[\x00\x01].{4}\x00\x01\x00\x01stdapi_fs_(separator|search|file_expand_path|md5|sha1|delete_file|stat|ls|chdir|mkdir|getwd|delete_dir)/
+231:/\x00\x00\x00[\x00\x01].{4}\x00\x01\x00\x01stdapi_net_(config_get_interfaces|config_get_routes|config_add_route|config_remove_route|udp_client|tcp_server|tcp_client|socket_tcp_shutdown)/
+232:/\x00\x00\x00[\x00\x01].{4}\x00\x01\x00\x01stdapi_railgun_(memread|memwrite|api_multi|api)/
+233:/\x00\x00\x00[\x00\x01].{4}\x00\x01\x00\x01stdapi_registry_(load_key|unload_key|open_key|open_remote_key|create_key|delete_key|close_key|enum_key|set_value|query_value|delete_value|query_class|enum_value)/
+234:/\x00\x00\x00[\x00\x01].{4}\x00\x01\x00\x01stdapi_sys_config_(getuid|sysinfo|rev2self|steal_token|drop_token|getprivs)/
+235:/\x00\x00\x00[\x00\x01].{4}\x00\x01\x00\x01stdapi_sys_eventlog_(open|numrecords|read|oldest|clear|close)/
+236:/\x00\x00\x00[\x00\x01].{4}\x00\x01\x00\x01stdapi_sys_process_(thread_open|thread_create|thread_get_threads|image_load|image_get_proc_address|image_unload|image_get_images|memory_allocate|memory_free|memory_read|memory_write|memory_query|memory_protect|memory_lock|memory_unlock|attach|execute|kill|getpid|get_processes|close|wait|get_info|thread_suspend|thread_resume|thread_terminate|thread_query_regs|thread_set_regs|thread_close)/
+237:/\x00\x00\x00[\x00\x01].{4}\x00\x01\x00\x01stdapi_ui_(enable_keyboard|enable_mouse|get_idle_time|desktop_enum|desktop_get|desktop_set|desktop_screenshot|unlock_desktop|start_keyscan|stop_keyscan|get_keys)/
+238:/\x00\x00\x00[\x00\x01].{4}\x00\x01\x00\x01webcam_(list|start|get_frame|stop|audio_record)/
+#239:/\x0a\x0d?\x0a[A-Z0-9\x2b\x2f\s]*[^A-Z0-9\x2b\x2f\s\x3d]/i
+240:/\x23\d{2}\x3a\d{2}\x3a\d\d$/
+241:/\x25USERPROFILE\x25\x5C[^\x2e]{1,255}\x2eexe/
+242:/\x26?arg\d+\s*=\s*[^\x26]*?(import|http)/i
+243:/\x26TARGET\x3d\x5f(blank|parent|top)/s i
+244:/\x26arg\d+\s*=\s*[^\r\n\x26]*import/i
+245:/\x26r\d\x3d[^\x26\s]*\x27/s m i
+246:/\x26r\d\x3d\d*[^\x26\s\d]/s m i
+247:/\x26tv\x3d\d\.\d\.\d{4}\.\d{4}/s m i
+248:/\x26uid\x3d[a-f0-9]{16}($|\x26)/
+249:/\x28\s*\x22\s*\x25([2-9][6-9][5-9]|[1-9][0-9]{3,})f/m i
+250:/\x28compatible\x3b[A-Z]*\x3b\x29\x0d\x0a/
+251:/\x2A\x02.{4}\x00\x04\x00\x07.*\x3C\x3E[^\x00]{1023,}/s m i
+252:/\x2E[A-Z\d_]+\s*\x7b\s*text-decoration[^\x3A]*?\x7d/s m i
+253:/\x2E\x00?d\x00?l\x00?l\x00?/i
+254:/\x2Ebin([\?\x5c\x2f]|$)/s m i
+255:/\x2Emaplet([\?\x5c\x2f]|$)/s m i
+256:/\x2Ermf([\?\x5c\x2f]|$)/s m i
+257:/\x2Eview\x2Eselection.*?\x2Etree\s*\x3D\s*null.*?\x2Einvalidate/s m i
+258:/\x2FCSuserCGI\x2Eexe\x3F.*?Logout.[^&]{96}/i
+259:/\x2F[a-z]+\x2epng/i
+260:/\x2Faws\d{1,5}\.jsp\x3F/i
+261:/\x2Fdesktop\x2F\d+\x2Ftoolbar\x2Fsupremetb\d+\.cfg/i
+262:/\x2Fevil\x2Fservices\x2Fbid_register\x2Ephp\x3FBID\x3D[A-Za-z]{6}\x26IP\x3D\d{1,3}\x2E\d{1,3}\x2E\d{1,3}\x2E\d{1,3}\x26cipher\x3D[A-Za-z]{9}/s m i
+263:/\x2Fgumblar\x2Ecn\x2Frss\x2F\x3Fid\x3D\d+/s m i
+264:/\x2Fin\.cgi\?\d{1,2}$/s m i
+265:/\x2Flogo\.gif\x3F[0-9a-f]{5,7}=\d{5,7}/i
+266:/\x2Flogos\.gif\x3F[0-9a-f]+=\x2d?\d+/i
+267:/\x2Fmartuz\x2Ecn\x2Fvid\x2F\x3Fid\x3D\d+/s m i
+268:/\x2Fmrow\x5Fpin\x2F\x3Fid\d+[a-z]{5,}\d{5}\x26rnd\x3D\d+/s m i
+269:/\x2FphpThumb\.php\x3F[^\r\n]*fltr\[\]=[^\r\n\x26]+\x3B/i
+270:/\x2Fupdate\w\x2Ephp\x3Fp\x3D\d+.*User\x2DAgent\x3A\s+Mozilla\x2F4\x2E75\s\x5Ben\x5D\s\x28X11\x3B\sU\x3B\sLinux\s2\x2E2\x2E16\x2D3\si686\x29/s m i
+271:/\x2e(jpg|png|gif)\x3fs?v.*?&tq=g[A-Z0-9]{2}/
+272:/\x2e3g2([\?\x5c\x2f]|$)/s m i
+273:/\x2e3gp([\?\x5c\x2f]|$)/s m i
+274:/\x2e4xm([\?\x5c\x2f]|$)/s m i
+275:/\x2eExecWB\s*\x28(IDM_PRINTPREVIEW|7)\x2c\s+(0|2)\x2C\s+\x22http/s m i
+276:/\x2eafm([\?\x5c\x2f]|$)/s m i
+277:/\x2eani([\?\x5c\x2f]|$)/s m i
+278:/\x2eapk([\?\x5c\x2f]|$)/s m i
+279:/\x2easx([\?\x5c\x2f]|$)/s m i
+280:/\x2eavi([\?\x5c\x2f]|$)/s m i
+281:/\x2ecdr([\?\x5c\x2f]|$)/s m i
+282:/\x2ecgm([\?\x5c\x2f]|$)/s m i
+283:/\x2echm([\?\x5c\x2f]|$)/s m i
+284:/\x2eclass([\?\x5c\x2f]|$)/s m i
+285:/\x2ecov([\?\x5c\x2f]|$)/s m i
+286:/\x2ecpe([\?\x5c\x2f]|$)/s m i
+287:/\x2ecsd([\?\x5c\x2f]|$)/s m i
+288:/\x2edcr([\?\x5c\x2f]|$)/s m i
+289:/\x2edefinition\s*\x28/s i
+290:/\x2edir([\?\x5c\x2f]|$)/s m i
+291:/\x2edisco([\?\x5c\x2f]|$)/s m i
+292:/\x2edmg([\?\x5c\x2f]|$)/s m i
+293:/\x2edoc([\?\x5c\x2f]|$)/s m i
+294:/\x2edxf([\?\x5c\x2f]|$)/s m i
+295:/\x2eeot([\?\x5c\x2f]|$)/s m i
+296:/\x2eeps([\?\x5c\x2f]|$)/s m i
+297:/\x2eexe([\?\x5c\x2f]|$)/s m i
+298:/\x2eexport(AsFDF|AsText|AsXFDF|DataObject|XFAData)\x28[^\x2c\x29]*\x2c[^\x2c\x29]*\x2c[^\x29]+\x2eexe/s m i
+299:/\x2ef4a([\?\x5c\x2f]|$)/s m i
+300:/\x2ef4b([\?\x5c\x2f]|$)/s m i
+301:/\x2ef4p([\?\x5c\x2f]|$)/s m i
+302:/\x2ef4v([\?\x5c\x2f]|$)/s m i
+303:/\x2eflv([\?\x5c\x2f]|$)/msi
+304:/\x2efpx([\?\x5c\x2f]|$)/s m i
+305:/\x2egif([\?\x5c\x2f]|$)/s m i
+306:/\x2ehpj([\?\x5c\x2f]|$)/s m i
+307:/\x2ehtc([\?\x5c\x2f]|$)/s m i
+308:/\x2eimg([\?\x5c\x2f]|$)/s m i
+309:/\x2ejar([\?\x5c\x2f]|$)/s m i
+310:/\x2ejfif?([\?\x5c\x2f]|$)/s m i
+311:/\x2ejif([\?\x5c\x2f]|$)/s m i
+312:/\x2ejnlp([\?\x5c\x2f]|$)/s m i
+313:/\x2ejpe([\?\x5c\x2f]|$)/s m i
+314:/\x2ejpeg([\?\x5c\x2f]|$)/s m i
+315:/\x2ejpg([\?\x5c\x2f]|$)/s m i
+316:/\x2ek3g([\?\x5c\x2f]|$)/s m i
+317:/\x2elnk([\?\x5c\x2f]|$)/s m i
+318:/\x2em3u([\?\x5c\x2f]|$)/s m i
+319:/\x2em4a([\?\x5c\x2f]|$)/s m i
+320:/\x2em4b([\?\x5c\x2f]|$)/s m i
+321:/\x2em4p([\?\x5c\x2f]|$)/s m i
+322:/\x2em4r([\?\x5c\x2f]|$)/s m i
+323:/\x2em4v([\?\x5c\x2f]|$)/s m i
+324:/\x2emanifest([\?\x5c\x2f]|$)/s m i
+325:/\x2emetalink([\?\x5c\x2f]|$)/s m i
+326:/\x2emov([\?\x5c\x2f]|$)/s m i
+327:/\x2emp3([\?\x5c\x2f]|$)/s m i
+328:/\x2emp4([\?\x5c\x2f]|$)/s m i
+329:/\x2empeg([\?\x5c\x2f]|$)/s m i
+330:/\x2empg([\?\x5c\x2f]|$)/s m i
+331:/\x2emswmm([\?\x5c\x2f]|$)/s m i
+332:/\x2eoga([\?\x5c\x2f]|$)/s m i
+333:/\x2eogg([\?\x5c\x2f]|$)/s m i
+334:/\x2eogv([\?\x5c\x2f]|$)/s m i
+335:/\x2eogx([\?\x5c\x2f]|$)/s m i
+336:/\x2eopus([\?\x5c\x2f]|$)/s m i
+337:/\x2eotf([\?\x5c\x2f]|$)/s m i
+338:/\x2epaq8o([\?\x5c\x2f]|$)/s m i
+339:/\x2epct([\?\x5c\x2f]|$)/s m i
+340:/\x2epdf([\?\x5c\x2f]|$)/s m i
+341:/\x2epfa([\?\x5c\x2f]|$)/s m i
+342:/\x2epfb([\?\x5c\x2f]|$)/s m i
+343:/\x2epfm([\?\x5c\x2f]|$)/s m i
+344:/\x2ephp\x3f[a-z]+=[a-fA-Z0-9]+&[a-z]+=[0-9]+$/i
+345:/\x2ephp\x3f\s*-s/i
+346:/\x2epict([\?\x5c\x2f]|$)/s m i
+347:/\x2epjpeg([\?\x5c\x2f]|$)/s m i
+348:/\x2epls([\?\x5c\x2f]|$)/s m i
+349:/\x2epmd([\?\x5c\x2f]|$)/s m i
+350:/\x2epng([\?\x5c\x2f]|$)/s m i
+351:/\x2eppt([\?\x5c\x2f]|$)/s m i
+352:/\x2epub([\?\x5c\x2f]|$)/s m i
+353:/\x2eqcp([\?\x5c\x2f]|$)/s m i
+354:/\x2eqt([\?\x5c\x2f]|$)/s m i
+355:/\x2eram?([\?\x5c\x2f]|$)/s m i
+356:/\x2erm([\?\x5c\x2f]|$)/s m i
+357:/\x2ermp([\?\x5c\x2f]|$)/s m i
+358:/\x2erp([\?\x5c\x2f]|$)/s m i
+359:/\x2ert([\?\x5c\x2f]|$)/s m i
+360:/\x2ertf([\?\x5c\x2f]|$)/s m i
+361:/\x2eru/\w+\?\d$/m i
+362:/\x2erv([\?\x5c\x2f]|$)/s m i
+363:/\x2esami([\?\x5c\x2f]|$)/s m i
+364:/\x2eskm([\?\x5c\x2f]|$)/s m i
+365:/\x2eskp([\?\x5c\x2f]|$)/s m i
+366:/\x2eslk([\?\x5c\x2f]|$)/s m i
+367:/\x2esmi([\?\x5c\x2f]|$)/s m i
+368:/\x2esmil([\?\x5c\x2f]|$)/s m i
+369:/\x2espx([\?\x5c\x2f]|$)/s m i
+370:/\x2esubstringData\s*\x28[^\x2c]*\x2c\s*0x7(f|F){6}[6-9AaBbCcDdEeFf]/
+371:/\x2eswf([\?\x5c\x2f]|$)/s m i
+372:/\x2etga([\?\x5c\x2f]|$)/s m i
+373:/\x2etif(f)?([\?\x5c\x2f]|$)/s m i
+374:/\x2etorrent([\?\x5c\x2f]|$)/s m i
+375:/\x2ette([\?\x5c\x2f]|$)/s m i
+376:/\x2ettf([\?\x5c\x2f]|$)/s m i
+377:/\x2evap([\?\x5c\x2f]|$)/s m i
+378:/\x2evbs([\?\x5c\x2f]|$)/s m i
+379:/\x2evisprj([\?\x5c\x2f]|$)/s m i
+380:/\x2evsd([\?\x5c\x2f]|$)/s m i
+381:/\x2ewav([\?\x5c\x2f]|$)/s m i
+382:/\x2ewax([\?\x5c\x2f]|$)/s m i
+383:/\x2ewm([\?\x5c\x2f]|$)/s m i
+384:/\x2ewma([\?\x5c\x2f]|$)/s m i
+385:/\x2ewmd([\?\x5c\x2f]|$)/s m i
+386:/\x2ewmf([\?\x5c\x2f]|$)/s m i
+387:/\x2ewmv([\?\x5c\x2f]|$)/s m i
+388:/\x2ewmx([\?\x5c\x2f]|$)/s m i
+389:/\x2ewmz([\?\x5c\x2f]|$)/s m i
+390:/\x2ewps([\?\x5c\x2f]|$)/s m i
+391:/\x2ewrf([\?\x5c\x2f]|$)/s m i
+392:/\x2ewri([\?\x5c\x2f]|$)/s m i
+393:/\x2ewvx([\?\x5c\x2f]|$)/s m i
+394:/\x2exbm([\?\x5c\x2f]|$)/s m i
+395:/\x2exls([\?\x5c\x2f]|$)/s m i
+396:/\x2exlw([\?\x5c\x2f]|$)/s m i
+397:/\x2exml([\?\x5c\x2f]|$)/s m i
+398:/\x2expm([\?\x5c\x2f]|$)/s m i
+399:/\x2exsl([\?\x5c\x2f]|$)/s m i
+400:/\x2exslt([\?\x5c\x2f]|$)/s m i
+401:/\x2exspf([\?\x5c\x2f]|$)/s m i
+402:/\x2exul([\?\x5c\x2f]|$)/msi
+403:/\x2ezip([\?\x5c\x2f]|$)/s m i
+404:/\x2f1020\d{6,16}$/
+405:/\x2fAdmin\x2fFunctionsClient\x2f(check.txt|Select.php|Update.php)/i
+406:/\x2fF\s*(<<|)\s*\x2fDOS\s*\x28/s m i
+407:/\x2fF\s*(<<|)\s*\x2fMac\s*\x28/s m i
+408:/\x2fF\s*(<<|)\s*\x2fUnix\s*\x28/s m i
+409:/\x2f[a-z0-9]+\.php\?php\x3dreceipt$/i
+410:/\x2f\?ts\x3d[a-f0-9]{40}\x26/i
+411:/\x2fblackmuscats?\x3f\d/i
+412:/\x2fib2\x2f$/
+413:/\x2fkills\x2etxt\x3f(t\d|p)\x3d\d{6}$/
+414:/\x2fms162cfg\x2ejsp\x3f([sverlcfan]\x3d[^\x26\s]*\x26){8}/i
+415:/\x2fpanda\x2f\x3fu\x3d[a-z0-9]{32}/
+416:/\x2ftimthumb\x2ephp\x3f[^\r\n]*?src=https?\x3a\x2f([^\x2e\x2f]+?\x2e){3}/i
+417:/\x2fwidth[^\x3e]+\x2fDCTDecode/s m i
+418:/\x3C\s*applet[^\x3E\n$]*code\s*=\s*[\x27\x22]AppletX[\x22\x27][^\x3E\n$]*archive\s*=\s*[\x22\x27][^\s\x3E\n$]{32}\x2Ejar[\x22\x27]/i
+419:/\x3C\s*param\s*\x3E\s*\x3C\s*value\s*\x3E\s*\x3C\s*string\s*\x3E[^\x3C]*[\x2C\x3B]/s m i
+420:/\x3b\s*udhcpc\s*\x3b.*\x26/s m i
+421:/\x3c[^\x3e]+[\x22\x27]mailto\x3a[^\x3e]+\x3f[^\x3e]*\x2faltvba/s m i
+422:/\x3c[^\x3e]+[\x22\x27]mailto\x3a[^\x3e]+\x3f[^\x3e]*\x2fimportprf/s m i
+423:/\x3c\s*Marquee[^\x3e]*onstart\s*\x3D\s*\x22\s*document\x2e(write|writeln|open)/s m i
+424:/\x3ccell\s+[^\x3e]*\x3aFormula\s*\x3d\s*\x22\s*\x3drept\x28/i
+425:/\x3ciframe[^\x3e]*?src\x3d\x22http\x3a\x2f\x2f[^\x26\x2e]+\x26\x2346\x3b[^\x2e]+\x2epl\x2frc\x2f\x22/
+426:/\x3cimg[^\x3e]*src\x3d(\x22|\x27)?[^\x22\x27\s]{300}/i
+427:/\x3cj2se[^\x3e]*(initial|max)-heap-size\s*\x3d\s*(\x22|\x27)[^\x22\x27]{50}/i
+428:/\x3cscript\x3etry\x7b\w+\x2b\x2b([^\x7d]{1,4})?\x7dcatch\x28/s m i
+429:/\x3ctime\x20[^\x3e]*(begin|end)\x3d\x22[^\x22]{13}/s m i
+430:/\x3e\x0d\x0aSUBJECT\x3a (\d{1,3}\x2e){3}\d{1,3}\x7c[^\r\n]*\x7c\d{2,4}\x0d\x0a/
+431:/\x3fsv\x3d\d{1,3}\x26tq\x3d/s m i
+432:/\x45\x4d\x46\x2b\x08\x40.(\x06|\x86).{28}([\xf4-\xff]\xff\xff(\xff|\x7f)|[\x00-\x06]\x00\x00\x80)/
+433:/\x5Csv\s+[^\x7D]*?\x3B[^\x7D]*?\x3B[^\x7B]{12}/s m i
+#434:/\x5F[A-F0-9]{16}/
+435:/\x5c\x00\x5c\x00[^\x5c]*?\x5c\x00\x00\x00/
+436:/\x5cdpcallout\s*\x5cdpcallout\s*\x5cdpcallout/s m i
+437:/\x5flayouts\x2fhelp\x2easpx\x3f.*?cid0\x3d[A-Za-z\x5c\x2e0-9]*[^A-Za-z\x5c\x2f\x2e\x26\x3d0-9\s]/s i
+438:/\xff\x5e\x00(\x05[\x80-\xff]|\x06\x00[\x80-\xff]|\x06[^\x00])/
+439:/\xff{32}$/
+440:/\|(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)\|\d+\|/
+441:/^((\.\.\/|\.\.\\).*|(\.(exe|dll)))~~/i
+#442:/^(.{3}[\x80-\xFF]|.{7}[\x80-\xFF])/s
+443:/^(GET|OPTIONS|HEAD|POST|PUT|DELETE|CONNECT|PROPFIND|PROPPATCH|MKCOL|COPY|MOVE|LOCK|UNLOCK)[^\r\n]*\s+[^\r\n]*\x2f\x25c0\x25af\x2f/m i
+444:/^(GET|POST|HEAD)\s+[^\x25\r\n]*\x25[\x23\x24\x27\x2a\x2b\x2d\x2ehlqjzt1234567890]*[diouxefgacspn]/i
+445:/^(NT|CallBack|SID|TimeOut)\s*\x3a\s*[^\n]{512}/s m i
+446:/^(To|From)[^\x3e]*?\x3e[a-z0-9]*[^a-z0-9][^\x3c]*?\x3c\x2fconvert(To|From)/is
+447:/^(UN)?SUBSCRIBE\s/s m i
+448:/^([\x22\x27]\s*value)?\s*=\s*\x22[^\x22]{70}/s m i
+449:/^([\x22\x27]\s*value)?\s*=\s*\x27[^\x27]{70}/s m i
+450:/^(\x75|\x2d|\x2f|\x73|\xa2|\x2e|\x24|\x74)/s
+451:/^(\xFF|\x3C)\x00/
+452:/^(admin|axis2)/i
+453:/^(encrypt|decrypt)\x28\x27[^\x27]{129}/s m i
+#454:/^...(..)?[\x80-\xff]/
+455:/^.\x00{3}(\x03|\x04)/s
+#456:/^.{27}/
+#457:/^.{27}/s
+458:/^.{28}([0-9A-Z\x20\x2F]{4}.{8}[^\xFF].{7})*([0-9A-Z\x20\x2F]{4}.{8}\xFF{3})/is
+459:/^.{28}(\x00\x1f|\x00\x20)/s
+#460:/^.{2}/s
+461:/^.{2}\x08\xa5\x00\x01.{14}(([^\x00]|\x00[\x81-\xFF])|.{4}([^\x00]|\x00[\x81-\xFF]))/s
+#462:/^.{4}/
+#463:/^.{4}/s
+#464:/^.{4}(\x00\x00\x00\x00|.{12})/s
+465:/^.{8}\x01[\x35\x36\x41\x42\x44-\x49]/
+466:/^.{8}\x01[\x37-\x40\x43]/
+467:/^.{8}user\x00[^\x00]+?\x00database\x00-[^\x00]+?\x00/
+468:/^9\s(\S{101}|\S+\s(\S{349}|\S+\s\S{521}))/s i
+469:/^<!--\s+[\w]{52,}\s+-->\r\n/s m i
+470:/^Authorization\s*\x3A\s*Digest\s+([^\n\x2C]*\x2C){15}/im
+471:/^Authorization\x3a\s*Basic[^\n]{256}/m i
+472:/^CONNECT\s[^\s]{1024}/i
+473:/^Connection\x3A\s*[^\r\n]*?\x2c\x2c/s m i
+474:/^Content-Disposition\x3A\s*attachment/s m i
+475:/^Content-Length\s*\x3A\s/m i
+476:/^Content-Length\s*\x3A\s*[1-9][0-9]{8}/m i
+477:/^Content-Length\x3a\s*0*([1-9][0-9]{8}|[7-9][0-9]{8})/m i
+478:/^Content-Type\x3a[\x20\x09]+application\/octet-stream/s m i
+479:/^Content-Type\x3a[\x20\x09]+application\/x-msdos-program/s m i
+480:/^Cookie\x3a\s?SECID=[^\x3b]+?$/m
+481:/^EXECSCRIPT\s+\.\.[\x2F\x5C]\.\./s m i
+482:/^From\x3A[^\r\n]*Trojaner-Info<webmaster@trojaner-info\x2Ede>/s m i
+483:/^From\x3a[^\r\n]*SpyBuddy/s m i
+484:/^GET \x2F3010[0-9A-F]{166}00000001/
+485:/^GET\s+.*\x2Frequests\x2Fstatus\.xml\x3F.*smb\x3A\x2F\x2F[^\s\x0A\x0D]{251}/s m i
+486:/^Host:\s*?[a-f0-9]{16}\./im
+487:/^Host:\s*?[a-f0-9]{63,64}\./im
+488:/^Host\x3A\s+.*jaiku\x2Ecom/s m i
+489:/^Host\x3a[^\r\n]*cojud\x2Edmcast\x2Ecom/s m i
+490:/^Host\x3a[^\r\n]*corep\x2Edmcast\x2Ecom/s m i
+491:/^Host\x3a[^\r\n]*dcww\x2Edmcast\x2Ecom/s m i
+492:/^Host\x3a[^\r\n]*related\x2Eyok\x2Ecom/s m i
+493:/^Host\x3a[^\r\n]*www\x2Eyok\x2Ecom/s m i
+494:/^Host\x3a\s*(194.192.14.125|202.75.58.179|flashupdates.info|nvidiadrivers.info|nvidiasoft.info|nvidiastream.info|rendercodec.info|syncstream.info|videosync.info)/s m i
+495:/^Host\x3a\s*(cache.dyndns.info|flashcenter.info|flashrider.org|webapp.serveftp.com|web.autoflash.info|webupdate.dyndns.info|webupdate.hopto.org|web.velocitycache.com)/s m i
+496:/^Host\x3a\x20\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\r?\n/s m i
+497:/^Location:\s*?https?\x3a\x2f{2}[0-9a-f]{16}[^/]+?\/index.php\?[a-z]=[^&\r\n]{100}/im
+498:/^Location\x3a[^\n]*file\x3a\x2f\x2f127\x2e0\x2e0\x2e1/m i
+499:/^POST\x20\x2fg[ao]lfstream\x26/
+500:/^STOR[^\n]+\.asp\x3B\./s m i
+501:/^SpyBuddy\s+Activity\s+Logs/s m i
+502:/^SpyBuddy\s+Alert/s m i
+503:/^Subject\x3A[^\r\n]*Trojaner-Info\sNewsletter/s m i
+504:/^URL\x3b\w+\x3amailto\x3a[^\n]*%[^\n]*\.(cmd|bat)/s m i
+505:/^USER\x20(XP|98|95|NT|ME|WIN|2K3)\x2d\d+\x20\x2a\x20\x30\x20\x3a/m i
+506:/^User-Agent:[^\n]*?MSIE [56]/m i
+507:/^User-Agent:[^\n]*?MSIE[56]/m i
+508:/^User-Agent\x3A[^\r\n]*TT-Bot/m i
+509:/^User-Agent\x3A[^\r\n]*beagle_beagle/s m i
+510:/^User-Agent\x3A[^\r\n]*malware/m i
+511:/^User-Agent\x3a\x20[A-Z]{9}\x0d\x0a/m
+512:/^User\x2DAgent\x3A\s*Mozilla\x0d?$/s m i
+513:/^User\x2DAgent\x3A\s+Ryeol\s+HTTP\s+Client\s+Class/s m i
+514:/^[A-Z]+\s+\x2Fsetup\x2Fsetup-.*?\x2E\x2E\x2F/m i
+515:/^[A-Za-z0-9\\x2b\x2f][GWm2]V4ZT9vb29v[A-Za-z0-9\\x2b\x2f][GWm2]Rh/
+516:/^[MNOP][A-Za-z0-9\\x2b\x2f]ZXhlP29vb2[89+/][A-Za-z0-9\\x2b\x2f]ZGF0/
+517:/^[\da-f]+\.[^\s]{41}/s m i
+518:/^[^\n]*filename[^\x3B]*([\x5C\x2F]\x2E\x2E|\x2E\x2E[\x5C\x2F])/i
+#519:/^[^\s\x00]{512}/
+#520:/^[^\x00]{512}/
+#521:/^[^\x0D\x0A\x00]{512}/i
+#522:/^[^\x0a\x3d]{512}/
+#523:/^[^\x22]+\x22(\d+\x20+){2}/
+#524:/^[^\x26\s]*(\x3e|\x253e)/i
+#525:/^[^\x26]*?\x25/
+#526:/^[^\x26]*?\x2E\x2E/
+#527:/^[^\x29]*\x2E[0-9]{11}/
+528:/^[a-z0-9]+\s+CREATE\s[^\r\n]{180}/m i
+529:/^[a-zA-Z]+\s+\x2F\x2Egif.*\x2E\x2E\x2F/m i
+530:/^[a-zA-Z]+\s+\x2F\x2Epng.*\x2E\x2E\x2F/m i
+531:/^[a-zA-Z]+\s+\x2Ferror-serverdown\x2Ejsp.*\x2E\x2E\x2F/m i
+532:/^[a-zA-Z]+\s+\x2Findex\x2Ejsp\x3Flogout\x3Dtrue.*\x2E\x2E\x2F/m i
+533:/^[a-zA-Z]+\s+\x2Flogin\x2Ejsp.*\x2E\x2E\x2F/m i
+534:/^[a-zA-Z]+\s+\x2Fsetup\x2F\index\x2Ejsp.*\x2E\x2E\x2F/m i
+535:/^[a-z]{5}\d=_\d_/
+536:/^[oz]/i
+537:/^\/999$/
+538:/^\/[0-9]{5}\.jar$/
+539:/^\/[0-9]{8}\.html$/
+540:/^\/[a-z0-9]{1,4}\.jar$/
+541:/^\/[a-z0-9]{1,4}\.jnlp$/
+542:/^\/[a-z]{2,20}\.php\?[a-z]{2,10}\x3d[a-zA-Z0-9\x2f\x2b]+\x3d$/
+543:/^\/[a-z]{5}\.php\?id=0\d{5}111D30[a-zA-Z0-9]{6}$/i
+544:/^\/\?q=[^&]*##1$/
+545:/^\/\d+$/i
+546:/^\/\d\x2eexe/i
+547:/^\/\w{1,2}\/\w{1,3}\.class$/
+548:/^\/amor\d{0,2}\.jar/
+549:/^\/cdmax$/i
+550:/^\/images2\/[0-9a-fA-F]{500,}/
+551:/^\/info\.php\?act\x3d(list|online)/
+552:/^\/jhan.jar?r=\d+/i
+553:/^\/jmx.jar?r=\d+/i
+554:/^\/load\.php\?spl=[^&]+&b=[^&]+&o=[^&]+&i=/
+555:/^\/uploading/id=\d+\&u=.*\=\=$/
+556:/^\S+\s+(uid\s+|)search\s+charset\s*\{\s/s m i
+557:/^\S+\s+(uid\s+|)search\s+charset\s+[^\s]{250}/s m i
+558:/^\S+\s+(uid\s+|)search\s[^\n]*(sent|)(on|before|since)\s*\{\s/s m i
+559:/^\S+\s+(uid\s+|)search\s[^\n]*(sent|)(on|before|since)\s+[^\s]{64}/s m i
+560:/^\d+O\d+\.jsp\?[a-z0-9\x3d\x2b\x2f]{20}/i
+561:/^\d+\x3Dhttps?\x3a\x2f\x2f[^\n\r]{1000}/i
+562:/^\d{0,10}_passes_\d{1,10}\.xm/i
+563:/^\s*=\s/
+564:/^\s*HLP\s*\x3d\s*[^\n]{257}/s m i
+565:/^\s*[\x22\x27]<\w>\s*<\s*[a-z][0-9]\s*>\s*<\s*[a-z][0-9]\s*>\s*<\s*[a-z][0-9]\s*>/i
+566:/^\s*\x28[^\x29\x2C]*?\x27\x27/
+567:/^\s*\x28[^\x2c]+\x2c[^\x2c]+?\x3b/
+568:/^\s*\x28\s*(\x27[^\x27\x22]*\x27\s*\x2c\s*)?\x27[^\x27\x22]*\x22/
+569:/^\s*\x28\s*[^\x29\x2C]*?\x27\x27/
+570:/^\s*\x28\s*\x27[^\x27]*0{4,6}\s*\x27\s*\x29\s/
+571:/^\s*\x28\s*\x27[^\x27]*?\x27\s*[^\x2c\x29]/
+572:/^\s*\x28\s*\x27[^\x27]*\x27\s*[^\s\x2c\x29]/i
+573:/^\s*\x28\s*\x27[^\x27]*\x27\s*[^\x2c\x29]/
+574:/^\s*\x5C?\x28\s*[\x22\x27][a-z]\x3A[\x2F\x5C]/i
+575:/^\w+\s+SUBSCRIBE\s[^\n]*?\{/s m i
+576:/^\w+\s+SUBSCRIBE\s[^\n]{100}/s m i
+577:/^\w+\x00/im
+#578:/^\x00+/
+579:/^\x00\x00\x00\x00[^\x00]{260}/
+580:/^\x00\x00\x00\x00[^\x00]{262}/
+581:/^\x00{3}[\x00\x01]\x7f\xff{3}/m
+582:/^\x01\x02.{0,50}[a-zA-Z]{10}\x2fPK.{0,50}[a-zA-Z]{10}\x2f[a-zA-Z]{7}\.classPK/s
+583:/^\x01\x3F\x2F\x05\x25\x2A[^\x0D\x0A]{300}/s m i
+584:/^\x28[^\x3D]+?\x29\x3D/m
+585:/^\x2F40e800[0-9A-F]{30,}$/i
+586:/^\x2FOvCgi\x2F[^\x2E]*?\x2Eexe[^\h]{1024}/i
+587:/^\x2F\d{10}$/
+588:/^\x2Fcap\x2Ftemp\x2F[A-Za-z0-9]+\x2Ejpg/m i
+589:/^\x2f[A-Z\d]{83}\x3d[A-Z\d]{10}$/i
+590:/^\x2f[A-Za-z0-9]{33}\?s=\d\&m=\d$/
+591:/^\x2f[a-z0-9]{51}$/i
+592:/^\x2f[a-z\x2d\x5f]{90,97}\.php$/
+593:/^\x2f\d{3}\x2f\d{3}\x2ehtml$/
+594:/^\x2f\x3fptrxcz\x5f[a-zA-Z0-9]{30}$/i
+595:/^\x2f\x3fxclve\x5f[a-zA-Z0-9]{30}$/i
+596:/^\x2fnosignal\.jpg\?\d\.\d+$/
+597:/^\x3d[^\s\x26\x0d\x0a]*?\x2527/i
+598:/^\x5C?\x28null\x5C?\x29/
+599:/^allhttp\x7c\d+\x7c/
+600:/^antiddos\x7c\d+\x7c/
+601:/^begin\s\d+\s[^\s\r\n\t]*\x60/s m
+602:/^connect\x7c\d+\x7c/
+603:/^connected\x2e[^\x0D\x0A]*20\d\d[^\x0D\x0A]*ver\x3A\s+Legends\s2\x2e1/s m i
+604:/^data\x7c\d+\x7c/
+605:/^dataget\x7c\d+\x7c/
+606:/^datapost\x7c\d+\x7c/
+607:/^die\x7c\d+\x7c/
+608:/^dns\x7c\d+\x7c/
+609:/^download\x7c\d+\x7c/
+610:/^exec\x7c\d+\x7c/
+611:/^fastddos\x7c\d+\x7c/
+612:/^ftp\x7c\d+\x7c/
+613:/^full\x7c\d+\x7c/
+614:/^host\x3a\s*[^\r\n]{300}/s m i
+615:/^http\x7c\d+\x7c/
+616:/^icmp\x7c\d+\x7c/
+617:/^images.php\?t=\d{2,7}$/
+618:/^loginpost\x7c\d+\x7c/
+619:/^p?\s*\x5c\([^\x3b]*?\x5c\(\x5c\)\x5c\(\x5c\)\x5c\(\x5c\)\x5c\(\x5c\)\x5c\(\x5c\)/s m i
+620:/^range\x7c\d+\x7c/
+621:/^resolve\x7c\d+\x7c/
+622:/^simpel\x7c\d+\x7c/
+623:/^sleep\x7c\d+\x7c/
+624:/^slowhttp\x7c\d+\x7c/
+625:/^stop\x7c\d+\x7c/
+626:/^syn\x7c\d+\x7c/
+627:/^tcpdata\x7c\d+\x7c/
+628:/^udp\x7c\d+\x7c/
+629:/^udpdata\x7c\d+\x7c/
+630:/^ver\x3aGhost\s+version\s+\d+\x2E\d+\s+server/s m i
+631:/__CALLBACKPARAM=[^\r\n]+?([\x22\x27]|%22|%27)([\x3E\x3C\x28\x29]|%3E|%3C|%28|%29)/i
+632:/act\x3D[^\x26\x3F\x3B\x0D\x0A]{300}/i
+633:/adp\d?\.php\?[fe]=/
+634:/app\x3D[^\x26\x3F\x3B\x0D\x0A]{300}/i
+635:/appendChild\x28\s*document\x2ecreateElement\x28\s*[\x22\x27]button[\x22\x27].*?outerText\s*=\s*[\x22\x27]{2}/s m i
+636:/bj\x22[\x0D\x0A\s\t]*\x2b[\x0D\x0A\s\t]*\x22ect\x28n\x2C\x27\x27\x29/s m i
+637:/body[^>]*?onload[^>]*?onselect/i
+638:/body\x3e\x3cdiv\s[a-z]{3}\x3d\x22[a-z]{3}\x22/
+639:/cai\x3a[^\x3e]*?(\x22|\x2522)[^\x3e\x22]*?-launcher/s m i
+640:/cdda\x3A\x2F\x2F[^\s\x22\x27]{100}/s m i
+641:/code\=\x22MyApplet(\.class)?\x22><\/applet/
+642:/com\.cisco\.nm\.help\.ServerHelpEngine\?[^$\n]*tag=[^$\n]*([\x3C\x3E\x22\x27]|script|src|location|document)/i
+643:/counter.img\?theme\=\d+\&digits\=10\&siteId\=\d+$/i
+644:/createEventObject[^\x7D]+innerHTML\s*\x3D\s*\S+[^\x7D]+(setTimeout|setInterval)/
+645:/crypto\x3Arc4_(encrypt|decrypt)\x28\x27[^\x27]{129}/s m i
+646:/css\s*?\x28\s*?[\x22\x27]margin[^\x29]*?[\x22\x27]\s*?\x2c\s*?[\x22\x27]\d{12,}\s*?px/s m i
+647:/ctl\d+\x24PlaceHolderMain\x24ctl\d+\x24customizeThemeSection\x24(accent1|accent2|accent3|accent4|accent5|accent6|dark1|dark2|light1|light2)=[^\r\n\x26]+(script|onclick|onload|onmouseover|[\x22\x27\x3c\x3e\x28\x29])/i
+648:/device\.center\.do\?[^$\n]*(DeviceID|objectID|dsOsName|device)=[^$\n]*([\x3C\x3E\x22\x27]|script|src|location|document)/i
+649:/document\x2Elocation\x2Ereplace\s*\x28\s*(\x22|\x27)[a-z0-9]+\.exe\?[a-z0-9]+\.pdf/i
+650:/evtdump\x3f.*?\x2525[^\x20]*?\x20HTTP/i
+651:/execCommand\x28\s*?[\x22\x27]selectAll[\x22\x27]\s*?\x29/i
+652:/exec_sdbinfo\s+[\x26\x3b\x7c\x3e\x3c]/i
+653:/exploit\/(Exploit(App)?|Loader)\.class/s m i
+654:/fileName=.*?\x2E\x2E(\x2F|\x5C)/s
+655:/fileName\x3d[^\r\n&]{235}/i
+656:/fileName\x3d[^\x26]*(\x2e\x2e\x5c|\x2e\x2e\x2f)/i
+657:/filename=[\x22\x27]?[^\n]*\x2eapk[\x22\x27\s]/s i
+658:/filename=[\x22\x27]?[^\n]*\x2easx[\x22\x27\s]/s i
+659:/filename=[\x22\x27]?[^\n]*\x2ehtc[\x22\x27\s]/s i
+660:/filename=[\x22\x27]?[^\n]*\x2em3u[\x22\x27\s]/s i
+661:/filename=[\x22\x27]?[^\n]*\x2emetalink[\x22\x27\s]/s i
+662:/filename=[\x22\x27]?[^\n]*\x2eskp[\x22\x27\s]/s i
+663:/filename=[^\n]*?\x2e4xm[\x22\x27\s]/s i
+664:/filename=[^\n]*?\x2eafm[\x22\x27\s]/s i
+665:/filename=[^\n]*?\x2eani[\x22\x27\s]/s i
+666:/filename=[^\n]*?\x2easf[\x22\x27\s]/s i
+667:/filename=[^\n]*?\x2easx[\x22\x27\s]/s i
+668:/filename=[^\n]*?\x2eavi[\x22\x27\s]/s i
+669:/filename=[^\n]*?\x2echm[\x22\x27\s]/s i
+670:/filename=[^\n]*?\x2ecov[\x22\x27\s]/s i
+671:/filename=[^\n]*?\x2ecpe[\x22\x27\s]/s i
+672:/filename=[^\n]*?\x2edcr[\x22\x27\s]/s i
+673:/filename=[^\n]*?\x2edir[\x22\x27\s]/s i
+674:/filename=[^\n]*?\x2edoc[\x22\x27\s]/s i
+675:/filename=[^\n]*?\x2edxf[\x22\x27\s]/s i
+676:/filename=[^\n]*?\x2eeot[\x22\x27\s]/s i
+677:/filename=[^\n]*?\x2eeps[\x22\x27\s]/s i
+678:/filename=[^\n]*?\x2eexe[\x22\x27\s]/s i
+679:/filename=[^\n]*?\x2ef4a[\x22\x27\s]/s i
+680:/filename=[^\n]*?\x2ef4b[\x22\x27\s]/s i
+681:/filename=[^\n]*?\x2ef4p[\x22\x27\s]/s i
+682:/filename=[^\n]*?\x2ef4v[\x22\x27\s]/s i
+683:/filename=[^\n]*?\x2efpx[\x22\x27\s]/s i
+684:/filename=[^\n]*?\x2egif[\x22\x27\s]/s i
+685:/filename=[^\n]*?\x2ehpj[\x22\x27\s]/s i
+686:/filename=[^\n]*?\x2ejfif?[\x22\x27\s]/s i
+687:/filename=[^\n]*?\x2ejif[\x22\x27\s]/s i
+688:/filename=[^\n]*?\x2ejpe[\x22\x27\s]/s i
+689:/filename=[^\n]*?\x2ejpeg[\x22\x27\s]/s i
+690:/filename=[^\n]*?\x2ejpg[\x22\x27\s]/s i
+691:/filename=[^\n]*?\x2elnk[\x22\x27\s]/s i
+692:/filename=[^\n]*?\x2empeg[\x22\x27\s]/s i
+693:/filename=[^\n]*?\x2emswmm[\x22\x27\s]/s i
+694:/filename=[^\n]*?\x2eotf[\x22\x27\s]/s i
+695:/filename=[^\n]*?\x2epaq8o[\x22\x27\s]/s i
+696:/filename=[^\n]*?\x2epct[\x22\x27\s]/s i
+697:/filename=[^\n]*?\x2epdf[\x22\x27\s]/s i
+698:/filename=[^\n]*?\x2epfa[\x22\x27\s]/s i
+699:/filename=[^\n]*?\x2epfb[\x22\x27\s]/s i
+700:/filename=[^\n]*?\x2epfm[\x22\x27\s]/s i
+701:/filename=[^\n]*?\x2epict[\x22\x27\s]/s i
+702:/filename=[^\n]*?\x2epjpeg[\x22\x27\s]/s i
+703:/filename=[^\n]*?\x2epls[\x22\x27\s]/s i
+704:/filename=[^\n]*?\x2epmd[\x22\x27\s]/s i
+705:/filename=[^\n]*?\x2epng[\x22\x27\s]/s i
+706:/filename=[^\n]*?\x2eppt[\x22\x27\s]/s i
+707:/filename=[^\n]*?\x2epub[\x22\x27\s]/s i
+708:/filename=[^\n]*?\x2eqcp[\x22\x27\s]/s i
+709:/filename=[^\n]*?\x2ertf[\x22\x27\s]/s i
+710:/filename=[^\n]*?\x2esami[\x22\x27\s]/s i
+711:/filename=[^\n]*?\x2esmi[\x22\x27\s]/s i
+712:/filename=[^\n]*?\x2esmil[\x22\x27\s]/s i
+713:/filename=[^\n]*?\x2eswf[\x22\x27\s]/s i
+714:/filename=[^\n]*?\x2etorrent[\x22\x27\s]/s i
+715:/filename=[^\n]*?\x2ette[\x22\x27\s]/s i
+716:/filename=[^\n]*?\x2evisprj[\x22\x27\s]/s i
+717:/filename=[^\n]*?\x2evsd[\x22\x27\s]/s i
+718:/filename=[^\n]*?\x2ewmf[\x22\x27\s]/s i
+719:/filename=[^\n]*?\x2ewrf[\x22\x27\s]/s i
+720:/filename=[^\n]*?\x2exls[\x22\x27\s]/s i
+721:/filename=[^\n]*?\x2exlw[\x22\x27\s]/s i
+722:/filename=[^\n]*?\x2exml[\x22\x27\s]/s i
+723:/filename=[^\n]*?\x2expm[\x22\x27\s]/s i
+724:/filename=[^\n]*?\x2exsl[\x22\x27\s]/s i
+725:/filename=[^\n]*?\x2exslt[\x22\x27\s]/s i
+726:/filename=[^\n]*?\x2exspf[\x22\x27\s]/s i
+727:/filename=[^\n]*?\x2ezip[\x22\x27\s]/s i
+728:/filename=[a-z0-9]{12}[0-9]{12}\.pdf/
+729:/filename=\x22[^\x22]*\x2easx\x22/i
+730:/filename=\x22[^\x22]*\x2ecgm\x22/i
+731:/filename=\x22[^\x22]*\x2eclass\x22/i
+732:/filename=\x22[^\x22]*\x2ecsd\x22/i
+733:/filename=\x22[^\x22]*\x2eflv\x22/i
+734:/filename=\x22[^\x22]*\x2ejnlp\x22/i
+735:/filename=\x22[^\x22]*\x2em3u\x22/i
+736:/filename=\x22[^\x22]*\x2emaplet\x22/i
+737:/filename=\x22[^\x22]*\x2emp3\x22/i
+738:/filename=\x22[^\x22]*\x2emp4\x22/i
+739:/filename=\x22[^\x22]*\x2empg\x22/i
+740:/filename=\x22[^\x22]*\x2eoga\x22/i
+741:/filename=\x22[^\x22]*\x2eogg\x22/i
+742:/filename=\x22[^\x22]*\x2eogv\x22/i
+743:/filename=\x22[^\x22]*\x2eogx\x22/i
+744:/filename=\x22[^\x22]*\x2eopus\x22/i
+745:/filename=\x22[^\x22]*\x2ermf\x22/i
+746:/filename=\x22[^\x22]*\x2espx\x22/i
+747:/filename=\x22[^\x22]*\x2etga\x22/i
+748:/filename=\x22[^\x22]*\x2etiff?\x22/i
+749:/filename=\x22[^\x22]*\x2evap\x22/i
+750:/filename=\x22[^\x22]*\x2ewax\x22/i
+751:/filename=\x22[^\x22]*\x2ewm\x22/i
+752:/filename=\x22[^\x22]*\x2ewma\x22/i
+753:/filename=\x22[^\x22]*\x2ewmv\x22/i
+754:/filename=\x22[^\x22]*\x2ewmx\x22/i
+755:/filename=\x22[^\x22]*\x2ewps\x22/i
+756:/filename=\x22[^\x22]*\x2ewvx\x22/i
+757:/filename=\x22\d+\x22\r\n/
+758:/filename\=[a-z0-9]{24}\.exe/
+759:/filename\=[a-z0-9]{24}\.jar/
+760:/filename\=\d{4}\.exe/
+761:/filename\s*=[^\n]*\.123/s i
+762:/filename\x3d\w{8}\.jar/i
+763:/form=[cde]\x3a(\x5C|\x2F)/i
+764:/from(%5f|_)prefix=[^&]*?(%2f|\/)[^&]*?e[^&]*?(%00|\x00)/i
+765:/function arguments\s*\x28\s*\x29\s*\x7b/
+766:/g\/\d{9}\/[0-9a-f]{32}\/[0-9]$/
+767:/gate\x2ephp\x3fid=[a-z]{15}/
+768:/gate\x2ephp\x3freg=[a-zA-Z]{15}/
+769:/gate\x2ephp\x3freg=[a-z]{10}/
+770:/grant\s.+?\son\s[^\.\s]{193}/m i
+771:/hcp\x3a\x2f\x2f[^\n]*(\x3c|\x253c)script(\s|\x2520|\x2f)+defer/i
+772:/href=.*?[\x22\x27][^\x22\x27]{500}/s m i
+773:/http\x3A\s+-J-jar\s+-J[^\s]+\x2Ejar/i
+774:/https?\x3a\x2f\x2f[^\n\r]{1000}/i
+775:/hwid=[^\x0a\x26]+?\x26pc=[^\x0a\x26]+?\x26localip=[^\x0a\x26]+?\x26winver=/
+776:/hwinfo=\x7b[a-f0-9]{8}\x2d[a-f0-9]{4}\x2d[a-f0-9]{4}\x2d[a-f0-9]{4}\x2d[a-f0-9]{12}\x7d/s m i
+777:/i=[a-zA-Z0-9$~]{40}/
+778:/id=((UNION|DELETE|ASCII)?\s*SELECT.*?FROM|UPDATE.*?SET)/i
+779:/index.php\?[0-9a-f]{32}$/
+780:/jnlp\x22\x09\x22-J-Djava\.security\.policy/i
+781:/json\s*=\s*\x7b.*?\x22fn\x22\s*\x3a\s*\x22(getItems|folderRename|file(Delete|Copy))\x22\s*\x2c\s*\x22args\x22\s*\x3a\x5b?[^\x7d]*?\x22[^\x22]*?(\.\.|0day)[^\x22]*?\x22.*?\x7d/s m i
+782:/load\.php\?spl=(Spreadsheet|DirectX_DS|MS09-002|MS06-006|mdac|RoxioCP v3\.2|wvf|flash|Opera_telnet|compareTo|jno|Font_FireFox|pdf_exp|aol|javad|ActiveX_pack)/
+783:/logo\.png\x3f(sv\x3d\d{1,3})?\x26tq\x3d.*?SoSEU/s m i
+784:/mJKV[^\s\x0D\x0A]+1Q_fQ_fQ_fQ_fQ_fQ_fQ_fQ/
+785:/nativeHelper\.apply\(\s*?\{\s*?[\x22\x27]\s*?x\s*?[\x22\x27]\s*?:\s*?(0x)?\d/i
+786:/new (javax?|org)/i
+787:/new(\s|%20)(java|org)/i
+788:/on(before|de)activate\s*\x3d\s*function\s*\x28\x29\s*\x7b\s*call(back|malFunc)\x28\x29/i
+789:/on(load|click)\s*=\s*\x22?window\.close\s*\x28/s i
+790:/onload\s*\x3D\s*[\x22\x27]?location\.reload\s*\x28/s m i
+791:/onoverflow\s*?=\s*?(\x22|\x27)\s*?event\.target\.parentNode\.removeChild/s m i
+792:/ora_osb_bgcookie=[^\w\d\-]+?/i
+793:/orig_url=[^\x26]*[\x22\x27\x28\x29\x3C\x3E]/i
+794:/other=[^\x26]*(%26|%7c)/s i
+795:/other=[^\x26]*[\x21-\x24\x27\x28-\x2a\x2d\x2f\x3b\x3c\x3e\x3f\x40\x5b-\x5d\x7b-\x7e]/
+796:/pass=(YAHOO|(XP\s+)?MSN|PALTALK)/i
+797:/passwd\x3D[^\x26\x3F\x3B\x0D\x0A]{29}/i
+798:/pdf\.php\?pdf=[0-9A-F]+&type=\d+&o=[^&]+&b=/
+799:/php\?jnlp\=[a-f0-9]{10}($|\x2c)/
+800:/php\?sf=\d+\&Ze=\d+\&m=\d+/
+801:/poc\/(Exploit|myClassLoader|pocMain|runCmd)\.class/s m i
+802:/progid\s*\x3d\s*[\x22\x27]SQLDMO\x2eSQLServer[\x22\x27]/
+803:/prototype\x2d([^\x7d]{1,5})?\x7dcatch\x28/s m i
+804:/pwd=(\!|\%21)CRYPT(\!|\%21)[^\r\n&]{513}/i
+805:/qt\x3anext\s*\x3d\s*\x22\s*file\x3a\x2f{3}/i
+806:/reason=[^\r\n\x26]+(alert|script|onclick|onload|onmouseover|[\x22\x27\x3c\x3e\x28\x29])/i
+807:/rec\.php$/s m i
+808:/recolorinfo[^>]*numcolors\s*=\s*\x22/s i
+809:/recolorinfo[^>]*numfills\s*=\s*\x22/s i
+810:/search\.php\?page=[a-f0-9]{16}$/
+811:/sections=[^\r\n\x26]+(script|onclick|onload|onmouseover|html|[\x22\x27\x3c\x3e\x28\x29])/i
+812:/select\s+xmlquery\s*\x28\s*(\x27|\x22)[^\x27\x22]{512}/s m i
+813:/session=[^\s\x3b&]{520}/i
+814:/session_to_unset=($|[\x26\x3B])/i
+815:/setInterval\s*\x28[^\x29]+\x2efocus\x28\x29/s m i
+816:/setup=[a-z]$/i
+817:/setup=[a-z]\&s=\d\&r=\d{5}$/i
+818:/showthread\.php\?t\=[a-f0-9]{16}\x27\x3b/s m i
+819:/skillName\x3D\x7B\x28\x23/i
+820:/skype4com\x3A[A-Z\d]{0,6}[^A-Z\d]/s m i
+821:/smb\x3A\x2F\x2F[^\s\x0A\x0D\x3C]{251}/m i
+822:/smb\x3A\x2F\x2F[^\s\x0D\x0A\x3C]{251}/m i
+823:/src.php\?case\=[a-f0-9]{16}/s m i
+824:/src=(?P<q1>[\x22\x27])\s*?search-ms\x3a[^#]*?query=[^#]*?#[^(P=q1)]*?\x2f(root|select)/s m i
+825:/src=\d+&gpr=\d+&tkr[ib]?=/
+826:/stat2\.php\?w=\d+\x26i=[0-9a-f]{32}\x26a=\d+/i
+827:/sys\x2eolapimpl\x5ft\x2eodcitablestart\x28[^\x2c]+\x2c[^\x2c]+\x2c\s*\x27?[^\x2c\x27]{303}/i
+828:/target=\.\.[\x2f\x5c]\.\.[\x2f\x5c]/i
+829:/tip\x3D[a-zA-Z]+\x26cli\x3D[a-zA-Z]+\x26tipo\x3Dcli\x26inf\x3D/s m i
+830:/toStaticHTML\x28.*?[\x26\x22].=expression\x28/s m i
+831:/txt_user_name_p\x3D[^\x26\x3F\x3B]{300}/i
+832:/u=[\dA-Fa-f]{8}/s m i
+833:/uname=[^&]*%26/
+834:/uname=[^&]*(%3[CE]|-)/i
+835:/uname\x3d[^\x26]*[\x3c\x3e]/i
+836:/uploadPath[^-]+?(%2e|\x2e){2}(%2f|\x2f)/m i
+837:/userid\x3D[^\x26\x3F\x3B\x0D\x0A]{29}/i
+838:/uuid_from_char\s*?\(\s*?[\x22\x27][^\x22\x27]{37}/s m i
+839:/var num \x3D (-1|168430090)\x3B/i
+840:/var\s+heapspray[A-Z\d_\s]*=/s m i
+841:/var\s+shellcode\s*=/s m i
+842:/wallclock\x28((\d{2}\x3A){2}\d{2}\.[^\x2b\x2d\x5a]{11}|\d{4}-\d{2}-\d{2}T(\d{2}\x3A){2}\d{2}\.[^\x2b\x2d\x5a]{11})/s m i
+843:/window\x2elocation\s*=\s*unescape\s*\x28\s*["']\x25[^"']*https?\x3a/
+844:/wp-content\/uploads\/fgallery\/.+\x2ehtml?(\?|$)/
+845:/wp-content\/uploads\/fgallery\/.+\x2ephp(\?|$)/
+846:/wpbanners_show\.php.*?[?&]cid=[^&]*?([^\x26]*[\x22\x27\x3C\x3E\x28\x29\x3B]|script|src|location|document)/i
+847:/xmldirectorylist(\.utf-8|\.other)?\.jsp[^\n]*?[\x3F\x26][lfn]=[^\x26]*?[\x22\x27][^\x26]*?\x20(or|union|like|select)\x20/i
