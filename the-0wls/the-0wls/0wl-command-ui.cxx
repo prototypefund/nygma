@@ -390,7 +390,7 @@ struct state {
     std::thread th( [=, this]() {
       subprocess_s proc;
       char const* cmd[] = {
-          "./build-default/t3tch/t3tch/t3",
+          "./build-default/modules/nygma/tetch/tetch/t3",
           "index-pcap",
           "--mode",
           "regexp",
