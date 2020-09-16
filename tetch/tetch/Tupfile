@@ -1,0 +1,17 @@
+include_rules
+
+CXXFLAGS += -I$(ONEUP_MODULES_ROOT)/nygma/libioc
+CXXFLAGS += -I$(ONEUP_MODULES_ROOT)/nygma/libriot
+CXXFLAGS += -I$(ONEUP_MODULES_ROOT)/nygma/libnygma
+CXXFLAGS += -I$(ONEUP_MODULES_ROOT)/nygma/libunclassified
+CXXFLAGS += -I$(ONEUP_MODULES_ROOT)/nygma/nygma
+CXXFLAGS += -I$(ONEUP_MODULES_ROOT)/nygma/tetch
+CXXFLAGS += -I$(ONEUP_MODULES_ROOT)/hyperscan
+CXXFLAGS += -I$(ONEUP_MODULES_ROOT)/pest
+CXXFLAGS += -I$(ONEUP_MODULES_ROOT)/argh
+
+libs := $(ONEUP_MODULES_ROOT)/hyperscan/hyperscan/libhyperscan.a
+
+: foreach *.cxx |> !oneup_cxx_o |> {objs}
+: {objs} $(libs) |> !oneup_cxx |> t3
+
