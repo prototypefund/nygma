@@ -1,5 +1,3 @@
-# NYGMA - network packet processing
-
 ```
 _______ _____.___. ________    _____      _____   
 \      \\__  |   |/  _____/   /     \    /  _  \  
@@ -10,11 +8,13 @@ _______ _____.___. ________    _____      _____
   NO GODS :: NO MASTERS :: AGAINST ALL AUTHORITY
 ```
 
+# NYGMA - network packet processing
+
 ... from hackers for hackers ...
 
-NOTE: `NYGMA` is currently in redesign phaning. for know happending in a private repository.
+NOTE: `NYGMA` is currently in redesign phase; for now happending in a private repository.
 
-- see: outdated [README]( doc/README.md ) 
+- see: [README]( doc/README.md ) ( outdated ) 
 
 ## support & blame-game
 
