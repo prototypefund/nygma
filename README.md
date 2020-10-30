@@ -13,6 +13,7 @@ _______ _____.___. ________    _____      _____
 ... from hackers for hackers ...
 
 NOTE: `NYGMA` is currently in redesign phase; for now happending in a private repository.
+re-release is planned for Q2/2021.
 
 - see: [README]( doc/README.md ) ( outdated ) 
 
